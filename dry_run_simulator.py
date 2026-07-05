@@ -1,55 +1,45 @@
 ﻿"""
-dry_run_simulator.py - برج المراقبة + وكيل الظل (Mean Reversion)
+dry_run_simulator.py - المحفظة ثنائية الاستراتيجية (المصفوفة + الزخم)
 المشروع: الكيان الفيروسي - أقوى شركة تداول
-يدير محفظة باستراتيجيتين: المصفوفة + الارتداد نحو المتوسط.
 """
 import pandas as pd
 from pathlib import Path
-from data_loader import load_hourly, load_m15
+from data_loader import load_hourly
 from strategy_matrix import generate_signals
-from strategy_mean_reversion import generate_mr_signals
+from strategy_momentum import generate_momentum_signals
 from backtest_engine import dynamic_backtest
 from unified_filters import apply_time_filter, apply_weekly_bias_filter
 from weekly_analyzer import analyze_week, apply_weekly_rules, get_effective_risk, recalculate_filters
 
 print("=" * 60)
-print("   🦅 برج المراقبة – المحفظة ثنائية الاستراتيجية")
+print("   🦅 المحفظة ثنائية الاستراتيجية (المصفوفة + الزخم)")
 print("=" * 60)
 
 # 1. تحميل البيانات
-print("\n📥 تحميل البيانات من DataHub...")
-df_h1 = load_hourly()
-df_m15 = load_m15()
-print(f"   ✅ H1: {len(df_h1)} صف | M15: {len(df_m15)} صف")
+print("\n📥 تحميل بيانات H1...")
+df = load_hourly()
+print(f"   ✅ تم تحميل {len(df)} صف")
 
 # 2. توليد الإشارات من الاستراتيجيتين
 print("\n🧠 توليد الإشارات...")
-df_h1 = generate_signals(df_h1)  # المصفوفة
-df_m15 = generate_mr_signals(df_m15)  # وكيل الظل
-print(f"   🔍 إشارات المصفوفة (H1): {(df_h1['Final']!=0).sum()}")
-print(f"   🔍 إشارات وكيل الظل (M15): {(df_m15['MR_Signal']!=0).sum()}")
+df = generate_signals(df)  # المصفوفة
+df = generate_momentum_signals(df)  # الزخم
+print(f"   🔍 إشارات المصفوفة: {(df['Final']!=0).sum()}")
+print(f"   🔍 إشارات الزخم: {(df['MO_Signal']!=0).sum()}")
 
-# 3. محاذاة التواريخ (نأخذ التاريخ المشترك)
-common_index = df_h1.index.intersection(df_m15.index)
-df_h1 = df_h1.loc[common_index]
-df_m15 = df_m15.loc[common_index]
-
-# 4. نسخ إشارات وكيل الظل إلى بيانات H1 لتوحيد المحرك
-df_h1['MR_Signal'] = df_m15['MR_Signal']
-
-# 5. حساب مصفوفة التأكيد للاستراتيجيتين
+# 3. حساب مصفوفة التأكيد
 print("\n🛡️ حساب درجة التأكيد...")
-time_ok = apply_time_filter(df_h1)
-day_ok = apply_weekly_bias_filter(df_h1)
-vol_ok = (df_h1['VolClass'] == 2)
+time_ok = apply_time_filter(df)
+day_ok = apply_weekly_bias_filter(df)
+vol_ok = (df['VolClass'] == 2)
 
-df_h1['Confirmation'] = 1.0
-df_h1.loc[time_ok, 'Confirmation'] += 0.5
-df_h1.loc[day_ok, 'Confirmation'] += 0.5
-df_h1.loc[vol_ok, 'Confirmation'] += 0.5
-df_h1['Confirmation'] = df_h1['Confirmation'].clip(upper=2.0)
+df['Confirmation'] = 1.0
+df.loc[time_ok, 'Confirmation'] += 0.5
+df.loc[day_ok, 'Confirmation'] += 0.5
+df.loc[vol_ok, 'Confirmation'] += 0.5
+df['Confirmation'] = df['Confirmation'].clip(upper=2.0)
 
-# 6. محاولة تحميل سجل سابق للفلاتر الديناميكية والمحلل الأسبوعي
+# 4. الفلاتر الديناميكية والمحلل الأسبوعي
 print("\n🔄 تحليل السجل السابق...")
 try:
     past_log = pd.read_csv('logs/dry_run_log.csv')
@@ -65,23 +55,22 @@ except FileNotFoundError:
     weekly_rules = {}
     print("   ⚠️ لا يوجد سجل سابق. بداية جديدة.")
 
-# 7. تطبيق الفلاتر الديناميكية والقواعد الأسبوعية
-df_h1['time_ok'] = df_h1['hour'].isin(good_hours)
-df_h1['day_ok'] = df_h1['weekday'].isin(good_days)
+df['time_ok'] = df['hour'].isin(good_hours)
+df['day_ok'] = df['weekday'].isin(good_days)
 if weekly_rules:
-    df_h1 = apply_weekly_rules(df_h1, weekly_rules)
+    df = apply_weekly_rules(df, weekly_rules)
 
 base_risk = 0.005
 effective_risk = get_effective_risk(base_risk, weekly_rules)
 
-# 8. تشغيل المحاكاة باستراتيجيتين معاً
+# 5. تشغيل المحاكاة باستراتيجيتين
 print(f"\n⚙️ تشغيل المحاكاة (المخاطرة: {effective_risk*100:.2f}%)...")
 trades, equity, trade_log = dynamic_backtest(
-    df_h1, 10000, risk_percent=effective_risk, log_trades=True,
-    strategy_cols=['Final', 'MR_Signal']
+    df, 10000, risk_percent=effective_risk, log_trades=True,
+    strategy_cols=['Final', 'MO_Signal']
 )
 
-# 9. النتائج
+# 6. النتائج
 print("\n📊 نتائج المحاكاة الجافة:")
 if trades:
     wins = [t for t in trades if t > 0]
