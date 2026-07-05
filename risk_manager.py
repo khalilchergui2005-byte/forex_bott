@@ -251,6 +251,8 @@ class RiskManager:
         يُستدعى بعد إغلاق كل صفقة.
         """
         pnl = Decimal(str(profit_amount))
+        if self.last_trade_date is None:
+            self.last_trade_date = date.today()
         self.daily_pnl += pnl
         self.weekly_pnl += pnl
         self.current_balance += pnl
