@@ -1,0 +1,2 @@
+SMA(29,55) RSI(7,38,73) ATRx0.8 Filter=True
+PnL=$7836.47 Trades=131 Win=45.0% DD=-25.4% PF=1.6

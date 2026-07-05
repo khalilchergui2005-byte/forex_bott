@@ -1,0 +1,22 @@
+﻿import pandas as pd
+import numpy as np
+df = pd.read_csv("logs/trade_log_detailed.csv")
+pnl = "net_pnl"
+print("=== قبل الجراحة ===")
+w0=df[df[pnl]>0][pnl]; l0=df[df[pnl]<0][pnl].abs()
+print(f"PF: {w0.sum()/l0.sum():.3f} | صفقات: {len(df)} | فوز: {len(w0)}")
+mask = (df["hour"] != 7) & (df["day"] != 1) & (df["entry_regime"] != 7)
+clean = df[mask].copy()
+print("=== بعد الجراحة ===")
+w1=clean[clean[pnl]>0][pnl]; l1=clean[clean[pnl]<0][pnl].abs()
+print(f"PF: {w1.sum()/l1.sum():.3f} | صفقات: {len(clean)} | فوز: {len(w1)}")
+print(f"نسبة الفوز: {len(w1)/len(clean)*100:.1f}%")
+print(f"AVG_WIN: {w1.mean():.2f} | AVG_LOSE: {l1.mean():.2f}")
+print(f"RR: {w1.mean()/l1.mean():.3f}")
+print(f"اجمالي الربح: {clean[pnl].sum():.2f}")
+print("=== HOURS بعد ===")
+print(clean.groupby("hour")[pnl].agg(["sum","count"]).round(2).to_string())
+print("=== DAYS بعد ===")
+print(clean.groupby("day")[pnl].agg(["sum","count"]).round(2).to_string())
+print("=== REGIME بعد ===")
+print(clean.groupby("entry_regime")[pnl].agg(["sum","count"]).round(2).to_string())

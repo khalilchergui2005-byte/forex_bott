@@ -1,0 +1,2 @@
+SMA_short=21, SMA_long=59, RSI_period=14, RSI_low=33, RSI_high=65, ATR_mult=0.5, regime_filter=False
+Return=$12593.15, Trades=29, WinRate=48.3%, DD=-5.2%, PF=2.7
