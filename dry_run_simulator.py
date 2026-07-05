@@ -1,7 +1,8 @@
 ﻿"""
-dry_run_simulator.py - برج المراقبة والتنفيذ الذهبي (مُحسَّن)
+dry_run_simulator.py - برج المراقبة والتنفيذ الذهبي + المحلل الأسبوعي
 المشروع: الكيان الفيروسي - أقوى شركة تداول
 يمنح كل إشارة درجة تأكيد، ويضاعف الرافعة على الذهبية.
+يتكيف أسبوعياً بناءً على الأداء.
 """
 import pandas as pd
 from pathlib import Path
@@ -9,9 +10,10 @@ from data_loader import load_hourly
 from strategy_matrix import generate_signals
 from backtest_engine import dynamic_backtest
 from unified_filters import apply_time_filter, apply_weekly_bias_filter
+from weekly_analyzer import analyze_week, apply_weekly_rules, get_effective_risk
 
 print("=" * 60)
-print("   🦅 برج المراقبة – Dry Run Simulator (محسن)")
+print("   🦅 برج المراقبة + الدماغ الأسبوعي – Dry Run Simulator")
 print("=" * 60)
 
 # 1. تحميل البيانات
@@ -24,36 +26,49 @@ print("\n🧠 توليد الإشارات من المصفوفة...")
 df = generate_signals(df)
 print(f"   🔍 إجمالي الإشارات الخام: {(df['Final']!=0).sum()}")
 
-# 3. حساب مصفوفة التأكيد (محسنة)
-print("\n🛡️ حساب درجة التأكيد (محسنة)...")
+# 3. حساب مصفوفة التأكيد
+print("\n🛡️ حساب درجة التأكيد...")
 time_ok = apply_time_filter(df)
 day_ok = apply_weekly_bias_filter(df)
-vol_ok = (df['VolClass'] == 2)  # مكافأة إضافية فقط
+vol_ok = (df['VolClass'] == 2)
 
-# درجة التأكيد تبدأ من 1.0 (أساسي لكل إشارة صالحة)
 df['Confirmation'] = 1.0
 df.loc[time_ok, 'Confirmation'] += 0.5
 df.loc[day_ok, 'Confirmation'] += 0.5
 df.loc[vol_ok, 'Confirmation'] += 0.5
-# الحد الأقصى 2.0 (لتبقى المخاطرة القصوى 1.0%)
 df['Confirmation'] = df['Confirmation'].clip(upper=2.0)
 
-# الإشارات الصالحة هي التي تحمل إشارة تداول
-df['Final_Filtered'] = df['Final']
-print(f"   ✅ إشارات صالحة للتداول: {df['Final_Filtered'].sum()}")
+# 4. محاكاة المحلل الأسبوعي
+print("\n📊 تحليل الأداء الأسبوعي السابق...")
+try:
+    past_log = pd.read_csv('logs/dry_run_log.csv')
+    analysis = analyze_week(past_log)
+    print(f"   {analysis['message']}")
+    weekly_rules = analysis['rules']
+except FileNotFoundError:
+    weekly_rules = {}
+    print("   ⚠️ لا يوجد سجل سابق. بداية جديدة.")
 
-# 4. تشغيل المحاكاة
-print("\n⚙️ تشغيل المحاكاة مع مضاعف الرافعة الذكي...")
-trades, equity, trade_log = dynamic_backtest(df, 10000, risk_percent=0.005, log_trades=True)
+# 5. تطبيق القواعد الأسبوعية
+if weekly_rules:
+    df = apply_weekly_rules(df, weekly_rules)
+    print(f"   🔧 تم تطبيق {len(weekly_rules)} قاعدة أسبوعية.")
+else:
+    print("   ✅ لا توجد قواعد أسبوعية للتطبيق.")
 
-# 5. النتائج
+# 6. تشغيل المحاكاة
+base_risk = 0.005
+effective_risk = get_effective_risk(base_risk, weekly_rules)
+print(f"\n⚙️ تشغيل المحاكاة (المخاطرة الأساسية: {effective_risk*100:.2f}%)...")
+trades, equity, trade_log = dynamic_backtest(df, 10000, risk_percent=effective_risk, log_trades=True)
+
+# 7. النتائج
 print("\n📊 نتائج المحاكاة الجافة:")
 if trades:
     wins = [t for t in trades if t > 0]
     losses = [t for t in trades if t <= 0]
     n = len(trades)
     wr = len(wins)/n*100
-    total = sum(trades)
     ret = (equity[-1]/10000 - 1)*100
     dd = (pd.Series(equity) / pd.Series(equity).cummax() - 1).min() * 100
     pf = abs(sum(wins)/sum(losses)) if losses and sum(losses)!=0 else (10 if wins else 0)
@@ -72,5 +87,5 @@ if trade_log:
     log_df.to_csv("logs/dry_run_log.csv", index=False)
     print(f"\n📋 تم تسجيل {len(log_df)} صفقة في logs/dry_run_log.csv")
 
-print("\n🎉 المحاكاة الجافة اكتملت. النظام جاهز للاختبار الحي.")
+print("\n🎉 المحاكاة الجافة اكتملت. النظام يتكيف أسبوعياً.")
 print("=" * 60)
