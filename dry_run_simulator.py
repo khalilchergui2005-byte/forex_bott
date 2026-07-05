@@ -1,7 +1,7 @@
 ﻿"""
-dry_run_simulator.py - بيئة المحاكاة الجافة
+dry_run_simulator.py - برج المراقبة والتنفيذ الذهبي (مُحسَّن)
 المشروع: الكيان الفيروسي - أقوى شركة تداول
-تختبر الاستراتيجية الكاملة بدون لمس السوق.
+يمنح كل إشارة درجة تأكيد، ويضاعف الرافعة على الذهبية.
 """
 import pandas as pd
 from pathlib import Path
@@ -11,33 +11,42 @@ from backtest_engine import dynamic_backtest
 from unified_filters import apply_time_filter, apply_weekly_bias_filter
 
 print("=" * 60)
-print("   🧪 بيئة المحاكاة الجافة – Dry Run Simulator")
+print("   🦅 برج المراقبة – Dry Run Simulator (محسن)")
 print("=" * 60)
 
-# 1. تحميل البيانات من المركز الموحد
+# 1. تحميل البيانات
 print("\n📥 تحميل البيانات من DataHub...")
 df = load_hourly()
 print(f"   ✅ تم تحميل {len(df)} صف | {df.index[0]} → {df.index[-1]}")
 
-# 2. توليد الإشارات من الاستراتيجية
+# 2. توليد الإشارات
 print("\n🧠 توليد الإشارات من المصفوفة...")
 df = generate_signals(df)
 print(f"   🔍 إجمالي الإشارات الخام: {(df['Final']!=0).sum()}")
 
-# 3. تطبيق الفلاتر الموحدة
-print("\n🔍 تطبيق الفلاتر...")
+# 3. حساب مصفوفة التأكيد (محسنة)
+print("\n🛡️ حساب درجة التأكيد (محسنة)...")
 time_ok = apply_time_filter(df)
 day_ok = apply_weekly_bias_filter(df)
-df['Trade_OK'] = (df['Final'] != 0) & time_ok & day_ok
-print(f"   ✅ إشارات صالحة بعد الفلاتر: {df['Trade_OK'].sum()}")
+vol_ok = (df['VolClass'] == 2)  # مكافأة إضافية فقط
+
+# درجة التأكيد تبدأ من 1.0 (أساسي لكل إشارة صالحة)
+df['Confirmation'] = 1.0
+df.loc[time_ok, 'Confirmation'] += 0.5
+df.loc[day_ok, 'Confirmation'] += 0.5
+df.loc[vol_ok, 'Confirmation'] += 0.5
+# الحد الأقصى 2.0 (لتبقى المخاطرة القصوى 1.0%)
+df['Confirmation'] = df['Confirmation'].clip(upper=2.0)
+
+# الإشارات الصالحة هي التي تحمل إشارة تداول
+df['Final_Filtered'] = df['Final']
+print(f"   ✅ إشارات صالحة للتداول: {df['Final_Filtered'].sum()}")
 
 # 4. تشغيل المحاكاة
-print("\n⚙️ تشغيل المحاكاة مع RiskManager...")
-df['Final_Filtered'] = 0
-df.loc[df['Trade_OK'], 'Final_Filtered'] = df['Final']
-trades, equity, trade_log = dynamic_backtest(df, 10000, log_trades=True)
+print("\n⚙️ تشغيل المحاكاة مع مضاعف الرافعة الذكي...")
+trades, equity, trade_log = dynamic_backtest(df, 10000, risk_percent=0.005, log_trades=True)
 
-# 5. حساب النتائج
+# 5. النتائج
 print("\n📊 نتائج المحاكاة الجافة:")
 if trades:
     wins = [t for t in trades if t > 0]
@@ -57,7 +66,6 @@ if trades:
 else:
     print("   ⚠️ لا توجد صفقات في هذه الفترة.")
 
-# 6. حفظ السجل
 if trade_log:
     log_df = pd.DataFrame(trade_log)
     Path("logs").mkdir(exist_ok=True)

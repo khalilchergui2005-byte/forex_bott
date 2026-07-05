@@ -1,7 +1,7 @@
 ﻿"""
-backtest_engine.py - المحرك الديناميكي الموحد + نظام الخروج الذكي
+backtest_engine.py - المحرك الديناميكي الموحد + نظام التأكيد الهجومي
 المشروع: الكيان الفيروسي - أقوى شركة تداول
-يتضمن: خروج جزئي، هدف ديناميكي، حماية Breakeven.
+يدعم: خروج جزئي، هدف ديناميكي، حماية Breakeven، ومضاعف رافعة ذكي.
 """
 import pandas as pd
 from risk_manager import RiskManager, CircuitBreakerException
@@ -10,13 +10,15 @@ from data_loader import load_hourly
 def dynamic_backtest(data=None, initial_balance=10000, risk_percent=0.005,
                      max_daily_loss_pct=0.02, max_total_dd_pct=0.10, log_trades=False):
     """
-    المحرك الموحد مع نظام الخروج الذكي:
-    - يخرج من نصف الصفقة عند هدف أول ديناميكي (2-4x ATR حسب جودة الإشارة).
-    - يحرك الوقف إلى نقطة الدخول للنصف المتبقي.
-    - يستهدف هدفًا أكبر (6x ATR) للنصف المتبقي.
+    المحرك الموحد مع نظام التداول الهجومي:
+    - يضرب نسبة المخاطرة الأساسية في درجة التأكيد (Confirmation) لكل إشارة.
+    - يخرج جزئياً ويحرك الوقف إلى نقطة الدخول.
     """
     if data is None:
         data = load_hourly()
+
+    # التحقق من وجود عمود التأكيد
+    use_confirmation = 'Confirmation' in data.columns
 
     rm = RiskManager(initial_balance, config={
         'base_risk_percent': risk_percent,
@@ -29,12 +31,11 @@ def dynamic_backtest(data=None, initial_balance=10000, risk_percent=0.005,
     equity_curve = [initial_balance]
     trade_log = []
 
-    # متغيرات الصفقة الواحدة (قد تكون جزئية)
     pos = 0
     entry_price = 0.0
     entry_time = None
-    remaining_units = 0.0  # الوحدات المتبقية بعد الخروج الجزئي
-    partial_exit_done = False  # هل تم الخروج الجزئي؟
+    remaining_units = 0.0
+    partial_exit_done = False
 
     avg_atr = data['ATR'].mean()
 
@@ -44,12 +45,21 @@ def dynamic_backtest(data=None, initial_balance=10000, risk_percent=0.005,
         signal = data['Final'].iloc[i]
         current_time = data.index[i] if hasattr(data.index[i], 'strftime') else i
 
-        # حساب نسبة التقلب ومضاعف الوقف الديناميكي
+        # حساب نسبة المخاطرة الذكية
+        if use_confirmation and signal != 0:
+            conf_score = data['Confirmation'].iloc[i]
+            # القيم المعتمدة: 0.25% إلى 1.0% بناءً على درجة التأكيد
+            effective_risk = risk_percent * conf_score
+            effective_risk = max(0.0025, min(0.01, effective_risk))  # حدود الأمان 0.25% - 1.0%
+        else:
+            effective_risk = risk_percent
+
+        # حساب مضاعف الوقف الديناميكي
         vol_ratio = atr / avg_atr if avg_atr > 0 else 1.0
         stop_multiplier = max(1.5, min(2.5, 2.5 - (0.5 * vol_ratio)))
 
-        # حساب جودة الإشارة (حاليًا قيمة متوسطة، ستُحسّن لاحقًا)
-        signal_quality = 0.7  # سيصبح ديناميكيًا في "مصفوفة التأكيد"
+        # مضاعف الهدف (Take Profit) يعتمد على جودة الإشارة
+        signal_quality = conf_score / 2.0 if use_confirmation and signal != 0 else 0.7
         take_profit_mult = 2.0 + (signal_quality * 2.0)  # بين 2.0 و 4.0
         target_price = entry_price + (pos * take_profit_mult * atr) if pos != 0 else 0
 
@@ -60,7 +70,6 @@ def dynamic_backtest(data=None, initial_balance=10000, risk_percent=0.005,
             # 1. هل ضرب الهدف الأول (للخروج الجزئي)؟
             if not partial_exit_done:
                 if (pos == 1 and price >= target_price) or (pos == -1 and price <= target_price):
-                    # بيع نصف الكمية
                     half_units = remaining_units / 2
                     pnl = (price - entry_price) * pos * half_units
                     rm.update_pnl(pnl)
@@ -73,11 +82,9 @@ def dynamic_backtest(data=None, initial_balance=10000, risk_percent=0.005,
                             'net_pnl': pnl, 'balance_after': float(rm.current_balance),
                             'type': 'PARTIAL_TP'
                         })
-                    # تحديث الكمية المتبقية وتفعيل الحماية
                     remaining_units = half_units
                     partial_exit_done = True
-                    # تحريك الوقف إلى نقطة الدخول (Breakeven)
-                    stop_loss = entry_price
+                    stop_loss = entry_price  # حماية Breakeven
                     continue
 
             # 2. هل ضرب الهدف الثاني (الخروج الكامل)؟
@@ -126,7 +133,8 @@ def dynamic_backtest(data=None, initial_balance=10000, risk_percent=0.005,
             try:
                 rm.check_circuit_breaker()
                 stop_loss = price - (signal * stop_multiplier * atr)
-                size = rm.calculate_position_size(price, stop_loss, 1.0)
+                # استخدام effective_risk لحساب الحجم
+                size = rm.calculate_position_size(price, stop_loss, effective_risk)
                 if size > 0:
                     pos = signal
                     entry_price = price
