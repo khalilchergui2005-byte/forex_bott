@@ -1,7 +1,7 @@
 ﻿"""
-weekly_analyzer.py - المحلل الأسبوعي الآلي
+weekly_analyzer.py - المحلل الأسبوعي والآلي + إعادة حساب الفلاتر الديناميكية
 المشروع: الكيان الفيروسي - أقوى شركة تداول
-يتعلم من الأداء كل أسبوع ويضبط النظام تلقائياً.
+يتعلم من الأداء كل أسبوع ويعيد حساب الفلاتر كل شهر.
 """
 import pandas as pd
 from datetime import datetime, timedelta
@@ -80,6 +80,63 @@ def analyze_week(trade_log_df, initial_balance=10000):
     return {'rules': rules, 'message': '\n'.join(messages)}
 
 
+def recalculate_filters(trade_log_df, lookback_days=30):
+    """
+    إعادة حساب الفلاتر الديناميكية بناءً على أداء آخر N يوم.
+    المدخل: DataFrame لسجل الصفقات.
+    المخرج: قاموس يحتوي على good_days, good_hours, good_vol_classes.
+    """
+    if trade_log_df.empty or len(trade_log_df) < 10:
+        return {'good_days': [1, 2, 4], 'good_hours': [7, 8, 12, 13], 'good_vol_classes': [1, 2]}
+
+    # التأكد من وجود عمود الوقت
+    if 'entry_time' not in trade_log_df.columns:
+        if 'exit_time' in trade_log_df.columns:
+            trade_log_df['entry_time'] = trade_log_df['exit_time']
+        else:
+            return {'good_days': [1, 2, 4], 'good_hours': [7, 8, 12, 13], 'good_vol_classes': [1, 2]}
+
+    trade_log_df['entry_time'] = pd.to_datetime(trade_log_df['entry_time'], utc=True)
+    
+    # تحديد فترة التحليل
+    now = trade_log_df['entry_time'].max()
+    start_date = now - timedelta(days=lookback_days)
+    recent = trade_log_df[trade_log_df['entry_time'] >= start_date]
+
+    if recent.empty or len(recent) < 10:
+        return {'good_days': [1, 2, 4], 'good_hours': [7, 8, 12, 13], 'good_vol_classes': [1, 2]}
+
+    # استخراج اليوم والساعة من وقت الدخول
+    recent['day'] = recent['entry_time'].dt.dayofweek
+    recent['hour'] = recent['entry_time'].dt.hour
+
+    # --- تحليل الأيام ---
+    day_pnl = recent.groupby('day')['net_pnl'].sum()
+    good_days = [day for day, pnl in day_pnl.items() if pnl > 0]
+    if not good_days:  # إذا لم تكن هناك أيام رابحة، استخدم القائمة الافتراضية
+        good_days = [1, 2, 4]
+
+    # --- تحليل الساعات ---
+    hour_pnl = recent.groupby('hour')['net_pnl'].sum()
+    good_hours = [hour for hour, pnl in hour_pnl.items() if pnl > 0]
+    if not good_hours:
+        good_hours = [7, 8, 12, 13]
+
+    # --- تحليل أنظمة التقلب (إذا كان العمود موجوداً) ---
+    good_vol_classes = [1, 2]  # افتراضي
+    if 'VolClass' in recent.columns:
+        vol_pnl = recent.groupby('VolClass')['net_pnl'].sum()
+        good_vol_classes = [vol for vol, pnl in vol_pnl.items() if pnl > 0]
+        if not good_vol_classes:
+            good_vol_classes = [1, 2]
+
+    return {
+        'good_days': good_days,
+        'good_hours': good_hours,
+        'good_vol_classes': good_vol_classes
+    }
+
+
 def apply_weekly_rules(df, rules):
     """
     تطبيق القواعد الأسبوعية على DataFrame البيانات.
@@ -96,7 +153,6 @@ def apply_weekly_rules(df, rules):
             if action == 'disable':
                 df.loc[df['weekday'] == day, 'Final'] = 0
             elif action == 'boost':
-                # تعزيز بزيادة درجة التأكيد لهذا اليوم
                 if 'Confirmation' in df.columns:
                     df.loc[df['weekday'] == day, 'Confirmation'] += 0.3
 
@@ -131,5 +187,11 @@ if __name__ == '__main__':
         print(result['message'])
         print("\nالقواعد المطبقة:")
         print(result['rules'])
+        
+        print("\n--- إعادة حساب الفلاتر ---")
+        filters = recalculate_filters(df)
+        print(f"الأيام الجيدة: {filters['good_days']}")
+        print(f"الساعات الجيدة: {filters['good_hours']}")
+        print(f"فئات التقلب الجيدة: {filters['good_vol_classes']}")
     except FileNotFoundError:
         print("ملف السجل غير موجود. قم بتشغيل المحاكاة أولاً.")

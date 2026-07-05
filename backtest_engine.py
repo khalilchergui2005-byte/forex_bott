@@ -1,7 +1,7 @@
 ﻿"""
-backtest_engine.py - المحرك الديناميكي الموحد + نظام التأكيد الهجومي
+backtest_engine.py - المحرك الديناميكي الموحد + نظام التصيد (Sniping Mode)
 المشروع: الكيان الفيروسي - أقوى شركة تداول
-يدعم: خروج جزئي، هدف ديناميكي، حماية Breakeven، ومضاعف رافعة ذكي.
+يدعم: خروج جزئي، هدف ديناميكي، حماية Breakeven، مضاعف رافعة ذكي، ونظام التصيد.
 """
 import pandas as pd
 from risk_manager import RiskManager, CircuitBreakerException
@@ -9,15 +9,9 @@ from data_loader import load_hourly
 
 def dynamic_backtest(data=None, initial_balance=10000, risk_percent=0.005,
                      max_daily_loss_pct=0.02, max_total_dd_pct=0.10, log_trades=False):
-    """
-    المحرك الموحد مع نظام التداول الهجومي:
-    - يضرب نسبة المخاطرة الأساسية في درجة التأكيد (Confirmation) لكل إشارة.
-    - يخرج جزئياً ويحرك الوقف إلى نقطة الدخول.
-    """
     if data is None:
         data = load_hourly()
 
-    # التحقق من وجود عمود التأكيد
     use_confirmation = 'Confirmation' in data.columns
 
     rm = RiskManager(initial_balance, config={
@@ -45,12 +39,12 @@ def dynamic_backtest(data=None, initial_balance=10000, risk_percent=0.005,
         signal = data['Final'].iloc[i]
         current_time = data.index[i] if hasattr(data.index[i], 'strftime') else i
 
-        # حساب نسبة المخاطرة الذكية
+        # حساب نسبة المخاطرة الذكية ودرجة التأكيد
+        conf_score = 1.0
         if use_confirmation and signal != 0:
             conf_score = data['Confirmation'].iloc[i]
-            # القيم المعتمدة: 0.25% إلى 1.0% بناءً على درجة التأكيد
             effective_risk = risk_percent * conf_score
-            effective_risk = max(0.0025, min(0.01, effective_risk))  # حدود الأمان 0.25% - 1.0%
+            effective_risk = max(0.0025, min(0.01, effective_risk))
         else:
             effective_risk = risk_percent
 
@@ -58,16 +52,16 @@ def dynamic_backtest(data=None, initial_balance=10000, risk_percent=0.005,
         vol_ratio = atr / avg_atr if avg_atr > 0 else 1.0
         stop_multiplier = max(1.5, min(2.5, 2.5 - (0.5 * vol_ratio)))
 
-        # مضاعف الهدف (Take Profit) يعتمد على جودة الإشارة
+        # مضاعف الهدف (Take Profit)
         signal_quality = conf_score / 2.0 if use_confirmation and signal != 0 else 0.7
-        take_profit_mult = 2.0 + (signal_quality * 2.0)  # بين 2.0 و 4.0
+        take_profit_mult = 2.0 + (signal_quality * 2.0)
         target_price = entry_price + (pos * take_profit_mult * atr) if pos != 0 else 0
 
         # --- إدارة الصفقة المفتوحة ---
         if pos != 0:
             stop_loss = entry_price - (pos * stop_multiplier * atr)
 
-            # 1. هل ضرب الهدف الأول (للخروج الجزئي)؟
+            # 1. هدف أول (خروج جزئي)
             if not partial_exit_done:
                 if (pos == 1 and price >= target_price) or (pos == -1 and price <= target_price):
                     half_units = remaining_units / 2
@@ -84,10 +78,10 @@ def dynamic_backtest(data=None, initial_balance=10000, risk_percent=0.005,
                         })
                     remaining_units = half_units
                     partial_exit_done = True
-                    stop_loss = entry_price  # حماية Breakeven
+                    stop_loss = entry_price
                     continue
 
-            # 2. هل ضرب الهدف الثاني (الخروج الكامل)؟
+            # 2. هدف ثاني (خروج كامل)
             second_target = entry_price + (pos * 6.0 * atr)
             if partial_exit_done:
                 if (pos == 1 and price >= second_target) or (pos == -1 and price <= second_target):
@@ -107,10 +101,9 @@ def dynamic_backtest(data=None, initial_balance=10000, risk_percent=0.005,
                     partial_exit_done = False
                     continue
 
-            # 3. هل ضرب وقف الخسارة أو انعكست الإشارة؟
+            # 3. وقف خسارة أو انعكاس إشارة
             hit_stop = (pos == 1 and price <= stop_loss) or (pos == -1 and price >= stop_loss)
             signal_reverse = (signal == -pos)
-
             if hit_stop or signal_reverse:
                 pnl = (price - entry_price) * pos * remaining_units
                 rm.update_pnl(pnl)
@@ -133,9 +126,22 @@ def dynamic_backtest(data=None, initial_balance=10000, risk_percent=0.005,
             try:
                 rm.check_circuit_breaker()
                 stop_loss = price - (signal * stop_multiplier * atr)
-                # استخدام effective_risk لحساب الحجم
                 size = rm.calculate_position_size(price, stop_loss, effective_risk)
                 if size > 0:
+                    # === نظام التصيد (Sniping Mode) ===
+                    # إذا كانت درجة التأكيد قصوى (2.0)، نضاعف حجم الصفقة بنسبة 50%
+                    if use_confirmation and conf_score >= 2.0:
+                        SNIPING_MULTIPLIER = 1.5
+                        size = int(size * SNIPING_MULTIPLIER)
+                        if log_trades:
+                            trade_log.append({
+                                'entry_time': current_time, 'exit_time': current_time,
+                                'direction': 'SNIPER',
+                                'entry_price': price, 'exit_price': price,
+                                'net_pnl': 0, 'balance_after': float(rm.current_balance),
+                                'type': 'SNIPING_MODE_ACTIVATED'
+                            })
+                    # =================================
                     pos = signal
                     entry_price = price
                     entry_time = current_time
