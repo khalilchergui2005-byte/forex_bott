@@ -1,0 +1,8 @@
+Best parameters found by optimizer_safe.py:
+bb_multiplier=1.6
+rsi_buy_threshold=36
+rsi_sell_threshold=52
+macd_fast=17
+macd_slow=25
+adx_period=13
+adx_threshold=27
