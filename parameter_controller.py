@@ -10,11 +10,14 @@ from typing import Optional, Dict
 class StrategyParameters:
     """Core trading parameters - starting point for institutional optimization."""
     
+    # --- Account / Prop Firm Settings ---
+    initial_capital: float = 10000.0         # Default starting balance (overridable)
+    min_order_value: float = 50.0            # Absolute min notional value. TEMPORARY: Reduced for 10k testing. Use 500 for 100k prop firm.
+    
     # --- Position Sizing & Risk (confirmed by user: base values) ---
     base_risk_percent: float = 0.005        # 0.5% per trade
     max_daily_loss_pct: float = 0.02        # 2% daily loss circuit breaker
     max_total_dd_pct: float = 0.10          # 10% max total drawdown
-    min_order_value: float = 50.0           # TEMPORARY CONSTRAINT: Realistic min is ~500$. Reduced to 50$ to allow sufficient trades in testing with 10k capital. Must be reviewed before live/prop firm.
     
     # --- Sniping (increased size on high-confidence signals) ---
     sniping_multiplier: float = 1.5         # Multiplier when Confirmation >= 2.0
@@ -57,30 +60,21 @@ class StrategyParameters:
     adx_period: int = 20
     adx_threshold: int = 23
 
-
-
     # --- Target Behavior ---
     dynamic_target: bool = False  # False = fixed at entry (Prop Firm safe)
 
-
     # --- Kelly Criterion (Dynamic Position Sizing) ---
     kelly_window: int = 50              # Rolling window for Kelly calculation
     kelly_min_fraction: float = 0.25    # Minimum Kelly multiplier (safety floor)
     kelly_max_fraction: float = 2.0     # Maximum Kelly multiplier (safety cap)
+
     # --- Shock & Awe (Anti-Martingale) ---
     shock_awe_threshold: int = 3        # Consecutive wins to trigger
     shock_awe_multiplier: float = 2.0   # Multiply risk by this when triggered
 
-
-    # --- Kelly Criterion (Dynamic Position Sizing) ---
-    kelly_window: int = 50              # Rolling window for Kelly calculation
-    kelly_min_fraction: float = 0.25    # Minimum Kelly multiplier (safety floor)
-    kelly_max_fraction: float = 2.0     # Maximum Kelly multiplier (safety cap)
-    # --- Shock & Awe (Anti-Martingale) ---
-    shock_awe_threshold: int = 3        # Consecutive wins to trigger
-    shock_awe_multiplier: float = 2.0   # Multiply risk by this when triggered
     # --- Optimization Guards ---
     min_trades_optimizer: int = 30   # Minimum trades to accept a parameter set
+
     def apply_preset(self, preset_name: str):
         """Load a named preset for specific Prop Firm challenges."""
         presets = {
@@ -94,9 +88,3 @@ class StrategyParameters:
 
 # Global instance (singleton pattern for now)
 params = StrategyParameters()
-
-
-
-
-
-
