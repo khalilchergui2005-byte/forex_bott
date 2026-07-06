@@ -3,13 +3,13 @@ import numpy as np
 
 def generate_signals(df):
     """
-    استراتيجية المصفوفة التسعة – مصدر الحقيقة الوحيد.
-    المدخل: DataFrame يحتوي على أعمدة: open, high, low, close.
-    المخرج: نفس الـ DataFrame مع أعمدة إضافية: Regime9, Buy, Sell, Final.
+    Strategy matrix - single source of truth.
+    Input: DataFrame with open, high, low, close.
+    Output: same DataFrame with extra columns: Regime9, Buy, Sell, Final.
     """
     df = df.copy()
     
-    # 1. التقلب والاتجاه
+    # 1. Volatility & trend
     df['ATR'] = (df['high'] - df['low']).rolling(14).mean()
     df['ATR_ratio'] = df['ATR'] / df['close']
     df['SMA_20'] = df['close'].rolling(20).mean()
@@ -17,16 +17,18 @@ def generate_signals(df):
     df.loc[df['close'] > df['SMA_20'] * 1.001, 'Trend'] = 1
     df.loc[df['close'] < df['SMA_20'] * 0.999, 'Trend'] = -1
 
-    vol = df['ATR_ratio'].dropna()
-    low_thresh = vol.quantile(0.33)
-    high_thresh = vol.quantile(0.66)
+    # 2. Volatility classification - NO look-ahead bias:
+    # Use expanding quantiles (growing window) so each candle only sees its own past.
+    # min_periods=30 ensures a meaningful threshold. Before that, VolClass defaults to 1 (medium).
+    df['low_thresh'] = df['ATR_ratio'].expanding(min_periods=30).quantile(0.33)
+    df['high_thresh'] = df['ATR_ratio'].expanding(min_periods=30).quantile(0.66)
     df['VolClass'] = 1
-    df.loc[df['ATR_ratio'] <= low_thresh, 'VolClass'] = 0
-    df.loc[df['ATR_ratio'] >= high_thresh, 'VolClass'] = 2
+    df.loc[df['ATR_ratio'] <= df['low_thresh'], 'VolClass'] = 0
+    df.loc[df['ATR_ratio'] >= df['high_thresh'], 'VolClass'] = 2
 
     df['Regime9'] = df['VolClass'] * 3 + (df['Trend'] + 1)
 
-    # 2. قواعد النظام
+    # 3. Regime rules
     regime_rules = {
         0: -1, 1: 0, 2: 1,
         3: -1, 4: 0, 5: 1,
@@ -34,7 +36,7 @@ def generate_signals(df):
     }
     df['Allowed'] = df['Regime9'].map(regime_rules)
 
-    # 3. مؤشرات الدخول
+    # 4. Entry indicators
     df.dropna(inplace=True)
     df['SMA_S'] = df['close'].rolling(10).mean()
     df['SMA_L'] = df['close'].rolling(30).mean()
@@ -58,7 +60,7 @@ def generate_signals(df):
     df['Buy']  = ((df['Buy_SMA'] | df['Buy_BB']) & df['Buy_RSI']).astype(int)
     df['Sell'] = ((df['Sell_SMA'] | df['Sell_BB']) & df['Sell_RSI']).astype(int)
 
-    # 4. الإشارات النهائية
+    # 5. Final signals
     df['Final'] = 0
     df.loc[(df['Buy'] == 1) & (df['Allowed'].isin([1, 0])), 'Final'] = 1
     df.loc[(df['Sell'] == 1) & (df['Allowed'].isin([-1, 0])), 'Final'] = -1
