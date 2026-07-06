@@ -66,7 +66,7 @@ effective_risk = get_effective_risk(base_risk, weekly_rules)
 # 5. تشغيل المحاكاة باستراتيجيتين
 print(f"\n⚙️ تشغيل المحاكاة (المخاطرة: {effective_risk*100:.2f}%)...")
 trades, equity, trade_log = dynamic_backtest(
-    df, 10000, risk_percent=effective_risk, log_trades=True,
+    df, params.initial_capital, risk_percent=effective_risk, log_trades=True,
     strategy_cols=['Final', 'MO_Signal']
 )
 
@@ -97,3 +97,4 @@ if trade_log:
 
 print("\n🎉 المحاكاة الجافة اكتملت. محفظة ثنائية الاستراتيجية.")
 print("=" * 60)
+
