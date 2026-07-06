@@ -6,6 +6,7 @@ Supports: Multiple strategies, partial exit, dynamic target, Sniping, and volati
 import pandas as pd
 from risk_manager import RiskManager, CircuitBreakerException
 from data_loader import load_hourly
+from parameter_controller import params
 
 def dynamic_backtest(data=None, initial_balance=10000, risk_percent=0.005,
                      max_daily_loss_pct=0.02, max_total_dd_pct=0.10, log_trades=False,
@@ -13,7 +14,6 @@ def dynamic_backtest(data=None, initial_balance=10000, risk_percent=0.005,
     if data is None:
         data = load_hourly()
 
-    # Ensure ATR exists (defensive)
     if 'ATR' not in data.columns:
         data['ATR'] = (data['high'] - data['low']).rolling(14).mean()
 
@@ -27,7 +27,6 @@ def dynamic_backtest(data=None, initial_balance=10000, risk_percent=0.005,
     use_confirmation = 'Confirmation' in data.columns
     use_volatility = 'VolClass' in data.columns
 
-    # --- Fix look-ahead bias: cumulative expanding average ATR ---
     data['avg_atr'] = data['ATR'].expanding(min_periods=30).mean()
 
     rm = RiskManager(initial_balance, config={
@@ -35,7 +34,7 @@ def dynamic_backtest(data=None, initial_balance=10000, risk_percent=0.005,
         'max_daily_loss_pct': max_daily_loss_pct,
         'max_total_drawdown_pct': max_total_dd_pct,
     })
-    rm.min_order_value = 50.0
+    rm.min_order_value = params.min_order_value
 
     trades = []
     equity_curve = [initial_balance]
@@ -53,20 +52,18 @@ def dynamic_backtest(data=None, initial_balance=10000, risk_percent=0.005,
         if pd.isna(avg_atr_val) or avg_atr_val == 0:
             avg_atr_val = data['ATR'].iloc[:i+1].mean()
         vol_ratio = atr / avg_atr_val if avg_atr_val > 0 else 1.0
-        stop_multiplier = max(1.5, min(2.5, 2.5 - (0.5 * vol_ratio)))
+        stop_multiplier = max(params.stop_min_mult, min(params.stop_max_mult, params.stop_max_mult - (params.stop_volatility_factor * vol_ratio)))
 
-        # ============== Turbo Volatility ==============
         is_volatile = False
         if use_volatility:
             is_volatile = (data['VolClass'].iloc[i] == 2)
 
         if is_volatile:
-            tp_mult = 2.0
-            sl_mult = 2.5
+            tp_mult = params.turbo_tp_mult
+            sl_mult = params.turbo_sl_mult
         else:
-            tp_mult = 3.0
+            tp_mult = params.normal_tp_mult
             sl_mult = stop_multiplier
-        # =============================================
 
         for col in strategy_cols:
             signal = data[col].iloc[i]
@@ -89,7 +86,7 @@ def dynamic_backtest(data=None, initial_balance=10000, risk_percent=0.005,
 
                 if not pos_data['partial']:
                     if (pos_data['pos'] == 1 and price >= target_price) or (pos_data['pos'] == -1 and price <= target_price):
-                        half_units = pos_data['units'] / 2
+                        half_units = pos_data['units'] * params.partial_exit_ratio
                         pnl = (price - pos_data['entry']) * pos_data['pos'] * half_units
                         rm.update_pnl(pnl)
                         trades.append(pnl)
@@ -101,12 +98,12 @@ def dynamic_backtest(data=None, initial_balance=10000, risk_percent=0.005,
                                 'net_pnl': pnl, 'balance_after': float(rm.current_balance),
                                 'type': 'PARTIAL_TP'
                             })
-                        pos_data['units'] = half_units
+                        pos_data['units'] -= half_units
                         pos_data['partial'] = True
                         stop_loss = pos_data['entry']
                         continue
 
-                second_target = pos_data['entry'] + (pos_data['pos'] * 6.0 * atr)
+                second_target = pos_data['entry'] + (pos_data['pos'] * params.second_target_atr_mult * atr)
                 if pos_data['partial']:
                     if (pos_data['pos'] == 1 and price >= second_target) or (pos_data['pos'] == -1 and price <= second_target):
                         pnl = (price - pos_data['entry']) * pos_data['pos'] * pos_data['units']
@@ -150,9 +147,8 @@ def dynamic_backtest(data=None, initial_balance=10000, risk_percent=0.005,
                     stop_loss = price - (signal * sl_mult * atr)
                     size = rm.calculate_position_size(price, stop_loss, effective_risk)
                     if size > 0:
-                        if use_confirmation and conf_score >= 2.0:
-                            SNIPING_MULTIPLIER = 1.5
-                            size = int(size * SNIPING_MULTIPLIER)
+                        if use_confirmation and conf_score >= params.sniping_threshold:
+                            size = int(size * params.sniping_multiplier)
                         pos_data['pos'] = signal
                         pos_data['entry'] = price
                         pos_data['time'] = current_time
