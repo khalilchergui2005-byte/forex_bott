@@ -14,7 +14,7 @@ class StrategyParameters:
     base_risk_percent: float = 0.005        # 0.5% per trade
     max_daily_loss_pct: float = 0.02        # 2% daily loss circuit breaker
     max_total_dd_pct: float = 0.10          # 10% max total drawdown
-    min_order_value: float = 50.0           # Minimum notional order value
+    min_order_value: float = 50.0           # TEMPORARY CONSTRAINT: Realistic min is ~500$. Reduced to 50$ to allow sufficient trades in testing with 10k capital. Must be reviewed before live/prop firm.
     
     # --- Sniping (increased size on high-confidence signals) ---
     sniping_multiplier: float = 1.5         # Multiplier when Confirmation >= 2.0
@@ -76,5 +76,6 @@ class StrategyParameters:
 
 # Global instance (singleton pattern for now)
 params = StrategyParameters()
+
 
 
