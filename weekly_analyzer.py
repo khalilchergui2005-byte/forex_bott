@@ -137,12 +137,43 @@ def recalculate_filters(trade_log_df, lookback_days=30):
     }
 
 
-def apply_weekly_rules(df, rules):
+def apply_weekly_rules(df, rules, signal_cols=None):
     """
     تطبيق القواعد الأسبوعية على DataFrame البيانات.
     """
     if not rules:
         return df
+
+    if signal_cols is None:
+        signal_cols = ['Final', 'MO_Signal']
+
+    df = df.copy()
+    
+    # تطبيق قواعد الأيام
+    for rule, action in rules.items():
+        if rule.startswith('day_'):
+            day = int(rule.split('_')[1])
+            if action == 'disable':
+                for col in signal_cols:
+                    if col in df.columns:
+                        df.loc[df['weekday'] == day, col] = 0
+            elif action == 'boost':
+                if 'Confirmation' in df.columns:
+                    df.loc[df['weekday'] == day, 'Confirmation'] += 0.3
+
+    # تطبيق قواعد الساعات
+    for rule, action in rules.items():
+        if rule.startswith('hour_'):
+            hour = int(rule.split('_')[1])
+            if action == 'disable':
+                for col in signal_cols:
+                    if col in df.columns:
+                        df.loc[df['hour'] == hour, col] = 0
+            elif action == 'boost':
+                if 'Confirmation' in df.columns:
+                    df.loc[df['hour'] == hour, 'Confirmation'] += 0.3
+
+    return df
 
     df = df.copy()
     
@@ -195,3 +226,4 @@ if __name__ == '__main__':
         print(f"فئات التقلب الجيدة: {filters['good_vol_classes']}")
     except FileNotFoundError:
         print("ملف السجل غير موجود. قم بتشغيل المحاكاة أولاً.")
+
