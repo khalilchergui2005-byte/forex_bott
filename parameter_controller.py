@@ -49,15 +49,15 @@ class StrategyParameters:
     })
     
     # --- Entry Indicator Thresholds ---
-    rsi_buy_threshold: float = 36.0
-    rsi_sell_threshold: float = 52.0
-    bb_multiplier: float = 1.6              # Bollinger Band width
+    rsi_buy_threshold: float = 47.0
+    rsi_sell_threshold: float = 50.0
+    bb_multiplier: float = 1.2              # Bollinger Band width
     
     # --- Momentum Agent (MACD/ADX) ---
-    macd_fast: int = 17
-    macd_slow: int = 25
+    macd_fast: int = 9
+    macd_slow: int = 34
     macd_signal: int = 9
-    adx_period: int = 13
+    adx_period: int = 16
     adx_threshold: int = 27
 
     # --- Target Behavior ---
@@ -88,4 +88,5 @@ class StrategyParameters:
 
 # Global instance (singleton pattern for now)
 params = StrategyParameters()
+
 
