@@ -1,5 +1,6 @@
 ﻿import pandas as pd
 import numpy as np
+from parameter_controller import params
 
 def generate_signals(df):
     """
@@ -17,9 +18,7 @@ def generate_signals(df):
     df.loc[df['close'] > df['SMA_20'] * 1.001, 'Trend'] = 1
     df.loc[df['close'] < df['SMA_20'] * 0.999, 'Trend'] = -1
 
-    # 2. Volatility classification - NO look-ahead bias:
-    # Use expanding quantiles (growing window) so each candle only sees its own past.
-    # min_periods=30 ensures a meaningful threshold. Before that, VolClass defaults to 1 (medium).
+    # 2. Volatility classification - NO look-ahead bias
     df['low_thresh'] = df['ATR_ratio'].expanding(min_periods=30).quantile(0.33)
     df['high_thresh'] = df['ATR_ratio'].expanding(min_periods=30).quantile(0.66)
     df['VolClass'] = 1
@@ -36,14 +35,14 @@ def generate_signals(df):
     }
     df['Allowed'] = df['Regime9'].map(regime_rules)
 
-    # 4. Entry indicators
+    # 4. Entry indicators (using ParameterController)
     df.dropna(inplace=True)
     df['SMA_S'] = df['close'].rolling(10).mean()
     df['SMA_L'] = df['close'].rolling(30).mean()
     df['BB_mid'] = df['close'].rolling(20).mean()
     df['BB_std'] = df['close'].rolling(20).std()
-    df['BB_lower'] = df['BB_mid'] - 1.5 * df['BB_std']
-    df['BB_upper'] = df['BB_mid'] + 1.5 * df['BB_std']
+    df['BB_lower'] = df['BB_mid'] - params.bb_multiplier * df['BB_std']
+    df['BB_upper'] = df['BB_mid'] + params.bb_multiplier * df['BB_std']
     delta = df['close'].diff()
     gain = delta.clip(lower=0)
     loss = -delta.clip(upper=0)
@@ -54,8 +53,8 @@ def generate_signals(df):
     df['Sell_SMA'] = ((df['SMA_S'] < df['SMA_L']) & (df['SMA_S'].shift(1) >= df['SMA_L'].shift(1))).astype(int)
     df['Buy_BB']   = (df['low'] <= df['BB_lower']).astype(int)
     df['Sell_BB']  = (df['high'] >= df['BB_upper']).astype(int)
-    df['Buy_RSI']  = (df['RSI'] < 48).astype(int)
-    df['Sell_RSI'] = (df['RSI'] > 52).astype(int)
+    df['Buy_RSI']  = (df['RSI'] < params.rsi_buy_threshold).astype(int)
+    df['Sell_RSI'] = (df['RSI'] > params.rsi_sell_threshold).astype(int)
 
     df['Buy']  = ((df['Buy_SMA'] | df['Buy_BB']) & df['Buy_RSI']).astype(int)
     df['Sell'] = ((df['Sell_SMA'] | df['Sell_BB']) & df['Sell_RSI']).astype(int)
