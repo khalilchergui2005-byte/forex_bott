@@ -1,11 +1,9 @@
 ﻿"""
-backtest_engine.py - Unified portfolio engine + Turbo Volatility + Kelly + Shock&Awe
+backtest_engine.py - Unified portfolio engine + Turbo Volatility
 Project: Viral Entity - Strongest Trading Firm
-Supports: Multiple strategies, partial exit, fixed target, Sniping, volatility booster,
-and dynamic position sizing via Kelly Criterion with Shock & Awe overlay.
+Supports: Multiple strategies, partial exit, fixed target, Sniping, and volatility booster.
 """
 import pandas as pd
-from collections import deque
 from risk_manager import RiskManager, CircuitBreakerException
 from data_loader import load_hourly
 from parameter_controller import params
@@ -13,11 +11,11 @@ from parameter_controller import params
 def dynamic_backtest(data=None, initial_balance=None, risk_percent=0.005,
                      max_daily_loss_pct=0.02, max_total_dd_pct=0.10, log_trades=False,
                      strategy_cols=None):
-    
+    if data is None:
+        data = load_hourly()
+
     if initial_balance is None:
         initial_balance = params.initial_capital
-
-        data = load_hourly()
 
     if 'ATR' not in data.columns:
         data['ATR'] = (data['high'] - data['low']).rolling(14).mean()
@@ -49,30 +47,6 @@ def dynamic_backtest(data=None, initial_balance=None, risk_percent=0.005,
                        'target': 0.0, 'stop_loss': 0.0}
                  for col in strategy_cols}
 
-    # ----- Kelly & Shock&Awe State -----
-    pnl_window = deque(maxlen=params.kelly_window)  # Rolling PnL window
-    consecutive_wins = 0
-
-    def calculate_kelly_multiplier():
-        """Calculate Kelly fraction from rolling window. Returns a multiplier for risk_percent."""
-        if len(pnl_window) < 10:
-            return 1.0  # Not enough data, use base risk
-        wins = [p for p in pnl_window if p > 0]
-        losses = [p for p in pnl_window if p <= 0]
-        if not losses or sum(losses) == 0:
-            return params.kelly_max_fraction
-        win_rate = len(wins) / len(pnl_window)
-        avg_win = sum(wins) / len(wins) if wins else 0
-        avg_loss = abs(sum(losses) / len(losses)) if losses else 1
-        if avg_loss == 0:
-            return params.kelly_max_fraction
-        win_loss_ratio = avg_win / avg_loss
-        if win_loss_ratio <= 0:
-            return params.kelly_min_fraction
-        kelly = win_rate - ((1 - win_rate) / win_loss_ratio)
-        return max(params.kelly_min_fraction, min(params.kelly_max_fraction, kelly))
-    # ------------------------------------
-
     for i in range(len(data)):
         price = data['close'].iloc[i]
         atr = data['ATR'].iloc[i]
@@ -95,12 +69,6 @@ def dynamic_backtest(data=None, initial_balance=None, risk_percent=0.005,
             tp_mult = params.normal_tp_mult
             sl_mult = stop_multiplier
 
-        # Kelly dynamic risk adjustment
-        kelly_mult = calculate_kelly_multiplier()
-        # Shock & Awe overlay
-        if consecutive_wins >= params.shock_awe_threshold and kelly_mult > 1.0:
-            kelly_mult *= params.shock_awe_multiplier
-
         for col in strategy_cols:
             signal = data[col].iloc[i]
             pos_data = positions[col]
@@ -108,10 +76,13 @@ def dynamic_backtest(data=None, initial_balance=None, risk_percent=0.005,
             conf_score = 1.0
             if use_confirmation and signal != 0:
                 conf_score = data['Confirmation'].iloc[i]
-                effective_risk = risk_percent * conf_score * kelly_mult
+                effective_risk = risk_percent * conf_score
                 effective_risk = max(0.0025, min(0.01, effective_risk))
             else:
-                effective_risk = risk_percent * kelly_mult
+                effective_risk = risk_percent
+
+            signal_quality = conf_score / 2.0 if use_confirmation and signal != 0 else 0.7
+            take_profit_mult = tp_mult + (signal_quality * 1.0)
 
             if pos_data['pos'] != 0:
                 stop_loss = pos_data['stop_loss']
@@ -123,11 +94,6 @@ def dynamic_backtest(data=None, initial_balance=None, risk_percent=0.005,
                         pnl = (price - pos_data['entry']) * pos_data['pos'] * half_units
                         rm.update_pnl(pnl)
                         trades.append(pnl)
-                        pnl_window.append(pnl)
-                        if pnl > 0:
-                            consecutive_wins += 1
-                        else:
-                            consecutive_wins = 0
                         if log_trades:
                             trade_log.append({
                                 'strategy': col, 'entry_time': pos_data['time'], 'exit_time': current_time,
@@ -147,11 +113,6 @@ def dynamic_backtest(data=None, initial_balance=None, risk_percent=0.005,
                         pnl = (price - pos_data['entry']) * pos_data['pos'] * pos_data['units']
                         rm.update_pnl(pnl)
                         trades.append(pnl)
-                        pnl_window.append(pnl)
-                        if pnl > 0:
-                            consecutive_wins += 1
-                        else:
-                            consecutive_wins = 0
                         if log_trades:
                             trade_log.append({
                                 'strategy': col, 'entry_time': pos_data['time'], 'exit_time': current_time,
@@ -171,11 +132,6 @@ def dynamic_backtest(data=None, initial_balance=None, risk_percent=0.005,
                     pnl = (price - pos_data['entry']) * pos_data['pos'] * pos_data['units']
                     rm.update_pnl(pnl)
                     trades.append(pnl)
-                    pnl_window.append(pnl)
-                    if pnl > 0:
-                        consecutive_wins += 1
-                    else:
-                        consecutive_wins = 0
                     if log_trades:
                         trade_log.append({
                             'strategy': col, 'entry_time': pos_data['time'], 'exit_time': current_time,

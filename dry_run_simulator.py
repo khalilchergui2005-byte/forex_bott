@@ -9,6 +9,7 @@ from strategy_matrix import generate_signals
 from strategy_momentum import generate_momentum_signals
 from backtest_engine import dynamic_backtest
 from unified_filters import apply_time_filter, apply_weekly_bias_filter
+from parameter_controller import params
 from weekly_analyzer import analyze_week, apply_weekly_rules, get_effective_risk, recalculate_filters
 
 print("=" * 60)
@@ -97,4 +98,5 @@ if trade_log:
 
 print("\n🎉 المحاكاة الجافة اكتملت. محفظة ثنائية الاستراتيجية.")
 print("=" * 60)
+
 
