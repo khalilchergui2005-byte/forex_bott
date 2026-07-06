@@ -13,6 +13,10 @@ class StrategyParameters:
     # --- Account / Prop Firm Settings ---
     initial_capital: float = 10000.0         # Default starting balance (overridable)
     min_order_value: float = 50.0            # Absolute min notional value. TEMPORARY: Reduced for 10k testing. Use 500 for 100k prop firm.
+    min_order_pct: float = 0.005            # Min order as fraction of capital (0.5%). Dynamically scales with account size.
+
+    # --- Market Awareness (Fear Sensor) ---
+    fear_threshold: float = 0.02            # ATR% threshold (2% daily). Risk is halved above this.
     
     # --- Position Sizing & Risk (confirmed by user: base values) ---
     base_risk_percent: float = 0.005        # 0.5% per trade
@@ -88,5 +92,7 @@ class StrategyParameters:
 
 # Global instance (singleton pattern for now)
 params = StrategyParameters()
+
+
 
 
