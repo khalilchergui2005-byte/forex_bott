@@ -40,7 +40,8 @@ def dynamic_backtest(data=None, initial_balance=10000, risk_percent=0.005,
     equity_curve = [initial_balance]
     trade_log = []
 
-    positions = {col: {'pos': 0, 'entry': 0.0, 'time': None, 'units': 0.0, 'partial': False}
+    positions = {col: {'pos': 0, 'entry': 0.0, 'time': None, 'units': 0.0, 'partial': False,
+                       'target': 0.0, 'stop_loss': 0.0}
                  for col in strategy_cols}
 
     for i in range(len(data)):
@@ -77,12 +78,10 @@ def dynamic_backtest(data=None, initial_balance=10000, risk_percent=0.005,
             else:
                 effective_risk = risk_percent
 
-            signal_quality = conf_score / 2.0 if use_confirmation and signal != 0 else 0.7
-            take_profit_mult = tp_mult + (signal_quality * 1.0)
-            target_price = pos_data['entry'] + (pos_data['pos'] * take_profit_mult * atr) if pos_data['pos'] != 0 else 0
-
             if pos_data['pos'] != 0:
-                stop_loss = pos_data['entry'] - (pos_data['pos'] * sl_mult * atr)
+                # Use stored stop loss and target (fixed at entry)
+                stop_loss = pos_data['stop_loss']
+                target_price = pos_data['target']
 
                 if not pos_data['partial']:
                     if (pos_data['pos'] == 1 and price >= target_price) or (pos_data['pos'] == -1 and price <= target_price):
@@ -100,7 +99,8 @@ def dynamic_backtest(data=None, initial_balance=10000, risk_percent=0.005,
                             })
                         pos_data['units'] -= half_units
                         pos_data['partial'] = True
-                        stop_loss = pos_data['entry']
+                        # Move stop loss to entry after partial exit
+                        pos_data['stop_loss'] = pos_data['entry']
                         continue
 
                 second_target = pos_data['entry'] + (pos_data['pos'] * params.second_target_atr_mult * atr)
@@ -144,8 +144,11 @@ def dynamic_backtest(data=None, initial_balance=10000, risk_percent=0.005,
             if pos_data['pos'] == 0 and signal != 0:
                 try:
                     rm.check_circuit_breaker()
-                    stop_loss = price - (signal * sl_mult * atr)
-                    size = rm.calculate_position_size(price, stop_loss, effective_risk)
+                    signal_quality = conf_score / 2.0 if use_confirmation and signal != 0 else 0.7
+                    take_profit_mult = tp_mult + (signal_quality * 1.0)
+                    initial_stop = price - (signal * sl_mult * atr)
+                    initial_target = price + (signal * take_profit_mult * atr)
+                    size = rm.calculate_position_size(price, initial_stop, effective_risk)
                     if size > 0:
                         if use_confirmation and conf_score >= params.sniping_threshold:
                             size = int(size * params.sniping_multiplier)
@@ -154,6 +157,8 @@ def dynamic_backtest(data=None, initial_balance=10000, risk_percent=0.005,
                         pos_data['time'] = current_time
                         pos_data['units'] = float(size)
                         pos_data['partial'] = False
+                        pos_data['target'] = initial_target
+                        pos_data['stop_loss'] = initial_stop
                 except CircuitBreakerException:
                     break
 
