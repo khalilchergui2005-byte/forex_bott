@@ -1,0 +1,7 @@
+bb_multiplier=1.6
+rsi_buy_threshold=35
+rsi_sell_threshold=54
+macd_fast=20
+macd_slow=31
+adx_period=11
+adx_threshold=33
