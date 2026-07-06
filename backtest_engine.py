@@ -1,7 +1,7 @@
 ﻿"""
-backtest_engine.py - محرك المحفظة الموحد (Portfolio Engine)
-المشروع: الكيان الفيروسي - أقوى شركة تداول
-يدعم: استراتيجيات متعددة، خروج جزئي، هدف ديناميكي، Sniping، والمزيد.
+backtest_engine.py - Unified portfolio engine + Turbo Volatility
+Project: Viral Entity - Strongest Trading Firm
+Supports: Multiple strategies, partial exit, dynamic target, Sniping, and volatility booster.
 """
 import pandas as pd
 from risk_manager import RiskManager, CircuitBreakerException
@@ -10,23 +10,25 @@ from data_loader import load_hourly
 def dynamic_backtest(data=None, initial_balance=10000, risk_percent=0.005,
                      max_daily_loss_pct=0.02, max_total_dd_pct=0.10, log_trades=False,
                      strategy_cols=None):
-    """
-    محرك المحفظة الموحد.
-    يمكنه التداول بناءً على استراتيجية واحدة (عمود 'Final') أو عدة استراتيجيات.
-    """
     if data is None:
         data = load_hourly()
 
-    # تحديد الأعمدة التي سيتم التداول عليها
+    # Ensure ATR exists (defensive)
+    if 'ATR' not in data.columns:
+        data['ATR'] = (data['high'] - data['low']).rolling(14).mean()
+
     if strategy_cols is None:
         strategy_cols = ['Final']
 
-    # إضافة عمود 'Final' افتراضي إذا لم يكن موجوداً
     for col in strategy_cols:
         if col not in data.columns:
             data[col] = 0
 
     use_confirmation = 'Confirmation' in data.columns
+    use_volatility = 'VolClass' in data.columns
+
+    # --- Fix look-ahead bias: cumulative expanding average ATR ---
+    data['avg_atr'] = data['ATR'].expanding(min_periods=30).mean()
 
     rm = RiskManager(initial_balance, config={
         'base_risk_percent': risk_percent,
@@ -39,26 +41,37 @@ def dynamic_backtest(data=None, initial_balance=10000, risk_percent=0.005,
     equity_curve = [initial_balance]
     trade_log = []
 
-    # لكل استراتيجية، نحتفظ بمركزها الخاص
     positions = {col: {'pos': 0, 'entry': 0.0, 'time': None, 'units': 0.0, 'partial': False}
                  for col in strategy_cols}
-
-    avg_atr = data['ATR'].mean()
 
     for i in range(len(data)):
         price = data['close'].iloc[i]
         atr = data['ATR'].iloc[i]
         current_time = data.index[i] if hasattr(data.index[i], 'strftime') else i
 
-        vol_ratio = atr / avg_atr if avg_atr > 0 else 1.0
+        avg_atr_val = data['avg_atr'].iloc[i]
+        if pd.isna(avg_atr_val) or avg_atr_val == 0:
+            avg_atr_val = data['ATR'].iloc[:i+1].mean()
+        vol_ratio = atr / avg_atr_val if avg_atr_val > 0 else 1.0
         stop_multiplier = max(1.5, min(2.5, 2.5 - (0.5 * vol_ratio)))
 
-        # --- معالجة جميع الاستراتيجيات ---
+        # ============== Turbo Volatility ==============
+        is_volatile = False
+        if use_volatility:
+            is_volatile = (data['VolClass'].iloc[i] == 2)
+
+        if is_volatile:
+            tp_mult = 2.0
+            sl_mult = 2.5
+        else:
+            tp_mult = 3.0
+            sl_mult = stop_multiplier
+        # =============================================
+
         for col in strategy_cols:
             signal = data[col].iloc[i]
             pos_data = positions[col]
 
-            # حساب نسبة المخاطرة الذكية
             conf_score = 1.0
             if use_confirmation and signal != 0:
                 conf_score = data['Confirmation'].iloc[i]
@@ -68,14 +81,12 @@ def dynamic_backtest(data=None, initial_balance=10000, risk_percent=0.005,
                 effective_risk = risk_percent
 
             signal_quality = conf_score / 2.0 if use_confirmation and signal != 0 else 0.7
-            take_profit_mult = 2.0 + (signal_quality * 2.0)
+            take_profit_mult = tp_mult + (signal_quality * 1.0)
             target_price = pos_data['entry'] + (pos_data['pos'] * take_profit_mult * atr) if pos_data['pos'] != 0 else 0
 
-            # إدارة الصفقة المفتوحة
             if pos_data['pos'] != 0:
-                stop_loss = pos_data['entry'] - (pos_data['pos'] * stop_multiplier * atr)
+                stop_loss = pos_data['entry'] - (pos_data['pos'] * sl_mult * atr)
 
-                # هدف أول (خروج جزئي)
                 if not pos_data['partial']:
                     if (pos_data['pos'] == 1 and price >= target_price) or (pos_data['pos'] == -1 and price <= target_price):
                         half_units = pos_data['units'] / 2
@@ -95,7 +106,6 @@ def dynamic_backtest(data=None, initial_balance=10000, risk_percent=0.005,
                         stop_loss = pos_data['entry']
                         continue
 
-                # هدف ثاني (خروج كامل)
                 second_target = pos_data['entry'] + (pos_data['pos'] * 6.0 * atr)
                 if pos_data['partial']:
                     if (pos_data['pos'] == 1 and price >= second_target) or (pos_data['pos'] == -1 and price <= second_target):
@@ -115,7 +125,6 @@ def dynamic_backtest(data=None, initial_balance=10000, risk_percent=0.005,
                         pos_data['partial'] = False
                         continue
 
-                # وقف خسارة أو انعكاس إشارة
                 hit_stop = (pos_data['pos'] == 1 and price <= stop_loss) or (pos_data['pos'] == -1 and price >= stop_loss)
                 signal_reverse = (signal == -pos_data['pos'])
                 if hit_stop or signal_reverse:
@@ -135,14 +144,12 @@ def dynamic_backtest(data=None, initial_balance=10000, risk_percent=0.005,
                     pos_data['partial'] = False
                     continue
 
-            # فتح صفقة جديدة
             if pos_data['pos'] == 0 and signal != 0:
                 try:
                     rm.check_circuit_breaker()
-                    stop_loss = price - (signal * stop_multiplier * atr)
+                    stop_loss = price - (signal * sl_mult * atr)
                     size = rm.calculate_position_size(price, stop_loss, effective_risk)
                     if size > 0:
-                        # Sniping Mode
                         if use_confirmation and conf_score >= 2.0:
                             SNIPING_MULTIPLIER = 1.5
                             size = int(size * SNIPING_MULTIPLIER)
