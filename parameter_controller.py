@@ -57,6 +57,12 @@ class StrategyParameters:
     adx_period: int = 20
     adx_threshold: int = 23
 
+
+
+    # --- Target Behavior ---
+    dynamic_target: bool = False  # False = fixed at entry (Prop Firm safe)
+    # --- Optimization Guards ---
+    min_trades_optimizer: int = 30   # Minimum trades to accept a parameter set
     def apply_preset(self, preset_name: str):
         """Load a named preset for specific Prop Firm challenges."""
         presets = {
@@ -70,3 +76,5 @@ class StrategyParameters:
 
 # Global instance (singleton pattern for now)
 params = StrategyParameters()
+
+
