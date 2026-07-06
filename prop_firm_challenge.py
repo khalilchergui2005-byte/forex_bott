@@ -1,5 +1,5 @@
 ﻿"""
-prop_firm_challenge.py - Full Prop Firm Challenge Simulator
+prop_firm_challenge.py - Full Prop Firm Challenge Simulator + SmartScore
 Capital: $100,000 | Min Order: $500 | Rules: FTMO
 """
 import pandas as pd
@@ -8,9 +8,10 @@ from strategy_matrix import generate_signals
 from strategy_momentum import generate_momentum_signals
 from backtest_engine import dynamic_backtest
 from parameter_controller import params
+from dry_run_simulator import calculate_contextual_win_rates, generate_smart_scores
 
 print("=" * 60)
-print("   🚀 PROP FIRM CHALLENGE SIMULATOR ($100,000)")
+print("   🚀 PROP FIRM CHALLENGE + SMARTSCORE ($100,000)")
 print("=" * 60)
 
 # 1. Override settings for the challenge
@@ -29,7 +30,28 @@ df = generate_momentum_signals(df)
 df['Final_Mom'] = df['MO_Signal']
 print(f"   Data loaded: {len(df)} candles. Matrix signals: {(df['Final']!=0).sum()}, Momentum signals: {(df['Final_Mom']!=0).sum()}")
 
-# 3. Run the challenge
+# 3. Apply SmartScore Logic
+print("\n🧠 Applying SmartScore contextual intelligence...")
+df['Confirmation'] = 1.0
+# Simplified: Use the same logic as dry_run_simulator
+time_ok = pd.Series(False, index=df.index)
+day_ok = pd.Series(False, index=df.index)
+vol_ok = (df['VolClass'] == 2)
+df.loc[time_ok, 'Confirmation'] += 0.5
+df.loc[day_ok, 'Confirmation'] += 0.5
+df.loc[vol_ok, 'Confirmation'] += 0.5
+df['Confirmation'] = df['Confirmation'].clip(upper=2.0)
+
+try:
+    past_log = pd.read_csv('logs/dry_run_log.csv')
+    win_rates_ctx = calculate_contextual_win_rates(past_log)
+    df = generate_smart_scores(df, win_rates_ctx)
+    df['Confirmation'] = df['SmartScore']  # Override confirmation with smart score
+    print("   ✅ SmartScore applied successfully.")
+except FileNotFoundError:
+    print("   ⚠️ No past log found. Using base Confirmation.")
+
+# 4. Run the challenge
 print("\n⚡ Running the Challenge...")
 trades, equity, trade_log = dynamic_backtest(
     data=df,
@@ -40,7 +62,7 @@ trades, equity, trade_log = dynamic_backtest(
     log_trades=True
 )
 
-# 4. Results
+# 5. Results
 print("\n" + "=" * 60)
 print("   📊 CHALLENGE RESULTS")
 print("=" * 60)
@@ -60,5 +82,5 @@ if trades:
     print(f"   ⚖️  Profit Factor: {pf:.2f}")
     print(f"   🎯 Challenge Status: {'✅ PASSED' if total_ret >= 10.0 and max_dd > -10.0 else '❌ FAILED'}")
 else:
-    print("   No trades generated. The beast stayed in its cage.")
+    print("   No trades generated.")
 print("=" * 60)
