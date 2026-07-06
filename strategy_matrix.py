@@ -65,3 +65,4 @@ def generate_signals(df):
     df.loc[(df['Sell'] == 1) & (df['Allowed'].isin([-1, 0])), 'Final'] = -1
 
     return df
+
