@@ -61,6 +61,24 @@ class StrategyParameters:
 
     # --- Target Behavior ---
     dynamic_target: bool = False  # False = fixed at entry (Prop Firm safe)
+
+
+    # --- Kelly Criterion (Dynamic Position Sizing) ---
+    kelly_window: int = 50              # Rolling window for Kelly calculation
+    kelly_min_fraction: float = 0.25    # Minimum Kelly multiplier (safety floor)
+    kelly_max_fraction: float = 2.0     # Maximum Kelly multiplier (safety cap)
+    # --- Shock & Awe (Anti-Martingale) ---
+    shock_awe_threshold: int = 3        # Consecutive wins to trigger
+    shock_awe_multiplier: float = 2.0   # Multiply risk by this when triggered
+
+
+    # --- Kelly Criterion (Dynamic Position Sizing) ---
+    kelly_window: int = 50              # Rolling window for Kelly calculation
+    kelly_min_fraction: float = 0.25    # Minimum Kelly multiplier (safety floor)
+    kelly_max_fraction: float = 2.0     # Maximum Kelly multiplier (safety cap)
+    # --- Shock & Awe (Anti-Martingale) ---
+    shock_awe_threshold: int = 3        # Consecutive wins to trigger
+    shock_awe_multiplier: float = 2.0   # Multiply risk by this when triggered
     # --- Optimization Guards ---
     min_trades_optimizer: int = 30   # Minimum trades to accept a parameter set
     def apply_preset(self, preset_name: str):
@@ -76,6 +94,9 @@ class StrategyParameters:
 
 # Global instance (singleton pattern for now)
 params = StrategyParameters()
+
+
+
 
 
 
