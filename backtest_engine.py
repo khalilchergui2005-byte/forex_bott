@@ -172,3 +172,4 @@ def dynamic_backtest(data=None, initial_balance=None, risk_percent=0.005,
         return trades, equity_curve, trade_log
     return trades, equity_curve
 
+
