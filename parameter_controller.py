@@ -68,8 +68,11 @@ class StrategyParameters:
     dynamic_target: bool = False  # False = fixed at entry (Prop Firm safe)
 
     # --- Kelly Criterion (Dynamic Position Sizing) ---
+    # FROZEN - Disabled, caused risk over-shrinkage, see report section 3.
     kelly_window: int = 50              # Rolling window for Kelly calculation
+    # FROZEN - Disabled, caused risk over-shrinkage, see report section 3.
     kelly_min_fraction: float = 0.25    # Minimum Kelly multiplier (safety floor)
+    # FROZEN - Disabled, caused risk over-shrinkage, see report section 3.
     kelly_max_fraction: float = 2.0     # Maximum Kelly multiplier (safety cap)
 
     # --- Shock & Awe (Anti-Martingale) ---
@@ -92,7 +95,3 @@ class StrategyParameters:
 
 # Global instance (singleton pattern for now)
 params = StrategyParameters()
-
-
-
-
