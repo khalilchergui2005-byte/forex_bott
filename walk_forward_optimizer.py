@@ -79,7 +79,7 @@ for w in range(NUM_WINDOWS):
             df['Final_Mom'] = df['MO_Signal']
             df['Final_Range'] = df['Range_Signal']
             
-            trades, equity = dynamic_backtest(data=df, strategy_cols=['Final', 'Final_Mom', 'Final_Range'], risk_percent=0.005)
+            trades, equity = dynamic_backtest(data=df, strategy_cols=['Final'], risk_percent=0.005)
             
             for k, v in original.items():
                 setattr(params, k, v)
@@ -113,7 +113,7 @@ for w in range(NUM_WINDOWS):
     df_test = generate_range_signals(df_test)
     df_test['Final_Mom'] = df_test['MO_Signal']
     df_test['Final_Range'] = df_test['Range_Signal']
-    trades_oos, eq_oos = dynamic_backtest(data=df_test, strategy_cols=['Final', 'Final_Mom', 'Final_Range'], risk_percent=0.005)
+    trades_oos, eq_oos = dynamic_backtest(data=df_test, strategy_cols=['Final'], risk_percent=0.005)
     
     if trades_oos and len(trades_oos) > 0:
         wins = [t for t in trades_oos if t > 0]
@@ -149,3 +149,4 @@ else:
 
 print(f"\n{'='*60}")
 print("Walk-Forward validation complete.")
+
