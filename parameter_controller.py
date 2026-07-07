@@ -84,6 +84,11 @@ class StrategyParameters:
     shock_awe_threshold: int = 3        # Consecutive wins to trigger
     shock_awe_multiplier: float = 2.0   # Multiply risk by this when triggered
 
+
+    # --- Temporal Edge Overlay (Council Atom 7.4 Discovery) ---
+    allowed_hours: list = field(default_factory=lambda: [0])       # Hours to allow trading (UTC). 0 = midnight
+    blocked_hours: list = field(default_factory=lambda: [13])      # Hours to block trading (UTC). 13 = 1 PM
+
     # --- Optimization Guards ---
     min_trades_optimizer: int = 30   # Minimum trades to accept a parameter set
 
@@ -100,6 +105,7 @@ class StrategyParameters:
 
 # Global instance (singleton pattern for now)
 params = StrategyParameters()
+
 
 
 
