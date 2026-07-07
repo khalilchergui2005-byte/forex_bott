@@ -6,7 +6,7 @@ import optuna
 import pandas as pd
 import numpy as np
 from data_loader import load_hourly
-from strategy_high_atr import generate_high_atr_signals
+from strategy_hour00 import generate_hour00_signals
 from backtest_engine import dynamic_backtest
 from parameter_controller import params
 import warnings
@@ -19,7 +19,7 @@ print("=" * 60)
 # 1. Load and prepare data
 print("\n[1/3] Loading data...")
 full_data = load_hourly()
-full_data = generate_high_atr_signals(full_data)
+full_data = generate_hour00_signals(full_data)
 print(f"   Total candles: {len(full_data)}, Signals: {full_data['Signal'].sum()}")
 
 # 2. Walk-Forward Setup (5 windows)
@@ -70,4 +70,5 @@ if results:
     print(f"\n   Average PF: {avg_pf:.2f} (±{std_pf:.2f})")
     print(f"   Stability: {'STABLE' if avg_pf > 1.0 and std_pf < 0.5 else 'UNSTABLE'}")
     print(f"{'='*60}")
+
 
