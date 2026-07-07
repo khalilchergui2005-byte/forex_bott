@@ -1,5 +1,5 @@
 ﻿"""
-backtest_engine.py - Unified portfolio engine + Turbo Volatility
+backtest_engine.py - Unified portfolio engine + Turbo Volatility + Shock & Awe
 Project: Viral Entity - Strongest Trading Firm
 Supports: Multiple strategies, partial exit, fixed target, Sniping, and volatility booster.
 """
@@ -35,9 +35,10 @@ def dynamic_backtest(data=None, initial_balance=None, risk_percent=0.005,
     rm = RiskManager(initial_balance, config={
         'base_risk_percent': risk_percent,
         'max_daily_loss_pct': max_daily_loss_pct,
+        'min_order_pct': params.min_order_pct,
         'max_total_drawdown_pct': max_total_dd_pct,
     })
-    rm.min_order_value = params.min_order_value
+    # Dynamic min order is now handled by RiskManager via min_order_pct
 
     trades = []
     equity_curve = [initial_balance]
@@ -46,6 +47,9 @@ def dynamic_backtest(data=None, initial_balance=None, risk_percent=0.005,
     positions = {col: {'pos': 0, 'entry': 0.0, 'time': None, 'units': 0.0, 'partial': False,
                        'target': 0.0, 'stop_loss': 0.0}
                  for col in strategy_cols}
+
+    # --- Shock & Awe State ---
+    consecutive_wins = 0
 
     for i in range(len(data)):
         price = data['close'].iloc[i]
@@ -57,6 +61,9 @@ def dynamic_backtest(data=None, initial_balance=None, risk_percent=0.005,
             avg_atr_val = data['ATR'].iloc[:i+1].mean()
         vol_ratio = atr / avg_atr_val if avg_atr_val > 0 else 1.0
         stop_multiplier = max(params.stop_min_mult, min(params.stop_max_mult, params.stop_max_mult - (params.stop_volatility_factor * vol_ratio)))
+
+        # Market Awareness: Fear multiplier (halve risk in high volatility)
+        fear_mult = 0.5 if (atr / price) > params.fear_threshold else 1.0
 
         is_volatile = False
         if use_volatility:
@@ -81,8 +88,9 @@ def dynamic_backtest(data=None, initial_balance=None, risk_percent=0.005,
             else:
                 effective_risk = risk_percent
 
-            signal_quality = conf_score / 2.0 if use_confirmation and signal != 0 else 0.7
-            take_profit_mult = tp_mult + (signal_quality * 1.0)
+            # Shock & Awe overlay
+            if consecutive_wins >= params.shock_awe_threshold:
+                effective_risk *= params.shock_awe_multiplier
 
             if pos_data['pos'] != 0:
                 stop_loss = pos_data['stop_loss']
@@ -94,6 +102,10 @@ def dynamic_backtest(data=None, initial_balance=None, risk_percent=0.005,
                         pnl = (price - pos_data['entry']) * pos_data['pos'] * half_units
                         rm.update_pnl(pnl)
                         trades.append(pnl)
+                        if pnl > 0:
+                            consecutive_wins += 1
+                        else:
+                            consecutive_wins = 0
                         if log_trades:
                             trade_log.append({
                                 'strategy': col, 'entry_time': pos_data['time'], 'exit_time': current_time,
@@ -113,6 +125,10 @@ def dynamic_backtest(data=None, initial_balance=None, risk_percent=0.005,
                         pnl = (price - pos_data['entry']) * pos_data['pos'] * pos_data['units']
                         rm.update_pnl(pnl)
                         trades.append(pnl)
+                        if pnl > 0:
+                            consecutive_wins += 1
+                        else:
+                            consecutive_wins = 0
                         if log_trades:
                             trade_log.append({
                                 'strategy': col, 'entry_time': pos_data['time'], 'exit_time': current_time,
@@ -132,6 +148,10 @@ def dynamic_backtest(data=None, initial_balance=None, risk_percent=0.005,
                     pnl = (price - pos_data['entry']) * pos_data['pos'] * pos_data['units']
                     rm.update_pnl(pnl)
                     trades.append(pnl)
+                    if pnl > 0:
+                        consecutive_wins += 1
+                    else:
+                        consecutive_wins = 0
                     if log_trades:
                         trade_log.append({
                             'strategy': col, 'entry_time': pos_data['time'], 'exit_time': current_time,
@@ -152,7 +172,7 @@ def dynamic_backtest(data=None, initial_balance=None, risk_percent=0.005,
                     take_profit_mult = tp_mult + (signal_quality * 1.0)
                     initial_stop = price - (signal * sl_mult * atr)
                     initial_target = price + (signal * take_profit_mult * atr)
-                    size = rm.calculate_position_size(price, initial_stop, effective_risk)
+                    size = rm.calculate_position_size(price, initial_stop, effective_risk, risk_percent_override=effective_risk)
                     if size > 0:
                         if use_confirmation and conf_score >= params.sniping_threshold:
                             size = int(size * params.sniping_multiplier)
@@ -171,4 +191,6 @@ def dynamic_backtest(data=None, initial_balance=None, risk_percent=0.005,
     if log_trades:
         return trades, equity_curve, trade_log
     return trades, equity_curve
+
+
 
