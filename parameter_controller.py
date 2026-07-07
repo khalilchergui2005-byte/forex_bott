@@ -76,9 +76,9 @@ class StrategyParameters:
     kelly_max_fraction: float = 2.0     # Maximum Kelly multiplier (safety cap)
 
     # --- Meta-Labeling Filter Thresholds (Council Recommendation) ---
-    min_smart_score_filter: float = 1.5      # Minimum SmartScore to accept a trade
+    min_smart_score_filter: float = 1.0      # Minimum SmartScore to accept a trade
     max_fear_level_filter: float = 1.0       # Fear multiplier must be >= this to accept (1.0 = no fear)
-    require_shock_awe_filter: bool = True   # If True, only take trades when Shock&Awe is active
+    require_shock_awe_filter: bool = False   # If True, only take trades when Shock&Awe is active
 
     # --- Shock & Awe (Anti-Martingale) ---
     shock_awe_threshold: int = 3        # Consecutive wins to trigger
@@ -100,5 +100,6 @@ class StrategyParameters:
 
 # Global instance (singleton pattern for now)
 params = StrategyParameters()
+
 
 
