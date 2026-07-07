@@ -1,8 +1,8 @@
-Stable parameters from Foundry Optimizer:
-bb_multiplier=1.3
-rsi_buy_threshold=46
-rsi_sell_threshold=54
-macd_fast=19
-macd_slow=26
-adx_period=12
-adx_threshold=23
+Stable parameters from Foundry Optimizer (Normalized):
+bb_multiplier=1.5
+rsi_buy_threshold=41
+rsi_sell_threshold=60
+macd_fast=14
+macd_slow=25
+adx_period=14
+adx_threshold=27
