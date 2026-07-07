@@ -1,7 +1,8 @@
 ﻿"""
-backtest_engine.py - Unified portfolio engine + Turbo Volatility
+backtest_engine.py - Unified portfolio engine + Meta-Labeling Filter
 Project: Viral Entity - Strongest Trading Firm
-Supports: Multiple strategies, partial exit, fixed target, Sniping, and volatility booster.
+Supports: Multiple strategies, partial exit, fixed target, Sniping, Turbo Volatility.
+Filter layers (SmartScore, Fear, Shock&Awe) act as gatekeepers, NOT position size multipliers.
 """
 import pandas as pd
 from risk_manager import RiskManager, CircuitBreakerException
@@ -47,10 +48,16 @@ def dynamic_backtest(data=None, initial_balance=None, risk_percent=0.005,
                        'target': 0.0, 'stop_loss': 0.0}
                  for col in strategy_cols}
 
+    # Shock & Awe state
+    consecutive_wins = 0
+
     for i in range(len(data)):
         price = data['close'].iloc[i]
         atr = data['ATR'].iloc[i]
         current_time = data.index[i] if hasattr(data.index[i], 'strftime') else i
+
+        # Fear multiplier calculation (used ONLY for filtering, NOT for sizing)
+        fear_mult = 0.5 if (atr / price) > params.fear_threshold else 1.0
 
         avg_atr_val = data['avg_atr'].iloc[i]
         if pd.isna(avg_atr_val) or avg_atr_val == 0:
@@ -81,8 +88,10 @@ def dynamic_backtest(data=None, initial_balance=None, risk_percent=0.005,
             else:
                 effective_risk = risk_percent
 
-            signal_quality = conf_score / 2.0 if use_confirmation and signal != 0 else 0.7
-            take_profit_mult = tp_mult + (signal_quality * 1.0)
+            # Shock & Awe overlay (for sizing)
+            if consecutive_wins >= params.shock_awe_threshold:
+                effective_risk *= params.shock_awe_multiplier
+                effective_risk = min(effective_risk, 0.015)
 
             if pos_data['pos'] != 0:
                 stop_loss = pos_data['stop_loss']
@@ -94,6 +103,10 @@ def dynamic_backtest(data=None, initial_balance=None, risk_percent=0.005,
                         pnl = (price - pos_data['entry']) * pos_data['pos'] * half_units
                         rm.update_pnl(pnl)
                         trades.append(pnl)
+                        if pnl > 0:
+                            consecutive_wins += 1
+                        else:
+                            consecutive_wins = 0
                         if log_trades:
                             trade_log.append({
                                 'strategy': col, 'entry_time': pos_data['time'], 'exit_time': current_time,
@@ -113,6 +126,10 @@ def dynamic_backtest(data=None, initial_balance=None, risk_percent=0.005,
                         pnl = (price - pos_data['entry']) * pos_data['pos'] * pos_data['units']
                         rm.update_pnl(pnl)
                         trades.append(pnl)
+                        if pnl > 0:
+                            consecutive_wins += 1
+                        else:
+                            consecutive_wins = 0
                         if log_trades:
                             trade_log.append({
                                 'strategy': col, 'entry_time': pos_data['time'], 'exit_time': current_time,
@@ -132,6 +149,10 @@ def dynamic_backtest(data=None, initial_balance=None, risk_percent=0.005,
                     pnl = (price - pos_data['entry']) * pos_data['pos'] * pos_data['units']
                     rm.update_pnl(pnl)
                     trades.append(pnl)
+                    if pnl > 0:
+                        consecutive_wins += 1
+                    else:
+                        consecutive_wins = 0
                     if log_trades:
                         trade_log.append({
                             'strategy': col, 'entry_time': pos_data['time'], 'exit_time': current_time,
@@ -146,6 +167,16 @@ def dynamic_backtest(data=None, initial_balance=None, risk_percent=0.005,
                     continue
 
             if pos_data['pos'] == 0 and signal != 0:
+                # --- Meta-Labeling Filter (Council Recommendation) ---
+                # These act as GATEKEEPERS only. Position size is NOT modified.
+                smart_score_ok = (conf_score >= params.min_smart_score_filter)
+                fear_ok = (fear_mult >= params.max_fear_level_filter)
+                shock_ok = (not params.require_shock_awe_filter) or (consecutive_wins >= params.shock_awe_threshold)
+
+                if not (smart_score_ok and fear_ok and shock_ok):
+                    continue  # Gate rejects this trade
+                # -------------------------------------------------
+
                 try:
                     rm.check_circuit_breaker()
                     signal_quality = conf_score / 2.0 if use_confirmation and signal != 0 else 0.7
@@ -171,5 +202,3 @@ def dynamic_backtest(data=None, initial_balance=None, risk_percent=0.005,
     if log_trades:
         return trades, equity_curve, trade_log
     return trades, equity_curve
-
-
