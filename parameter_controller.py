@@ -11,17 +11,17 @@ class StrategyParameters:
     """Core trading parameters - starting point for institutional optimization."""
     
     # --- Account / Prop Firm Settings ---
-    initial_capital: float = 10000.0         # Default starting balance (overridable)
-    min_order_value: float = 50.0            # Absolute min notional value. TEMPORARY: Reduced for 10k testing. Use 500 for 100k prop firm.
+    initial_capital: float = 100000.0        # Default starting balance for FTMO Challenge
+    min_order_value: float = 500.0           # Absolute min notional value for 100k prop firm.
     min_order_pct: float = 0.005            # Min order as fraction of capital (0.5%). Dynamically scales with account size.
 
     # --- Market Awareness (Fear Sensor) ---
     fear_threshold: float = 0.02            # ATR% threshold (2% daily). Risk is halved above this.
     
-    # --- Position Sizing & Risk (confirmed by user: base values) ---
+    # --- Position Sizing & Risk (FTMO Defaults) ---
     base_risk_percent: float = 0.005        # 0.5% per trade
-    max_daily_loss_pct: float = 0.02        # 2% daily loss circuit breaker
-    max_total_dd_pct: float = 0.10          # 10% max total drawdown
+    max_daily_loss_pct: float = 0.05        # 5% daily loss circuit breaker (FTMO)
+    max_total_dd_pct: float = 0.10          # 10% max total drawdown (FTMO)
     
     # --- Sniping (increased size on high-confidence signals) ---
     sniping_multiplier: float = 1.5         # Multiplier when Confirmation >= 2.0
