@@ -167,6 +167,11 @@ def dynamic_backtest(data=None, initial_balance=None, risk_percent=0.005,
                     continue
 
             if pos_data['pos'] == 0 and signal != 0:
+                # --- Temporal Edge Filter (Council Atom 7.4) ---
+                current_hour = data.index[i].hour if hasattr(data.index[i], 'hour') else current_time.hour
+                if current_hour in params.blocked_hours:
+                    continue  # Blocked hour, skip trade
+                # ---------------------------------------------
                 # --- Meta-Labeling Filter (Council Recommendation) ---
                 # These act as GATEKEEPERS only. Position size is NOT modified.
                 smart_score_ok = (conf_score >= params.min_smart_score_filter)
@@ -202,3 +207,4 @@ def dynamic_backtest(data=None, initial_balance=None, risk_percent=0.005,
     if log_trades:
         return trades, equity_curve, trade_log
     return trades, equity_curve
+
