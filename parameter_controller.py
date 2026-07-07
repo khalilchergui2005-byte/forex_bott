@@ -81,9 +81,10 @@ class StrategyParameters:
     require_shock_awe_filter: bool = False   # If True, only take trades when Shock&Awe is active
 
     # --- Shock & Awe (Anti-Martingale) ---
+    # FROZEN - Failed statistical runs test (Atom 7.3). Rule increases risk without proven momentum.
     shock_awe_threshold: int = 3        # Consecutive wins to trigger
+    # FROZEN - Failed statistical runs test (Atom 7.3). Rule increases risk without proven momentum.
     shock_awe_multiplier: float = 2.0   # Multiply risk by this when triggered
-
 
     # --- Temporal Edge Overlay (Council Atom 7.4 Discovery) ---
     allowed_hours: list = field(default_factory=lambda: [0])       # Hours to allow trading (UTC). 0 = midnight
@@ -105,7 +106,3 @@ class StrategyParameters:
 
 # Global instance (singleton pattern for now)
 params = StrategyParameters()
-
-
-
-
