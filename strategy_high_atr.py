@@ -13,10 +13,11 @@ def generate_high_atr_signals(df):
     df['ATR_ratio'] = df['ATR'] / df['close']
     
     # Generate signal (buy when high volatility)
-    threshold = df['ATR_ratio'].quantile(0.66)
+    threshold = df['ATR_ratio'].expanding().quantile(0.66)
     df['Signal'] = 0
     df.loc[df['ATR_ratio'] >= threshold, 'Signal'] = 1
     
     df.dropna(inplace=True)
     
     return df
+
