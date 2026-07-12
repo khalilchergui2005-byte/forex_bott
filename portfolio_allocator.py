@@ -94,3 +94,60 @@ class ExposureController:
             aggregate_exposure=agg, long_exposure=long_sum,
             short_exposure=short_sum, scaling_factor=1.0,
             should_reduce=False, reason="Normal")
+
+def risk_parity_weights(returns: dict, min_weight: float = 0.05) -> dict:
+    """Inverse-volatility weights so each strategy contributes equal risk.
+
+    Args:
+        returns: {strategy_name: per-trade P&L list}
+        min_weight: floor so no strategy gets zero weight.
+    Returns:
+        {strategy_name: weight} summing to 1.0.
+    """
+    names = list(returns.keys())
+    n = len(names)
+    if n == 0:
+        return {}
+    if n == 1:
+        return {names[0]: 1.0}
+    vols = {}
+    for nm in names:
+        r = np.array(returns[nm], dtype=float)
+        if len(r) < 5:
+            vols[nm] = np.nan
+        else:
+            v = float(np.std(r))
+            vols[nm] = v if v > 1e-10 else np.nan
+    valid = {k: v for k, v in vols.items() if not np.isnan(v)}
+    if not valid:
+        eq = 1.0 / n
+        return {nm: eq for nm in names}
+    mean_v = float(np.mean(list(valid.values())))
+    for nm in names:
+        if np.isnan(vols.get(nm, np.nan)):
+            vols[nm] = mean_v
+    raw = {nm: 1.0 / vols[nm] for nm in names}
+    total_raw = sum(raw.values())
+    raw = {k: v / total_raw for k, v in raw.items()}
+    below = [nm for nm in names if raw[nm] < min_weight]
+    if below:
+        reserved = min_weight * len(below)
+        remaining = 1.0 - reserved
+        above = [nm for nm in names if raw[nm] >= min_weight]
+        above_sum = sum(raw[nm] for nm in above)
+        weights = {}
+        if above and above_sum > 1e-10:
+            for nm in names:
+                if nm in below:
+                    weights[nm] = min_weight
+                else:
+                    weights[nm] = remaining * raw[nm] / above_sum
+        else:
+            eq = 1.0 / n
+            weights = {nm: eq for nm in names}
+    else:
+        weights = dict(raw)
+    total = sum(weights.values())
+    if total > 1e-10:
+        weights = {k: v / total for k, v in weights.items()}
+    return weights
