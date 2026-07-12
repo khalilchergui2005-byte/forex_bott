@@ -100,7 +100,9 @@ def dynamic_backtest(data=None, initial_balance=None, risk_percent=0.005,
                 if not pos_data['partial']:
                     if (pos_data['pos'] == 1 and price >= target_price) or (pos_data['pos'] == -1 and price <= target_price):
                         half_units = pos_data['units'] * params.partial_exit_ratio
-                        pnl = (price - pos_data['entry']) * pos_data['pos'] * half_units
+                        commission = (half_units / 100000) * params.commission_per_lot
+                        slippage = params.slippage_pips * params.pip_size
+                        pnl = (price - pos_data['pos'] * slippage - pos_data['entry']) * pos_data['pos'] * half_units - commission
                         rm.update_pnl(pnl)
                         trades.append(pnl)
                         if pnl > 0:
@@ -123,7 +125,9 @@ def dynamic_backtest(data=None, initial_balance=None, risk_percent=0.005,
                 second_target = pos_data['entry'] + (pos_data['pos'] * params.second_target_atr_mult * atr)
                 if pos_data['partial']:
                     if (pos_data['pos'] == 1 and price >= second_target) or (pos_data['pos'] == -1 and price <= second_target):
-                        pnl = (price - pos_data['entry']) * pos_data['pos'] * pos_data['units']
+                        commission = (pos_data['units'] / 100000) * params.commission_per_lot
+                        slippage = params.slippage_pips * params.pip_size
+                        pnl = (price - pos_data['pos'] * slippage - pos_data['entry']) * pos_data['pos'] * pos_data['units'] - commission
                         rm.update_pnl(pnl)
                         trades.append(pnl)
                         if pnl > 0:
@@ -146,7 +150,9 @@ def dynamic_backtest(data=None, initial_balance=None, risk_percent=0.005,
                 hit_stop = (pos_data['pos'] == 1 and price <= stop_loss) or (pos_data['pos'] == -1 and price >= stop_loss)
                 signal_reverse = (signal == -pos_data['pos'])
                 if hit_stop or signal_reverse:
-                    pnl = (price - pos_data['entry']) * pos_data['pos'] * pos_data['units']
+                    commission = (pos_data['units'] / 100000) * params.commission_per_lot
+                    slippage = params.slippage_pips * params.pip_size
+                    pnl = (price - pos_data['pos'] * slippage - pos_data['entry']) * pos_data['pos'] * pos_data['units'] - commission
                     rm.update_pnl(pnl)
                     trades.append(pnl)
                     if pnl > 0:
@@ -193,7 +199,9 @@ def dynamic_backtest(data=None, initial_balance=None, risk_percent=0.005,
                         if use_confirmation and conf_score >= params.sniping_threshold:
                             size = int(size * params.sniping_multiplier)
                         pos_data['pos'] = signal
-                        pos_data['entry'] = price
+                        half_spread = (params.spread_pips * params.pip_size) / 2
+                        slippage = params.slippage_pips * params.pip_size
+                        pos_data['entry'] = price + signal * half_spread + signal * slippage
                         pos_data['time'] = current_time
                         pos_data['units'] = float(size)
                         pos_data['partial'] = False

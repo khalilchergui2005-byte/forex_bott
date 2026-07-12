@@ -15,6 +15,13 @@ class StrategyParameters:
     min_order_value: float = 500.0           # Absolute min notional value for 100k prop firm.
     min_order_pct: float = 0.005            # Min order as fraction of capital (0.5%). Dynamically scales with account size.
 
+    # --- Execution Costs (Realistic Backtest) ---
+    spread_pips: float = 1.0                # Spread in pips (1.0 = normal EUR/USD)
+    pip_size: float = 0.0001                # Pip value in price units (4-digit pairs)
+    commission_per_lot: float = 7.0           # Commission per standard lot round-turn ($)
+    slippage_pips: float = 0.5                # Average slippage in pips
+    slippage_model: str = 'fixed'             # fixed or volatility
+
     # --- Market Awareness (Fear Sensor) ---
     fear_threshold: float = 0.02            # ATR% threshold (2% daily). Risk is halved above this.
     
