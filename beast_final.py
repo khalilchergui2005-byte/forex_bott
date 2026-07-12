@@ -1,5 +1,8 @@
+ï»¿# Beast V-Final Strategy
+# Main strategy module - multi-indicator entry/exit logic with risk management
+
 # ============================================================
-# ÇáãÔÑæÚ: ÇáßíÇä ÇáİíÑæÓí – Beast Final (ÍÏæÏ ÏíäÇãíßíÉ)
+# Ø§Ù„Ù…Ø´Ø±ÙˆØ¹: Ø§Ù„ÙƒÙŠØ§Ù† Ø§Ù„ÙÙŠØ±ÙˆØ³ÙŠ â€“ Beast Final (Ø­Ø¯ÙˆØ¯ Ø¯ÙŠÙ†Ø§Ù…ÙŠÙƒÙŠØ©)
 # ============================================================
 import time
 import threading
@@ -17,6 +20,9 @@ from ibapi.order import Order
 from sklearn.mixture import GaussianMixture
 import warnings
 warnings.filterwarnings('ignore')
+
+LIVE_TRADING_CONFIRMATION_ENV = 'FOREX_BOT_ALLOW_LIVE_TRADING'
+LIVE_TRADING_CONFIRMATION_VALUE = 'I_ACCEPT_LIVE_TRADING_RISK'
 
 HIGH_IMPACT_NEWS = [
     (1, 10, 13, 30, "NFP"), (2, 7, 13, 30, "NFP"), (3, 7, 13, 30, "NFP"),
@@ -62,8 +68,8 @@ class BeastFinal(EWrapper, EClient):
         self.position_ready = False
         self.account_balance = 10000.0
         self.balance_ready = False
-        # ?? ÍÏæÏ ÏíäÇãíßíÉ ãä ÇáæÓíØ
-        self.max_order_size = 20000  # ŞíãÉ ÇİÊÑÇÖíÉ áÍíä ÌáÈåÇ ãä ÇáæÓíØ
+        # Ø­Ø¯ÙˆØ¯ Ø¯ÙŠÙ†Ø§Ù…ÙŠÙƒÙŠØ© Ù…Ù† Ø§Ù„ÙˆØ³ÙŠØ·
+        self.max_order_size = 20000  # Ù‚ÙŠÙ…Ø© Ø§ÙØªØ±Ø§Ø¶ÙŠØ© Ù„Ø­ÙŠÙ† Ø¬Ù„Ø¨Ù‡Ø§ Ù…Ù† Ø§Ù„ÙˆØ³ÙŠØ·
         self.contract_details_ready = False
         self.log_file = "logs/beast_log.csv"
         Path("logs").mkdir(exist_ok=True)
@@ -94,7 +100,7 @@ class BeastFinal(EWrapper, EClient):
         self.connected = True
         self.log("SYSTEM", "CONNECTED", f"orderId={orderId}")
 
-    # ?? ÌáÈ ÊİÇÕíá ÇáÚŞÏ (ÍÏæÏ ÇáÍÌã)
+    # Ø¬Ù„Ø¨ ØªÙØ§ØµÙŠÙ„ Ø§Ù„Ø¹Ù‚Ø¯ (Ø­Ø¯ÙˆØ¯ Ø§Ù„Ø­Ø¬Ù…)
     def contractDetails(self, reqId, contractDetails):
         if contractDetails.contract.symbol == "EUR" and contractDetails.contract.currency == "USD":
             if contractDetails.minSize:
@@ -207,7 +213,7 @@ class BeastFinal(EWrapper, EClient):
         active = (last_trend == 0) and (last_vol <= low_thresh) and (last_atr > 0.0001)
         return active, last_price, last_atr
 
-    # ?? ÍÌã ÇáÕİŞÉ ÇáÏíäÇãíßí ãÚ ÍÏ ÃŞÕì ãä ÇáæÓíØ
+    # Ø­Ø¬Ù… Ø§Ù„ØµÙÙ‚Ø© Ø§Ù„Ø¯ÙŠÙ†Ø§Ù…ÙŠÙƒÙŠ Ù…Ø¹ Ø­Ø¯ Ø£Ù‚ØµÙ‰ Ù…Ù† Ø§Ù„ÙˆØ³ÙŠØ·
     def calculate_position_size(self, atr_value):
         risk_amount = self.account_balance * 0.01
         stop_distance = 2.0 * atr_value
@@ -272,7 +278,7 @@ class BeastFinal(EWrapper, EClient):
             self.log("SYSTEM", "KILLED", "Trading halted")
             return
 
-        # ÌáÈ ÊİÇÕíá ÇáÚŞÏ (Ãæá ãÑÉ İŞØ¡ Ëã ÊõÎÒøä)
+        # Ø¬Ù„Ø¨ ØªÙØ§ØµÙŠÙ„ Ø§Ù„Ø¹Ù‚Ø¯ (Ø£ÙˆÙ„ Ù…Ø±Ø© ÙÙ‚Ø·ØŒ Ø«Ù… ØªÙØ®Ø²Ù‘Ù†)
         if not self.contract_details_ready:
             contract = Contract()
             contract.symbol = "EUR"
@@ -285,7 +291,7 @@ class BeastFinal(EWrapper, EClient):
                 time.sleep(1)
                 timeout_cd += 1
 
-        # ÌáÈ ÑÕíÏ ÇáÍÓÇÈ æÇáãÑÇßÒ
+        # Ø¬Ù„Ø¨ Ø±ØµÙŠØ¯ Ø§Ù„Ø­Ø³Ø§Ø¨ ÙˆØ§Ù„Ù…Ø±Ø§ÙƒØ²
         self.balance_ready = False
         self.reqAccountSummary(1, "All", "NetLiquidation")
         self.position_ready = False
@@ -327,7 +333,7 @@ class BeastFinal(EWrapper, EClient):
             else:
                 self.log("MATRIX-H1", "REVERSE", "Closing first")
                 close_action = "SELL" if self.current_position == 1 else "BUY"
-                close_qty = abs(self.current_position) * 20000
+                close_qty = abs(self.current_position)
                 self.place_trade("MATRIX-H1", close_action, close_qty)
                 time.sleep(2)
                 quantity = self.calculate_position_size(matrix_atr)
@@ -337,7 +343,7 @@ class BeastFinal(EWrapper, EClient):
             buy_limit = mm_price - 0.3 * mm_atr
             sell_limit = mm_price + 0.3 * mm_atr
             mm_qty = int(self.account_balance * 0.002 / mm_atr) if mm_atr > 0 else 500
-            mm_qty = max(min(mm_qty, self.max_order_size // 10), 100)  # 10% ãä ÇáÍÏ ÇáÃŞÕì ßÍÏ ÃŞÕì áÕÇäÚ ÇáÓæŞ
+            mm_qty = max(min(mm_qty, self.max_order_size // 10), 100)  # 10% Ù…Ù† Ø§Ù„Ø­Ø¯ Ø§Ù„Ø£Ù‚ØµÙ‰ ÙƒØ­Ø¯ Ø£Ù‚ØµÙ‰ Ù„ØµØ§Ù†Ø¹ Ø§Ù„Ø³ÙˆÙ‚
             self.place_limit_order("MM-M15", "BUY", mm_qty, buy_limit)
             self.place_limit_order("MM-M15", "SELL", mm_qty, sell_limit)
             self.log("MM-M15", "GRID_PLACED", f"Buy@{buy_limit:.5f} Sell@{sell_limit:.5f} x{mm_qty}u")
@@ -375,30 +381,48 @@ def watchdog(beast):
             time.sleep(5)
             beast.connect_with_retry()
 
-print("BEAST FINAL – Immune System Active")
-print("=" * 50)
-beast = BeastFinal()
-ok = beast.connect_with_retry()
-if not ok:
-    print("Failed to connect. Ensure IB Gateway is open on port 4002.")
-    exit(1)
-beast.log("SYSTEM", "BEAST_ONLINE", "Immune System Active – Watchdog Running")
-wd = threading.Thread(target=watchdog, args=(beast,), daemon=True)
-wd.start()
-beast.log("SYSTEM", "WATCHDOG_STARTED", "Monitoring every 60s")
-while True:
-    try:
-        if beast.connected:
-            beast.run_cycle()
-            beast.log("SYSTEM", "SLEEP", "15 minutes")
-            time.sleep(900)
-        else:
-            beast.log("SYSTEM", "WAITING", "Watchdog will reconnect")
-            time.sleep(60)
-    except KeyboardInterrupt:
-        beast.log("SYSTEM", "STOPPED", "Manual")
-        beast.disconnect()
-        break
-    except Exception as e:
-        beast.log("SYSTEM", "CRASH", str(e)[:100])
-        time.sleep(300)
+def require_live_trading_confirmation():
+    confirmation = os.environ.get(LIVE_TRADING_CONFIRMATION_ENV)
+    if confirmation != LIVE_TRADING_CONFIRMATION_VALUE:
+        raise SystemExit(
+            "LIVE TRADING BLOCKED. Set "
+            f"{LIVE_TRADING_CONFIRMATION_ENV}={LIVE_TRADING_CONFIRMATION_VALUE} "
+            "only after explicit founder approval."
+        )
+
+
+def main():
+    require_live_trading_confirmation()
+    print("BEAST FINAL â€“ Immune System Active")
+    print("=" * 50)
+    beast = BeastFinal()
+    ok = beast.connect_with_retry()
+    if not ok:
+        print("Failed to connect. Ensure IB Gateway is open on port 4002.")
+        exit(1)
+    beast.log("SYSTEM", "BEAST_ONLINE", "Immune System Active â€“ Watchdog Running")
+    wd = threading.Thread(target=watchdog, args=(beast,), daemon=True)
+    wd.start()
+    beast.log("SYSTEM", "WATCHDOG_STARTED", "Monitoring every 60s")
+    while True:
+        try:
+            if beast.connected:
+                beast.run_cycle()
+                beast.log("SYSTEM", "SLEEP", "15 minutes")
+                time.sleep(900)
+            else:
+                beast.log("SYSTEM", "WAITING", "Watchdog will reconnect")
+                time.sleep(60)
+        except KeyboardInterrupt:
+            beast.log("SYSTEM", "STOPPED", "Manual")
+            beast.disconnect()
+            break
+        except Exception as e:
+            beast.log("SYSTEM", "CRASH", str(e)[:100])
+            time.sleep(300)
+
+
+if __name__ == "__main__":
+    main()
+
+

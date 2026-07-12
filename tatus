@@ -1,0 +1,20 @@
+* [33mbd62095[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mmaster[m[33m)[m atom 0.2.6-D: clean Meta-Labeling Filter, no hardcoded values
+* [33m67b4e3b[m atom 0.2.6-D: add meta-labeling filter thresholds to ParameterController
+* [33m573f30a[m atom 0.2.6-C: label frozen Kelly parameters (docs only)
+* [33mf6976e1[m Add realistic trading costs (spread+commission), fix sniping line, safe risk scaling
+* [33m130bb27[m 0.2.5: Add Institutional Walk-Forward Validation tool
+* [33m9867b4e[m Add professional risk scaling (cap 1% floor 0.25%)
+* [33m920f968[m Revert effective_risk override - caused risk mgmt failure
+* [33m18dd145[m Fix: effective_risk now actually overrides base_risk in position sizing
+* [33m9bfa266[m 0.2.6: Add Range Hunter strategy for ranging markets
+* [33mcfec8ba[m Fix merged final signal lines in strategy_matrix
+* [33mac56bd9[m Add fear_threshold parameter for Market Awareness
+* [33mb94f1ef[m Apply best 100k parameters from Bayesian optimizer
+* [33mdac0ac1[m Integrate SmartScore into Prop Firm Challenge simulator
+* [33m01079f2[m Add Prop Firm Challenge simulator with best parameters
+* [33m1bc1e8b[m Apply best parameters from Bayesian optimizer (PF 2.02 OOS)
+* [33m7862874[m Add safe Bayesian optimizer (does not modify existing files)
+* [33m9a273ac[m Cleanup: fix backtest engine, clean parameter controller, remove dead files
+* [33m332cac5[m Add Prop Firm Challenge simulator (100k account)
+* [33m4f836df[m Make backtest engine and dry run use dynamic capital from ParameterController
+* [33m0d265a8[m Fix indentation and consolidate account settings in ParameterController

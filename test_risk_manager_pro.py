@@ -2,8 +2,6 @@
 اختبارات مؤسسية شاملة لـ RiskManager
 المستوى: إنتاجي. أي فشل هنا يعني خللاً قد يمس رأس المال.
 """
-import sys
-sys.path.insert(0, r'C:\Users\GTINF\Desktop\forex_bot')
 
 import pytest
 from datetime import date, timedelta

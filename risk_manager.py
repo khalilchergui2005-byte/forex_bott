@@ -4,7 +4,7 @@ risk_manager.py - درع المخاطر الديناميكي
 يدعم قوالب شركات التمويل (Prop Firms) وحجم صفقة ديناميكي.
 """
 import logging
-from datetime import date, timedelta
+from datetime import date, datetime, timedelta
 from decimal import Decimal, ROUND_DOWN
 from typing import Optional, Dict
 import pandas as pd
@@ -27,11 +27,13 @@ class RiskManager:
         self.max_weekly_loss_pct = Decimal('0.04')
         self.max_total_drawdown_pct = Decimal('0.10')
         self.min_order_pct = Decimal('0.005')  # 0.5% of balance as dynamic min
+        self.min_order_value_abs = Decimal('500')  # Absolute floor from broker constraints
+        self.max_position_pct = Decimal('0.05')  # 5% notional cap
         self.scaling_factor = Decimal('1.0')
         self.daily_pnl = Decimal('0')
         self.weekly_pnl = Decimal('0')
-        self.last_trade_date = None
-        self.week_start_date = None
+        self.last_trade_date = date.today()
+        self.week_start_date = date.today() - timedelta(days=date.today().weekday())
         self.trading_allowed = True
         self.prop_firm_mode = None
         if config:
@@ -45,6 +47,8 @@ class RiskManager:
             'max_total_drawdown_pct': 'max_total_drawdown_pct',
             'initial_balance': 'initial_balance',
             'min_order_pct': 'min_order_pct',
+            'min_order_value_abs': 'min_order_value_abs',
+            'max_position_pct': 'max_position_pct',
         }
         for key, attr in mapping.items():
             if key in config:
@@ -52,7 +56,7 @@ class RiskManager:
         if 'initial_balance' in config:
             self.current_balance = self.initial_balance
 
-    def calculate_position_size(self, entry_price: float, stop_loss_price: float, signal_quality: float = 1.0) -> int:
+    def calculate_position_size(self, entry_price: float, stop_loss_price: float, signal_quality: float = 1.0, risk_fraction: float = None) -> int:
         try:
             entry = Decimal(str(entry_price))
             stop = Decimal(str(stop_loss_price))
@@ -65,14 +69,18 @@ class RiskManager:
         if pd.isna(float(stop_distance)) or np.isinf(float(stop_distance)) or stop_distance < Decimal('0.00001'):
             return 0
         
-        risk_percent = self.base_risk_percent * self.scaling_factor * quality
+        base = Decimal(str(risk_fraction)) if risk_fraction is not None else self.base_risk_percent
+        risk_percent = base * self.scaling_factor * quality
         risk_amount = self.current_balance * risk_percent
         try:
             position_size = risk_amount / stop_distance
         except Exception:
             return 0
-        min_order_value = self.current_balance * self.min_order_pct
+        min_order_value = max(self.min_order_value_abs, self.current_balance * self.min_order_pct)
         position_value = position_size * entry
+        max_position_value = self.current_balance * self.max_position_pct
+        if position_value > max_position_value:
+            position_size = max_position_value / entry
         if position_value < min_order_value:
             logger.warning(f"قيمة الصفقة المحسوبة (${position_value:,.2f}) أقل من الحد الأدنى (${min_order_value:,.2f}).")
             return 0
@@ -80,14 +88,36 @@ class RiskManager:
         logger.info(f"حجم الصفقة المحسوب: {final_size} وحدة. المخاطرة: ${risk_amount:,.2f} ({risk_percent*100:.2f}% من الرصيد)")
         return final_size
 
-    def check_circuit_breaker(self) -> bool:
-        today = date.today()
-        if self.last_trade_date != today:
+    def update_balance(self, new_balance: float):
+        """تحديث الرصيد وإعادة حساب عامل التدرج - صيغة الجذر التربيعي (المعيار الصناعي).
+        الجذر التربيعي يوفر نمواً مستداماً مع حماية من التضخم المفرط للمخاطرة.
+        """
+        if new_balance <= 0:
+            raise ValueError("الرصيد يجب أن يكون أكبر من صفر.")
+        self.current_balance = Decimal(str(new_balance))
+        ratio = float(self.current_balance / self.initial_balance)
+        self.scaling_factor = Decimal(str(max(0.5, ratio ** 0.5))).quantize(
+            Decimal('0.0001'), rounding=ROUND_DOWN
+        )
+        logger.info(f'تم تحديث الرصيد: ${self.current_balance:,.2f}, عامل التدرج: {self.scaling_factor}')
+
+    def check_circuit_breaker(self, current_time=None) -> bool:
+        if current_time is None:
+            today = datetime.utcnow().date()
+        elif hasattr(current_time, 'date'):
+            today = current_time.date()
+        else:
+            today = current_time
+        if self.last_trade_date is None:
+            self.last_trade_date = today
+        elif self.last_trade_date != today:
             self.daily_pnl = Decimal('0')
             self.last_trade_date = today
             logger.info("تمت إعادة تعيين عداد الخسارة اليومية.")
         week_start = today - timedelta(days=today.weekday())
-        if self.week_start_date != week_start:
+        if self.week_start_date is None:
+            self.week_start_date = week_start
+        elif self.week_start_date != week_start:
             self.weekly_pnl = Decimal('0')
             self.week_start_date = week_start
             logger.info("تمت إعادة تعيين عداد الخسارة الأسبوعية.")
@@ -123,3 +153,27 @@ class RiskManager:
         self.trading_allowed = True
         self.scaling_factor = Decimal('1.0')
         logger.info("تمت إعادة تعيين مدير المخاطر للاختبار.")
+
+    def status_report(self) -> str:
+        d = chr(36)
+        lines = []
+        lines.append("Balance: " + d + str(self.current_balance) + " / " + d + str(self.initial_balance))
+        lines.append("Trading Allowed: " + str(self.trading_allowed))
+        return "\n".join(lines)
+    def enable_prop_firm_mode(self, preset_name):
+        presets = {
+            'FTMO': {
+                'max_daily_loss_pct': Decimal('0.05'),
+                'max_total_drawdown_pct': Decimal('0.10')
+            }
+        }
+        name = preset_name.upper()
+        if name not in presets:
+            raise ValueError(f'Unknown prop firm: {preset_name}')
+        p = presets[name]
+        self.max_daily_loss_pct = p['max_daily_loss_pct']
+        self.max_total_drawdown_pct = p['max_total_drawdown_pct']
+        self.prop_firm_mode = name
+        self.last_trade_date = date.today()
+        self.week_start_date = date.today() - timedelta(days=date.today().weekday())
+        logger.info(f'Prop firm mode enabled: {name}')

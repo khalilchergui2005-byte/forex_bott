@@ -1,0 +1,8 @@
+Best parameters for 100k Prop Firm Challenge:
+bb_multiplier=1.2
+rsi_buy_threshold=47
+rsi_sell_threshold=50
+macd_fast=9
+macd_slow=34
+adx_period=16
+adx_threshold=27

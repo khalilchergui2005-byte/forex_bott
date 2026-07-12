@@ -65,9 +65,12 @@ def load_daily():
     return df.resample('D').agg({'open':'first','high':'max','low':'min','close':'last'}).dropna()
 
 def load_m15():
-    """تحميل البيانات الموحدة بإطار 15 دقيقة."""
-    df = load_hourly()
-    return df.resample('15min').agg({'open':'first','high':'max','low':'min','close':'last'}).dropna()
+    # DEPRECATED: M15 data is NOT available.
+    # H1-to-M15 resample produces fake candles.
+    # Use load_hourly() until real M15 is integrated.
+    raise NotImplementedError(
+        'M15 not available. Use load_hourly() instead.'
+    )
 
 if __name__ == "__main__":
     build_unified_data()
