@@ -1,6 +1,7 @@
 ﻿"""Portfolio Allocator — correlation, exposure control, risk parity."""
 import numpy as np
 import pandas as pd
+from dataclasses import dataclass
 from typing import Optional
 
 
@@ -54,3 +55,42 @@ def avg_correlation(corr_matrix: pd.DataFrame,
     vals = corr_matrix[strategy_name].drop(strategy_name, errors="ignore")
     vals = vals.dropna()
     return float(vals.mean()) if len(vals) > 0 else 0.0
+
+@dataclass
+class ExposureReport:
+    aggregate_exposure: float
+    long_exposure: float
+    short_exposure: float
+    scaling_factor: float
+    should_reduce: bool
+    reason: str
+
+
+class ExposureController:
+
+    def __init__(self, max_direction_exposure=0.7):
+        self.max_exp = max_direction_exposure
+
+    def check(self, positions):
+        if not positions:
+            return ExposureReport(0.0, 0.0, 0.0, 1.0, False, "No positions")
+        long_sum = sum(p["size"] for p in positions
+                       if p.get("side") == "long")
+        short_sum = sum(p["size"] for p in positions
+                        if p.get("side") == "short")
+        total = long_sum + short_sum
+        if total < 1e-10:
+            return ExposureReport(0.0, 0.0, 0.0, 1.0, False, "Zero total")
+        agg = (long_sum - short_sum) / total
+        aa = abs(agg)
+        if aa > self.max_exp:
+            sc = self.max_exp / aa
+            return ExposureReport(
+                aggregate_exposure=agg, long_exposure=long_sum,
+                short_exposure=short_sum, scaling_factor=sc,
+                should_reduce=True,
+                reason=f"|exp| {aa:.2f} > {self.max_exp}")
+        return ExposureReport(
+            aggregate_exposure=agg, long_exposure=long_sum,
+            short_exposure=short_sum, scaling_factor=1.0,
+            should_reduce=False, reason="Normal")
