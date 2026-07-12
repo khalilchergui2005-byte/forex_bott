@@ -1,83 +1,132 @@
 ﻿"""
-cpv_temporal.py - CPCV Test for Pure Temporal Edge (Council Atom 8.2)
-Tests ONLY the 00:00 UTC buy signal across 10 time paths.
-Fully self-contained: generates signal, calculates ATR, cleans data.
+Combinatorial Purged Cross-Validation (CPCV)
+Temporal Engine
+
+Reference: Lopez de Prado (2018)
+Advances in Financial Machine Learning, Ch.7
 """
-import pandas as pd
+
+
 import numpy as np
 from itertools import combinations
-from data_loader import load_hourly
-from backtest_engine import dynamic_backtest
-from parameter_controller import params
-import warnings
-warnings.filterwarnings('ignore')
+from dataclasses import dataclass
+from typing import List, Tuple
 
-print("=" * 60)
-print("   CPCV TEMPORAL EDGE TEST - 00:00 UTC Only")
-print("=" * 60)
+@dataclass
+class CPCVSplit:
+    """Single train/test split with metadata."""
+    train_indices: np.ndarray
+    test_indices: np.ndarray
+    train_groups: Tuple[int, ...]
+    test_groups: Tuple[int, ...]
+    split_id: int
 
-# 1. Load data
-print("\n[1/4] Loading H1 data...")
-full_data = load_hourly()
+    @property
+    def train_size(self) -> int:
+        return len(self.train_indices)
 
-# Generate pure temporal signal
-full_data['Temporal_Signal'] = 0
-full_data.loc[full_data.index.hour == 0, 'Temporal_Signal'] = 1
+    @property
+    def test_size(self) -> int:
+        return len(self.test_indices)
 
-# Calculate ATR (required by backtest engine)
-full_data['ATR'] = (full_data['high'] - full_data['low']).rolling(14).mean()
+class TemporalCPCV:
+    """
+    Combinatorial Purged Cross-Validation.
 
-# Drop rows where ATR is NaN (first 13 candles)
-full_data.dropna(subset=['ATR'], inplace=True)
+    n_groups: temporal groups (default 6)
+    n_test_groups: test groups per combo (default 2)
+    purge_gap: bars to purge (default 24)
+    embargo_pct: extra embargo fraction (default 0.01)
+    """
 
-print(f"   Clean candles: {len(full_data)}")
-print(f"   Temporal signals (Buy @ 00:00 UTC): {full_data['Temporal_Signal'].sum()}")
+    def __init__(self, n_groups=6, n_test_groups=2,
+                 purge_gap=24, embargo_pct=0.01):
+        if n_test_groups >= n_groups:
+            raise ValueError(
+                f"n_test_groups ({n_test_groups}) must be < "
+                f"n_groups ({n_groups})")
+        if purge_gap < 0:
+            raise ValueError("purge_gap must be >= 0")
+        self.n_groups = n_groups
+        self.n_test_groups = n_test_groups
+        self.purge_gap = purge_gap
+        self.embargo_pct = embargo_pct
+        self._test_combos = list(
+            combinations(range(n_groups), n_test_groups))
+        self.n_splits = len(self._test_combos)
 
-# 2. CPCV Setup (5 groups)
-print("\n[2/4] Setting up CPCV...")
-n_groups = 5
-group_size = len(full_data) // n_groups
-groups = [full_data.iloc[i*group_size:(i+1)*group_size].copy() for i in range(n_groups)]
-test_combinations = list(combinations(range(n_groups), 2))
-print(f"   Testing {len(test_combinations)} combinations.")
+    def generate_splits(self, n_bars):
+        """Generate CPCV splits for n_bars data points."""
+        group_ids = self._assign_groups(n_bars)
+        splits = []
+        for sid, tg in enumerate(self._test_combos):
+            tr_g = tuple(
+                g for g in range(self.n_groups)
+                if g not in tg)
+            tr_mask = np.isin(group_ids, tr_g)
+            te_mask = np.isin(group_ids, tg)
+            tr_idx = np.where(tr_mask)[0]
+            te_idx = np.where(te_mask)[0]
+            tr_idx, te_idx = self._apply_purge(
+                tr_idx, te_idx)
+            tr_idx = self._apply_embargo(
+                tr_idx, te_idx)
+            if len(tr_idx) < 100 or len(te_idx) < 30:
+                continue
+            splits.append(CPCVSplit(
+                train_indices=tr_idx,
+                test_indices=te_idx,
+                train_groups=tr_g,
+                test_groups=tg,
+                split_id=sid))
+        if not splits:
+            raise ValueError(
+                f"No valid splits. n_bars={n_bars}")
+        return splits
 
-# 3. Run CPCV
-print("\n[3/4] Running CPCV across all paths...")
-pf_results = []
-for idx, test_idx in enumerate(test_combinations):
-    train_idx = [i for i in range(n_groups) if i not in test_idx]
-    test_data = pd.concat([groups[i] for i in test_idx])
-    
-    trades, equity = dynamic_backtest(
-        data=test_data,
-        strategy_cols=['Temporal_Signal'],
-        risk_percent=0.005
-    )
-    if trades and len(trades) > 5:
-        wins = [t for t in trades if t > 0]
-        losses = [t for t in trades if t <= 0]
-        pf = abs(sum(wins)/sum(losses)) if losses and sum(losses)!=0 else 0.0
-        pf_results.append(pf)
-    else:
-        pf_results.append(0.0)
+    def _assign_groups(self, n_bars):
+        """Assign each bar to a temporal group."""
+        gids = np.empty(n_bars, dtype=int)
+        gs = n_bars // self.n_groups
+        rem = n_bars % self.n_groups
+        start = 0
+        for g in range(self.n_groups):
+            sz = gs + (1 if g < rem else 0)
+            gids[start:start + sz] = g
+            start += sz
+        return gids
 
-# 4. Analysis
-print("\n[4/4] Analyzing results...")
-if pf_results:
-    avg_pf = np.mean(pf_results)
-    std_pf = np.std(pf_results)
-    n_trials = len(test_combinations)
-    expected_max = np.sqrt(2 * np.log(n_trials))
-    dsr = (avg_pf - 1.0) / max(std_pf, 0.001) * (1 - expected_max / np.sqrt(n_trials))
-    
-    print(f"\n{'='*60}")
-    print(f"   CPCV RESULTS for TEMPORAL EDGE ({len(test_combinations)} paths)")
-    print(f"{'='*60}")
-    print(f"   Average PF: {avg_pf:.3f} (±{std_pf:.3f})")
-    print(f"   PF Range: [{min(pf_results):.3f} - {max(pf_results):.3f}]")
-    print(f"   % of paths PF>1.0: {sum(1 for p in pf_results if p>1.0)/len(pf_results)*100:.1f}%")
-    print(f"   Deflated Sharpe Ratio: {dsr:.3f}")
-    print(f"   Verdict: {'EDGE EXISTS' if dsr > 0.5 else 'NO RELIABLE EDGE'}")
-    print(f"{'='*60}")
-else:
-    print("No results to display.")
+    def _apply_purge(self, train_idx, test_idx):
+        """Remove train bars near any test bar."""
+        if (self.purge_gap == 0 or
+                len(train_idx) == 0 or
+                len(test_idx) == 0):
+            return train_idx, test_idx
+        n = max(train_idx.max(), test_idx.max()) + 1
+        tm = np.zeros(n, dtype=bool)
+        tm[test_idx] = True
+        dl = tm.copy()
+        for _ in range(self.purge_gap):
+            p = dl.copy()
+            dl[1:] |= p[:-1]
+            dl[:-1] |= p[1:]
+        keep = ~dl[train_idx]
+        return train_idx[keep], test_idx
+
+    def _apply_embargo(self, train_idx, test_idx):
+        """Extra embargo for autocorrelation."""
+        if self.embargo_pct <= 0 or len(test_idx) == 0:
+            return train_idx
+        eb = max(1, int(len(test_idx) * self.embargo_pct))
+        tmin = test_idx.min()
+        cutoff = tmin - self.purge_gap - eb
+        return train_idx[train_idx < cutoff]
+
+    def summary(self):
+        """Return configuration summary."""
+        return (
+            f"CPCV: {self.n_groups} groups, "
+            f"{self.n_test_groups} test, "
+            f"{self.n_splits} splits, "
+            f"purge={self.purge_gap}, "
+            f"embargo={self.embargo_pct}")
