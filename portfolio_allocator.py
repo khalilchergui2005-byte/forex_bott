@@ -1,7 +1,7 @@
 ﻿"""Portfolio Allocator — correlation, exposure control, risk parity."""
 import numpy as np
 import pandas as pd
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from typing import Optional
 
 
@@ -151,3 +151,84 @@ def risk_parity_weights(returns: dict, min_weight: float = 0.05) -> dict:
     if total > 1e-10:
         weights = {k: v / total for k, v in weights.items()}
     return weights
+
+
+@dataclass
+class AllocationDecision:
+    approved: bool
+    final_size: float
+    factors: dict
+    reason: str
+    pair_sizes: dict = field(default_factory=dict)
+class PortfolioAllocator:
+    BLOCK_THRESHOLD = 0.8
+
+    def __init__(self, max_positions=5, max_correlation=0.7,
+                 base_risk=0.02):
+        self.max_positions = max_positions
+        self.max_corr = max_correlation
+        self.base_risk = base_risk
+
+    def allocate(self, pairs, volatilities, correlations,
+                 news_risks, spread_risks, session_quality,
+                 regime_quality, bias_compatible):
+        n = len(pairs)
+        factors = {}
+        pair_sizes = {}
+        blocked = False
+        block_reason = ""
+        if n > self.max_positions:
+            return AllocationDecision(
+                approved=False, final_size=0.0, factors=factors,
+                reason=f"Pairs ({n}) > max_positions ({self.max_positions})")
+        for i in range(n):
+            pair = pairs[i]
+            nf = 1.0 - news_risks[i]
+            sf = 1.0 - spread_risks[i]
+            bf = 1.0 if bias_compatible[i] else 0.0
+            sq = session_quality[i]
+            rq = regime_quality[i]
+            pf = nf * sf * sq * rq * bf
+            raw = self.base_risk / volatilities[i]
+            pair_sizes[pair] = raw * pf
+            factors[f"news_{pair}"] = nf
+            factors[f"spread_{pair}"] = sf
+            factors[f"session_{pair}"] = sq
+            factors[f"regime_{pair}"] = rq
+            factors[f"bias_{pair}"] = bf
+            if news_risks[i] > self.BLOCK_THRESHOLD:
+                blocked = True
+                block_reason = f"News risk {news_risks[i]:.2f} for {pair}"
+            if spread_risks[i] > self.BLOCK_THRESHOLD:
+                blocked = True
+                block_reason = f"Spread risk {spread_risks[i]:.2f} for {pair}"
+            if not bias_compatible[i]:
+                blocked = True
+                block_reason = f"Bias incompatible for {pair}"
+
+        if n > 1:
+            off_diag = []
+            for i in range(n):
+                for j in range(n):
+                    if i != j:
+                        off_diag.append(correlations[i][j])
+            avg_c = sum(off_diag) / len(off_diag) if off_diag else 0.0
+            if avg_c > self.max_corr:
+                cf = self.max_corr / avg_c
+                for pair in pair_sizes:
+                    pair_sizes[pair] *= cf
+                factors["correlation"] = cf
+            else:
+                factors["correlation"] = 1.0
+        else:
+            factors["correlation"] = 1.0
+        final = sum(pair_sizes.values())
+        if blocked:
+            return AllocationDecision(
+                approved=False, final_size=0.0,
+                factors=factors, reason=block_reason,
+                pair_sizes=pair_sizes)
+        return AllocationDecision(
+            approved=True, final_size=final,
+            factors=factors, reason="Allocation approved",
+            pair_sizes=pair_sizes)
