@@ -1,4 +1,4 @@
-﻿# Beast V-Final Strategy
+# Beast V-Final Strategy
 # Main strategy module - multi-indicator entry/exit logic with risk management
 
 # ============================================================
@@ -65,6 +65,7 @@ class BeastFinal(EWrapper, EClient):
         self.max_weekly_loss = -500
         self.last_trade_date = None
         self.current_position = 0
+        self.current_units = 0.0
         self.position_ready = False
         self.account_balance = 10000.0
         self.balance_ready = False
@@ -327,17 +328,22 @@ class BeastFinal(EWrapper, EClient):
             if self.current_position == 0:
                 quantity = self.calculate_position_size(matrix_atr)
                 self.place_trade("MATRIX-H1", "BUY" if matrix_signal == 1 else "SELL", quantity)
+                self.current_units = quantity
+                self.current_position = matrix_signal
                 self.log("MATRIX-H1", "SIGNAL", f"{'BUY' if matrix_signal==1 else 'SELL'} {quantity}u @ {matrix_price:.5f}")
             elif matrix_signal == self.current_position:
                 self.log("MATRIX-H1", "SKIP", f"Already have position in this direction")
             else:
                 self.log("MATRIX-H1", "REVERSE", "Closing first")
                 close_action = "SELL" if self.current_position == 1 else "BUY"
-                close_qty = abs(self.current_position)
+                close_qty = self.current_units
                 self.place_trade("MATRIX-H1", close_action, close_qty)
+                self.current_units = 0.0
                 time.sleep(2)
                 quantity = self.calculate_position_size(matrix_atr)
                 self.place_trade("MATRIX-H1", "BUY" if matrix_signal == 1 else "SELL", quantity)
+                self.current_units = quantity
+                self.current_position = matrix_signal
                 self.log("MATRIX-H1", "SIGNAL", f"{'BUY' if matrix_signal==1 else 'SELL'} {quantity}u @ {matrix_price:.5f}")
         elif mm_active and self.current_position == 0:
             buy_limit = mm_price - 0.3 * mm_atr

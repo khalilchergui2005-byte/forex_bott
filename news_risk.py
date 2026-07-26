@@ -1,4 +1,4 @@
-﻿"""News Risk Detector - avoids trading around high-impact economic events."""
+"""News Risk Detector - avoids trading around high-impact economic events."""
 from dataclasses import dataclass
 from datetime import datetime, timedelta
 from enum import Enum

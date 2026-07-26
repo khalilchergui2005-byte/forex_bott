@@ -1,4 +1,4 @@
-﻿"""Monte Carlo Bootstrap Test — resamples trades to test robustness."""
+"""Monte Carlo Bootstrap Test — resamples trades to test robustness."""
 
 from dataclasses import dataclass, field
 import numpy as np
@@ -44,7 +44,7 @@ class MonteCarloTest:
         pnl = trades.sum()
         eq = np.concatenate([[0.0], np.cumsum(trades)])
         peak = np.maximum.accumulate(eq)
-        dd = (peak - eq) / np.where(peak > 0, peak, 1e-10)
+        dd = (peak - eq) / np.where(peak > 0, peak, 1.0)  # FIX: Prevent division by zero explosion
         max_dd = dd.max() if len(dd) > 0 else 0.0
         sharpe = (trades.mean() / trades.std() if trades.std() > 0 else 0.0)
         return {"pf": pf, "pnl": pnl, "max_dd": max_dd, "sharpe": sharpe}

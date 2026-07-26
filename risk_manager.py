@@ -1,10 +1,10 @@
-﻿"""
+"""
 risk_manager.py - درع المخاطر الديناميكي
 المشروع: الكيان الفيروسي - أقوى شركة تداول
 يدعم قوالب شركات التمويل (Prop Firms) وحجم صفقة ديناميكي.
 """
 import logging
-from datetime import date, datetime, timedelta
+from datetime import datetime, timezone, date, timedelta  # FIX-BUG-08  # FIX-BUG-08  # FIX-BUG-08
 from decimal import Decimal, ROUND_DOWN
 from typing import Optional, Dict
 import pandas as pd
@@ -76,7 +76,7 @@ class RiskManager:
             position_size = risk_amount / stop_distance
         except Exception:
             return 0
-        min_order_value = max(self.min_order_value_abs, self.current_balance * self.min_order_pct)
+        min_order_value = self.current_balance * self.min_order_pct  # FIX-BUG-02: Removed absolute floor
         position_value = position_size * entry
         max_position_value = self.current_balance * self.max_position_pct
         if position_value > max_position_value:
@@ -103,7 +103,7 @@ class RiskManager:
 
     def check_circuit_breaker(self, current_time=None) -> bool:
         if current_time is None:
-            today = datetime.utcnow().date()
+            today = datetime.now(timezone.utc).date()  # FIX: Type match with date.today()
         elif hasattr(current_time, 'date'):
             today = current_time.date()
         else:

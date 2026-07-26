@@ -1,4 +1,4 @@
-﻿"""Parameter Sensitivity — detects overfitting by perturbing strategy parameters."""
+"""Parameter Sensitivity — detects overfitting by perturbing strategy parameters."""
 
 from dataclasses import dataclass, field
 import numpy as np

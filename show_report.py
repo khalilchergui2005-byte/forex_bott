@@ -1,4 +1,4 @@
-﻿# تقرير فوري - يتحمل أي خطأ في ملف السجل
+# تقرير فوري - يتحمل أي خطأ في ملف السجل
 from pathlib import Path
 log_file = "logs/beast_log.csv"
 if not Path(log_file).exists():

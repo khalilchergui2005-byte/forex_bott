@@ -1,4 +1,4 @@
-﻿"""
+"""
 parameter_controller.py - Dynamic Parameter Hub for the Viral Entity.
 All tunable knobs in one place. Ready for Bayesian Optimization, Walk-Forward,
 and per-Prop-Firm scenario profiles.
@@ -28,7 +28,7 @@ class StrategyParameters:
     # --- Position Sizing & Risk (FTMO Defaults) ---
     base_risk_percent: float = 0.005        # 0.5% per trade
     max_daily_loss_pct: float = 0.05        # 5% daily loss circuit breaker (FTMO)
-    max_total_dd_pct: float = 0.10          # 10% max total drawdown (FTMO)
+    max_total_drawdown_pct: float = 0.10          # 10% max total drawdown (FTMO)
     
     # --- Sniping (increased size on high-confidence signals) ---
     sniping_multiplier: float = 1.5         # Multiplier when Confirmation >= 2.0
@@ -43,14 +43,26 @@ class StrategyParameters:
     stop_volatility_factor: float = 0.5     # How much vol_ratio reduces stop_mult
     
     # --- Turbo Volatility (VolClass == 2) ---
-    turbo_tp_mult: float = 2.0              # Take profit multiplier in high vol
-    turbo_sl_mult: float = 2.5              # Stop loss multiplier in high vol
+    turbo_tp_mult: float = 4.0  # FIX: Adjusted RRR to 1:2              # Take profit multiplier in high vol
+    turbo_sl_mult: float = 2.0  # FIX: Adjusted RRR to 1:2              # Stop loss multiplier in high vol
     
     # --- Normal Regime ---
     normal_tp_mult: float = 3.0             # Take profit multiplier in normal vol
     
     # --- Second Target (after partial exit) ---
     second_target_atr_mult: float = 6.0     # ATR multiplier for second target
+    
+    # --- Strategy-Specific Trade Management (ARCH-02 Fix) ---
+    # Maps column name to specific SL/TP multipliers. Overrides global TP/SL if found.
+    strategy_sl_tp: Dict[str, Dict[str, float]] = field(default_factory=lambda: {
+        'Signal': {'tp_mult': 1.5, 'sl_mult': 2.5, 'second_target_mult': 3.0},  # OPT-INST: Optimized for 5Y Mean Reversion
+        'Final': {'tp_mult': 4.0, 'sl_mult': 2.0, 'second_target_mult': 6.0},  # Breakout (Matrix)
+        'Swing_Signal': {'tp_mult': 4.0, 'sl_mult': 2.0, 'second_target_mult': 6.0},  # Trend Following (Swing HL)
+        'Donchian_Signal': {'tp_mult': 4.0, 'sl_mult': 2.0, 'second_target_mult': 6.0},  # Trend Following (Donchian)
+        'MA_Crossover_Signal': {'tp_mult': 4.0, 'sl_mult': 2.0, 'second_target_mult': 6.0},  # Trend Following (MA Crossover)
+        'Asian_Breakout_Signal': {'tp_mult': 2.5, 'sl_mult': 2.0, 'second_target_mult': 5.0},  # OPT-INST: Asian Breakout
+        'Absorption_Signal': {'tp_mult': 3.0, 'sl_mult': 1.5, 'second_target_mult': 6.0}  # OPT-INST: Liquidity Absorption  # OPT-INST  # Smart Money (Liquidity Absorption)  # Session Breakout (Asian)
+    })
     
     # --- Strategy Matrix Regime Rules ---
     regime_rules: Dict[int, int] = field(default_factory=lambda: {
@@ -100,16 +112,60 @@ class StrategyParameters:
     # --- Optimization Guards ---
     min_trades_optimizer: int = 30   # Minimum trades to accept a parameter set
 
+
+    # --- Cost Scenarios (Atom 4.4) ---
+    cost_scenario: str = "normal"
+
+    # --- Order Execution Simulation (Atom 4.5) ---
+    rejection_rate: float = 0.0
+    partial_fill_probability: float = 0.0
+    partial_fill_min_ratio: float = 0.5
+
     def apply_preset(self, preset_name: str):
         """Load a named preset for specific Prop Firm challenges."""
         presets = {
-            'FTMO': {'max_daily_loss_pct': 0.05, 'max_total_dd_pct': 0.10},
-            'THE_FUNDED_TRADER': {'max_daily_loss_pct': 0.05, 'max_total_dd_pct': 0.10},
+            'FTMO': {'max_daily_loss_pct': 0.05, 'max_total_drawdown_pct': 0.10},
+            'THE_FUNDED_TRADER': {'max_daily_loss_pct': 0.05, 'max_total_drawdown_pct': 0.10},
             'DEFAULT': {},
         }
         if preset_name in presets:
             for k, v in presets[preset_name].items():
                 setattr(self, k, v)
+
+    COST_SCENARIOS = {
+        "normal": {
+            "spread_pips": 1.0,
+            "slippage_pips": 0.5,
+            "commission_per_lot": 7.0,
+            "rejection_rate": 0.0,
+            "partial_fill_probability": 0.0,
+        },
+        "bad": {
+            "spread_pips": 3.0,
+            "slippage_pips": 2.0,
+            "commission_per_lot": 10.0,
+            "rejection_rate": 0.02,
+            "partial_fill_probability": 0.05,
+        },
+        "crisis": {
+            "spread_pips": 10.0,
+            "slippage_pips": 5.0,
+            "commission_per_lot": 15.0,
+            "rejection_rate": 0.05,
+            "partial_fill_probability": 0.10,
+        },
+    }
+
+    def apply_cost_scenario(self, scenario_name: str):
+        """Apply a cost scenario preset to execution cost parameters."""
+        if scenario_name not in self.COST_SCENARIOS:
+            raise ValueError(
+                f"Unknown cost scenario: {scenario_name}. "
+                f"Available: {list(self.COST_SCENARIOS.keys())}"
+            )
+        for k, v in self.COST_SCENARIOS[scenario_name].items():
+            setattr(self, k, v)
+        self.cost_scenario = scenario_name
 
 # Global instance (singleton pattern for now)
 params = StrategyParameters()

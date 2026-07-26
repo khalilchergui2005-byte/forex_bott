@@ -1,4 +1,4 @@
-﻿"""
+"""
 multiple_testing_high_atr.py - Bonferroni Correction for High ATR (Candidate 2)
 Calculates original p-value and applies strict correction.
 """

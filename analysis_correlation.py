@@ -1,4 +1,4 @@
-﻿"""
+"""
 correlation_test.py - Correlation Matrix for Three Candidate Strategies (Atom 8.10c)
 Measures daily return correlation between Long_Lower_Shadow, High_ATR, and Hour_00.
 """

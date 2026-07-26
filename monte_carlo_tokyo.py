@@ -1,4 +1,4 @@
-﻿"""
+"""
 monte_carlo_tokyo.py - FTMO Challenge Monte Carlo on Tokyo Open Edge (Atom 7.6)
 Estimates success probability using bootstrapped trade sequences.
 """

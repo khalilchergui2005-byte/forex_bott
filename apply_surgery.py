@@ -1,4 +1,4 @@
-﻿import pandas as pd
+import pandas as pd
 import numpy as np
 df = pd.read_csv("logs/trade_log_detailed.csv")
 pnl = "net_pnl"

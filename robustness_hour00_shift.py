@@ -1,4 +1,4 @@
-﻿"""
+"""
 robustness_hour00_shift.py - Robustness test for Hour_00 (Candidate 3)
 Tests the edge by shifting the entry time ±1 and ±2 hours.
 """

@@ -1,4 +1,4 @@
-﻿"""Bias Score - quantitative directional bias from normalized components."""
+"""Bias Score - quantitative directional bias from normalized components."""
 from dataclasses import dataclass
 import numpy as np
 

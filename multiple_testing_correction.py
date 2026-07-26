@@ -1,4 +1,4 @@
-﻿"""
+"""
 multiple_testing_correction.py - Bonferroni Correction (Council Atom 8.3)
 Calculates the total number of trials across all project history,
 and applies strict correction to the temporal edge discovery.

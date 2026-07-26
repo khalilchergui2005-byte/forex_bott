@@ -1,4 +1,4 @@
-﻿"""Composite Score — weighted aggregation of all validation tests."""
+"""Composite Score — weighted aggregation of all validation tests."""
 
 from dataclasses import dataclass, field
 

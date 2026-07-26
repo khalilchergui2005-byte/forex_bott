@@ -1,4 +1,4 @@
-﻿"""
+"""
 edge_diagnostics.py - Statistical Edge Test (Council Atom 7.1)
 Tests if classical indicators have ANY predictive power.
 """

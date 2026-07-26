@@ -1,4 +1,4 @@
-﻿"""data_feed_interface.py"""
+"""data_feed_interface.py"""
 from abc import ABC, abstractmethod
 from typing import Tuple, Optional
 import pandas as pd

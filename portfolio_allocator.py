@@ -1,4 +1,4 @@
-﻿"""Portfolio Allocator — correlation, exposure control, risk parity."""
+"""Portfolio Allocator — correlation, exposure control, risk parity."""
 import numpy as np
 import pandas as pd
 from dataclasses import dataclass, field
@@ -175,8 +175,6 @@ class PortfolioAllocator:
         n = len(pairs)
         factors = {}
         pair_sizes = {}
-        blocked = False
-        block_reason = ""
         if n > self.max_positions:
             return AllocationDecision(
                 approved=False, final_size=0.0, factors=factors,
@@ -197,8 +195,14 @@ class PortfolioAllocator:
             factors[f"regime_{pair}"] = rq
             factors[f"bias_{pair}"] = bf
             if news_risks[i] > self.BLOCK_THRESHOLD:
-                blocked = True
-                block_reason = f"News risk {news_risks[i]:.2f} for {pair}"
+                pair_sizes[pair] = 0.0
+                factors[f"block_{pair}"] = f"News risk {news_risks[i]:.2f}"
+            elif spread_risks[i] > self.BLOCK_THRESHOLD:
+                pair_sizes[pair] = 0.0
+                factors[f"block_{pair}"] = f"Spread risk {spread_risks[i]:.2f}"
+            elif not bias_compatible[i]:
+                pair_sizes[pair] = 0.0
+                factors[f"block_{pair}"] = "Bias incompatible"
             if spread_risks[i] > self.BLOCK_THRESHOLD:
                 blocked = True
                 block_reason = f"Spread risk {spread_risks[i]:.2f} for {pair}"
@@ -223,10 +227,10 @@ class PortfolioAllocator:
         else:
             factors["correlation"] = 1.0
         final = sum(pair_sizes.values())
-        if blocked:
+        if final == 0.0:
             return AllocationDecision(
                 approved=False, final_size=0.0,
-                factors=factors, reason=block_reason,
+                factors=factors, reason="All pairs blocked",
                 pair_sizes=pair_sizes)
         return AllocationDecision(
             approved=True, final_size=final,

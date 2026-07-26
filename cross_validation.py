@@ -1,4 +1,4 @@
-﻿"""
+"""
 cross_validation.py - Time-series Cross-Validation (Overfitting Gate)
 Tests current parameters on 3 sequential data folds.
 """

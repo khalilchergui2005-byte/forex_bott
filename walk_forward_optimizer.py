@@ -1,4 +1,4 @@
-﻿"""
+"""
 walk_forward_optimizer.py - Walk-Forward Test for Long Lower Shadow Strategy
 Tests ONLY the Signal column across 5 time windows.
 """

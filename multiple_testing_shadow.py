@@ -1,4 +1,4 @@
-﻿"""
+"""
 multiple_testing_shadow.py - Bonferroni Correction for Long Lower Shadow (Atom 8.9a)
 Calculates original p-value and applies strict correction.
 """

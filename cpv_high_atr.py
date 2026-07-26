@@ -1,4 +1,4 @@
-﻿"""
+"""
 cpv_high_atr.py - CPCV Test for High ATR Edge (Candidate 2)
 Tests if high volatility regimes offer a structural edge.
 """

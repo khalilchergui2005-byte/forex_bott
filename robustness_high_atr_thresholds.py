@@ -1,4 +1,4 @@
-﻿"""
+"""
 robustness_high_atr_thresholds.py - Robustness test for High ATR (Candidate 2)
 Tests the edge across three percentile thresholds (0.50, 0.66, 0.80) using CPCV.
 """

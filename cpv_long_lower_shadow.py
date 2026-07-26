@@ -1,4 +1,4 @@
-﻿"""
+"""
 cpv_long_lower_shadow.py - CPCV Test for Long Lower Shadow Edge (Candidate 1)
 Tests if long lower shadows predict bullish reversals.
 """

@@ -9,3 +9,10 @@ venv/
 *.log
 .pytest_cache/
 .mypy_cache/
+data/
+models/
+logs/
+*.csv
+*.pth
+*.pkl
+*.zip

@@ -1,4 +1,4 @@
-﻿"""
+"""
 robustness_shadow_thresholds.py - Robustness test for Long Lower Shadow (Atom 8.4)
 Tests the edge across three threshold values (0.8, 1.0, 1.2) using CPCV.
 """

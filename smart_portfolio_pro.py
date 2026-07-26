@@ -1,4 +1,4 @@
-﻿"""
+"""
 smart_portfolio_pro.py - Institutional-Grade Smart Portfolio (Atom 8.10d-Super)
 Optimizes dynamic weights using Bayesian Optimization, tests robustness,
 and provides a Monte Carlo estimate.

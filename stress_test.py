@@ -1,4 +1,4 @@
-﻿"""Stress Test — validates strategy robustness under adverse market conditions."""
+"""Stress Test — validates strategy robustness under adverse market conditions."""
 
 from dataclasses import dataclass, field
 import numpy as np

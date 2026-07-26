@@ -1,4 +1,4 @@
-﻿"""
+"""
 multiple_testing_hour00.py - Bonferroni Correction for Hour_00 (Candidate 3)
 Calculates original p-value and applies strict correction.
 """

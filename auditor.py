@@ -1,4 +1,4 @@
-﻿import os
+import os
 import re
 
 EXCLUDE_DIRS = {'venv', '__pycache__', '.pytest_cache', '.git', 'logs', 'data', 'models', 'reports'}

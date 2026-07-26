@@ -1,4 +1,4 @@
-﻿"""
+"""
 shock_awe_test.py - Statistical Runs Test for Shock & Awe (Atom 7.3)
 Tests if winning trades cluster together (momentum).
 """

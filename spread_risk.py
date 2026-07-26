@@ -1,4 +1,4 @@
-﻿"""Spread Risk Monitor — tracks bid-ask spread health for trade decisions."""
+"""Spread Risk Monitor — tracks bid-ask spread health for trade decisions."""
 from dataclasses import dataclass
 from typing import Optional
 import numpy as np

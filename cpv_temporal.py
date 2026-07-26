@@ -1,4 +1,4 @@
-﻿"""
+"""
 Combinatorial Purged Cross-Validation (CPCV)
 Temporal Engine
 

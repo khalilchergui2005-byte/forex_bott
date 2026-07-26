@@ -1,4 +1,4 @@
-﻿"""strategy_base.py — Unified strategy interface."""
+"""strategy_base.py — Unified strategy interface."""
 
 from abc import ABC, abstractmethod
 from dataclasses import dataclass, field

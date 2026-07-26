@@ -1,4 +1,4 @@
-﻿# ============================================================
+# ============================================================
 # المشروع: الكيان الفيروسي – Behavioral Cloning للجين الفائز
 # ============================================================
 import gymnasium as gym
@@ -161,8 +161,8 @@ model = SAC("MlpPolicy", train_env, learning_rate=0.0003, buffer_size=200_000,
             batch_size=512, tau=0.005, gamma=0.99, train_freq=16,
             gradient_steps=16, ent_coef=0.1, verbose=1)
 
-# الخطوة الحرجة: حقن صفقات الجين الفائز في replay buffer
-print(f"💉 حقن {len(demonstrations)} توضيح في الذاكرة...")
+# TODO: حقن demonstrations في replay buffer يحتاج transitions كاملة (obs,action,reward,next_obs,done)
+print(f"WARNING: {len(demonstrations)} demonstrations extracted but NOT injected (needs full transitions)")
 obs = train_env.reset()
 for _ in range(50):
     model.learn(total_timesteps=1000, reset_num_timesteps=False)
@@ -200,6 +200,5 @@ while not done:
 
 inst = eval_env.envs[0]
 ret = (inst.capital / 10_000 - 1) * 100
-n = len([1 for _ in []])  # placeholder
 print(f"💰 رأس المال: {inst.capital:,.2f} $ | عائد: {ret:.2f}%")
 print(f"🎉 Behavioral Cloning اكتمل.")

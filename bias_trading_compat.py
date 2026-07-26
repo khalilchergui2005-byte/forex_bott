@@ -1,4 +1,4 @@
-﻿"""Bias x Trading Type Compatibility."""
+"""Bias x Trading Type Compatibility."""
 from dataclasses import dataclass
 from bias_score import BiasReport
 

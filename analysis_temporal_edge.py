@@ -1,4 +1,4 @@
-﻿"""
+"""
 temporal_edge_test.py - Temporal/Session Edge Test (Council Atom 7.4)
 Tests if specific days/hours have a structural edge.
 """

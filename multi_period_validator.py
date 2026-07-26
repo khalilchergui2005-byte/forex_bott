@@ -1,4 +1,4 @@
-﻿"""Multi-Period Validation — checks consistency across time segments."""
+"""Multi-Period Validation — checks consistency across time segments."""
 
 from dataclasses import dataclass, field
 import numpy as np

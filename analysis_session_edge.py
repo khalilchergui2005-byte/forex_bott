@@ -1,4 +1,4 @@
-﻿"""
+"""
 session_edge_test.py - Trading Session Edge Test (Council Atom 7.4)
 Tests buy signals at the start of major trading sessions (UTC).
 """

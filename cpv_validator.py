@@ -1,4 +1,4 @@
-﻿"""
+"""
 CPCV Validator - Validate strategies via CPCV.
 """
 

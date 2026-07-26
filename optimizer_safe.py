@@ -1,4 +1,4 @@
-﻿"""
+"""
 optimizer_safe.py - Safe Bayesian Optimization for Matrix + Momentum
 Project: Viral Entity - Strongest Trading Firm
 Does NOT modify any existing file. Only suggests best parameters.
@@ -91,6 +91,7 @@ print(f"   Best Score: {study.best_value:.2f}")
 
 # 4. Test on Out-of-Sample with best parameters
 print("\n[4/4] Testing best parameters on Out-of-Sample data...")
+_saved_params = {k: getattr(params, k) for k in best.keys()}
 for k, v in best.items():
     setattr(params, k, v)
 
@@ -117,4 +118,8 @@ with open('optimizer_safe_results.txt', 'w') as f:
     for k, v in best.items():
         f.write(f"{k}={v}\n")
 print("\nResults saved to optimizer_safe_results.txt. You can review and apply them manually.")
+# BUG-M08 FIX: restore original params after OOS
+for k, v in _saved_params.items():
+    setattr(params, k, v)
+print("Original params restored.")
 print("Done.")

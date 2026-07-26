@@ -1,4 +1,4 @@
-﻿"""
+"""
 dry_run_simulator.py - Dynamic Portfolio (3 strategies + adaptive weighting)
 Project: Viral Entity - Strongest Trading Firm
 """

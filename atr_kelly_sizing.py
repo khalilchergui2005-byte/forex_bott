@@ -1,4 +1,4 @@
-﻿"""
+"""
 atr_kelly_sizing.py - ATR-Based Dynamic Position Sizing Test (Atom 7.5)
 Compares fixed 0.5% risk vs. dynamic ATR-adjusted risk on Tokyo Open edge.
 """

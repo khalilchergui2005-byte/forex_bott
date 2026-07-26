@@ -1,4 +1,4 @@
-﻿"""
+"""
 monte_carlo_shadow.py - Monte Carlo Simulation for Long Lower Shadow
 Estimates Prop Firm success probability using bootstrapped trade sequences.
 """

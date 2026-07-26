@@ -1,4 +1,4 @@
-﻿import pandas as pd
+import pandas as pd
 df = pd.read_csv("logs/trade_log_detailed.csv")
 pnl = "net_pnl"
 print("=== تحليل الاربعاء بعمق ===")

@@ -1,4 +1,4 @@
-﻿"""
+"""
 smart_portfolio.py - Smart Portfolio with Dynamic Weights (Atom 8.10d)
 Allocates capital based on current volatility regime.
 """

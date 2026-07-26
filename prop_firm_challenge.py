@@ -1,4 +1,4 @@
-﻿"""
+"""
 prop_firm_challenge.py - Full Prop Firm Challenge Simulator
 Capital: $100,000 | Min Order: $500 | Rules: FTMO
 """
@@ -18,7 +18,7 @@ print("\n⚙️ Configuring FTMO Challenge Environment...")
 params.initial_capital = 100000.0
 params.min_order_value = 500.0
 params.max_daily_loss_pct = 0.05
-params.max_total_dd_pct = 0.10
+params.max_total_drawdown_pct = 0.10
 print("   Capital: $100,000 | Min Order: $500 | Daily Loss Limit: 5% | Total DD Limit: 10%")
 
 # 2. Load and prepare data
@@ -41,7 +41,7 @@ trades, equity, trade_log = dynamic_backtest(
     strategy_cols=['Final', 'Final_Mom'],
     risk_percent=0.005,
     max_daily_loss_pct=0.05,
-    max_total_dd_pct=0.10,
+    max_total_drawdown_pct=0.10,
     log_trades=True
 )
 

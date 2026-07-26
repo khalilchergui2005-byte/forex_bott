@@ -1,4 +1,4 @@
-﻿"""Defect Rate Calculator — aggregates validation test results."""
+"""Defect Rate Calculator — aggregates validation test results."""
 
 from dataclasses import dataclass, field
 

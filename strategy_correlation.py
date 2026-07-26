@@ -1,4 +1,4 @@
-﻿"""
+"""
 strategy_correlation.py - Signal Correlation Test (Atom 8.10c)
 Checks overlap between strategies to measure true diversification.
 """

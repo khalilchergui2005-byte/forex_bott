@@ -1,4 +1,4 @@
-﻿"""
+"""
 Walk-Forward Validation Engine.
 """
 

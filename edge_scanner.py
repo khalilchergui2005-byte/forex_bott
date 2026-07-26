@@ -1,4 +1,4 @@
-﻿"""
+"""
 edge_scanner.py - Systematic Edge Discovery (Council Atom 8.9)
 Scans multiple feature classes for predictive power using CPCV.
 """
