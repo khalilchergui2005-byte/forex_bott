@@ -30,7 +30,8 @@ windows = []
 for i in range(3):
     start_train = i * window_size
     end_train = start_train + window_size
-    start_test = end_train
+    PURGE_BARS = 10  # FIX-INST: Prevent label leakage across train/test boundary
+    start_test = end_train + PURGE_BARS
     end_test = start_test + window_size
     if end_test <= len(raw_data):
         train_df = raw_data.iloc[start_train:end_train].copy()

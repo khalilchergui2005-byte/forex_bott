@@ -108,9 +108,13 @@ def dynamic_backtest(data=None, initial_balance=None, risk_percent=0.005,
                 if not pos_data['partial']:
                     if (pos_data['pos'] == 1 and price >= target_price) or (pos_data['pos'] == -1 and price <= target_price):
                         half_units = pos_data['units'] * params.partial_exit_ratio
+                        # FIX-INST: Added missing spread cost at exit (was only charged at entry)
                         commission = (half_units / 100000) * params.commission_per_lot
+                        real_spread_exit = data['avg_spread'].iloc[i] if 'avg_spread' in data.columns else params.spread_pips * params.pip_size
+                        half_spread_exit = real_spread_exit / 2
                         slippage = params.slippage_pips * params.pip_size
-                        pnl = (price - pos_data['pos'] * slippage - pos_data['entry']) * pos_data['pos'] * half_units - commission
+                        exit_price = price - pos_data['pos'] * (half_spread_exit + slippage)
+                        pnl = (exit_price - pos_data['entry']) * pos_data['pos'] * half_units - commission
                         rm.update_pnl(pnl)
                         guardian.record_trade(pnl, current_time=current_time)  # Phase 4: Settle trade
                         trades.append(pnl)
@@ -136,7 +140,10 @@ def dynamic_backtest(data=None, initial_balance=None, risk_percent=0.005,
                     if (pos_data['pos'] == 1 and price >= second_target) or (pos_data['pos'] == -1 and price <= second_target):
                         commission = (pos_data['units'] / 100000) * params.commission_per_lot
                         slippage = params.slippage_pips * params.pip_size
-                        pnl = (price - pos_data['pos'] * slippage - pos_data['entry']) * pos_data['pos'] * pos_data['units'] - commission
+                        real_spread_exit = data['avg_spread'].iloc[i] if 'avg_spread' in data.columns else params.spread_pips * params.pip_size
+                        half_spread_exit = real_spread_exit / 2
+                        exit_price = price - pos_data['pos'] * (half_spread_exit + slippage)
+                        pnl = (exit_price - pos_data['entry']) * pos_data['pos'] * pos_data['units'] - commission
                         rm.update_pnl(pnl)
                         trades.append(pnl)
                         if pnl > 0:
@@ -159,9 +166,13 @@ def dynamic_backtest(data=None, initial_balance=None, risk_percent=0.005,
                 hit_stop = (pos_data['pos'] == 1 and price <= stop_loss) or (pos_data['pos'] == -1 and price >= stop_loss)
                 signal_reverse = (signal == -pos_data['pos'])
                 if hit_stop or signal_reverse:
+                    # FIX-INST: Added missing spread cost at exit (was only charged at entry)
                     commission = (pos_data['units'] / 100000) * params.commission_per_lot
+                    real_spread_exit = data['avg_spread'].iloc[i] if 'avg_spread' in data.columns else params.spread_pips * params.pip_size
+                    half_spread_exit = real_spread_exit / 2
                     slippage = params.slippage_pips * params.pip_size
-                    pnl = (price - pos_data['pos'] * slippage - pos_data['entry']) * pos_data['pos'] * pos_data['units'] - commission
+                    exit_price = price - pos_data['pos'] * (half_spread_exit + slippage)
+                    pnl = (exit_price - pos_data['entry']) * pos_data['pos'] * pos_data['units'] - commission
                     rm.update_pnl(pnl)
                     trades.append(pnl)
                     if pnl > 0:
@@ -212,7 +223,7 @@ def dynamic_backtest(data=None, initial_balance=None, risk_percent=0.005,
                         if current_regime not in ["VOLATILE", "TREND_UP", "TREND_DOWN"]: continue
                 # Identify strategy type by column name
                 is_mean_reversion = (col == 'Signal' or 'Absorption' in col or 'Reversion' in col)
-                is_trend = ('Trend' in col or 'trend' in col)
+                is_trend = ('Trend' in col or 'trend' in col or 'News' in col)
                 is_breakout = ('Breakout' in col or 'Asian' in col or 'London' in col)
 
                 # 1. Regime Filter (Strategy-Specific)
@@ -278,7 +289,9 @@ def dynamic_backtest(data=None, initial_balance=None, risk_percent=0.005,
                                 if size <= 0:
                                     continue
                         pos_data['pos'] = signal
-                        half_spread = (params.spread_pips * params.pip_size) / 2
+                        # FIX-INST: Use real avg_spread from Dukascopy instead of flat constant
+                        real_spread = data['avg_spread'].iloc[i] if 'avg_spread' in data.columns else params.spread_pips * params.pip_size
+                        half_spread = real_spread / 2
                         slippage = params.slippage_pips * params.pip_size
                         pos_data['entry'] = price + signal * half_spread + signal * slippage
                         pos_data['time'] = current_time

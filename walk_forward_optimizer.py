@@ -1,74 +1,113 @@
 """
-walk_forward_optimizer.py - Walk-Forward Test for Long Lower Shadow Strategy
-Tests ONLY the Signal column across 5 time windows.
+walk_forward_optimizer.py - Institutional Walk-Forward Validator
+Non-overlapping windows with Purge (10 bars) and Embargo (24 bars).
+Generic: accepts any strategy column name.
 """
-import optuna
 import pandas as pd
 import numpy as np
-from data_loader import load_hourly
-from strategy_hour00 import generate_hour00_signals
 from backtest_engine import dynamic_backtest
-from parameter_controller import params
 import warnings
-warnings.filterwarnings('ignore')
+warnings.filterwarnings("ignore")
 
-print("=" * 60)
-print("   WALK-FORWARD TEST - Long Lower Shadow Strategy")
-print("=" * 60)
-
-# 1. Load and prepare data
-print("\n[1/3] Loading data...")
-full_data = load_hourly()
-full_data = generate_hour00_signals(full_data)
-print(f"   Total candles: {len(full_data)}, Signals: {full_data['Signal'].sum()}")
-
-# 2. Walk-Forward Setup (5 windows)
-WINDOW_TRAIN = 2000
-WINDOW_TEST = 1000
-WINDOW_STEP = 500
-NUM_WINDOWS = 5
-
-results = []
-for w in range(NUM_WINDOWS):
-    start_train = w * WINDOW_STEP
-    end_train = start_train + WINDOW_TRAIN
-    start_test = end_train
-    end_test = start_test + WINDOW_TEST
+def run_walk_forward(data, strategy_cols, risk_percent=0.005, num_windows=5, train_size=2000, test_size=1000, purge=10, embargo=24):
+    """
+    Runs Walk-Forward test with non-overlapping windows and Purge/Embargo.
+    """
+    print("=" * 60)
+    print("   WALK-FORWARD VALIDATION (Purged & Embargoed)")
+    print("=" * 60)
     
-    if end_test > len(full_data):
-        break
+    gap = purge + embargo
+    fold_span = train_size + gap + test_size
+    total_bars = len(data)
     
-    test_data = full_data.iloc[start_test:end_test].copy()
+    print(f"Total bars: {total_bars} (~{total_bars/24/30:.1f} months)")
+    print(f"Fold span: {fold_span} bars (Train={train_size}, Gap={gap}, Test={test_size})")
+    print(f"Windows: {num_windows}")
+    print()
     
-    trades, equity = dynamic_backtest(
-        data=test_data,
-        strategy_cols=['Signal'],
-        risk_percent=0.005
-    )
+    results = []
     
-    if trades and len(trades) > 5:
-        wins = [t for t in trades if t > 0]
-        losses = [t for t in trades if t <= 0]
-        pf = abs(sum(wins)/sum(losses)) if losses and sum(losses)!=0 else 0.0
-        ret = (equity[-1]/params.initial_capital - 1)*100
-        dd = (pd.Series(equity)/pd.Series(equity).cummax() - 1).min()*100
-        results.append({'window': w+1, 'pf': pf, 'return': ret, 'dd': dd, 'trades': len(trades)})
-        print(f"   Window {w+1}: PF={pf:.2f}, Return={ret:.2f}%, MaxDD={dd:.2f}%, Trades={len(trades)}")
-    else:
-        results.append({'window': w+1, 'pf': 0.0, 'return': 0.0, 'dd': 0.0, 'trades': 0})
-        print(f"   Window {w+1}: No trades!")
+    for w in range(num_windows):
+        start_train = w * fold_span
+        end_train = start_train + train_size
+        start_test = end_train + purge
+        end_test = start_test + test_size
+        
+        if end_test > total_bars:
+            print(f"   Window {w+1}: Skipped (insufficient data)")
+            break
+        
+        test_data = data.iloc[start_test:end_test].copy()
+        
+        res = dynamic_backtest(
+            data=test_data,
+            strategy_cols=strategy_cols,
+            risk_percent=risk_percent,
+            log_trades=False
+        )
+        
+        trades = res[0] if isinstance(res, tuple) else res
+        
+        if trades and len(trades) > 5:
+            wins = [t for t in trades if t > 0]
+            losses = [t for t in trades if t <= 0]
+            pf = abs(sum(wins) / sum(losses)) if losses and sum(losses) != 0 else 0.0
+            results.append({
+                'window': w + 1,
+                'pf': pf,
+                'trades': len(trades),
+                'win_rate': len(wins) / len(trades) * 100
+            })
+            print(f"   Window {w+1}: PF={pf:.2f}, Trades={len(trades)}, WinRate={len(wins)/len(trades)*100:.1f}%")
+        else:
+            results.append({
+                'window': w + 1,
+                'pf': 0.0,
+                'trades': 0,
+                'win_rate': 0.0
+            })
+            print(f"   Window {w+1}: No trades!")
+    
+    if results:
+        pfs = [r['pf'] for r in results]
+        avg_pf = np.mean(pfs)
+        std_pf = np.std(pfs)
+        total_trades = sum(r['trades'] for r in results)
+        
+        print(f"\n{'='*60}")
+        print(f"   WALK-FORWARD FINAL REPORT")
+        print(f"{'='*60}")
+        print(f"   Windows tested: {len(results)}")
+        print(f"   Total trades: {total_trades}")
+        print(f"   Average PF: {avg_pf:.2f} (±{std_pf:.2f})")
+        print(f"   Stability: {'STABLE' if avg_pf > 1.0 and std_pf < 0.5 else 'UNSTABLE'}")
+        print(f"{'='*60}")
+        
+        return {
+            'results': results,
+            'avg_pf': avg_pf,
+            'std_pf': std_pf,
+            'stable': avg_pf > 1.0 and std_pf < 0.5,
+            'total_trades': total_trades
+        }
+    
+    return None
 
-# 3. Final Report
-if results:
-    df_results = pd.DataFrame(results)
-    avg_pf = df_results['pf'].mean()
-    std_pf = df_results['pf'].std()
-    print(f"\n{'='*60}")
-    print(f"   WALK-FORWARD FINAL REPORT")
-    print(f"{'='*60}")
-    print(df_results.to_string(index=False))
-    print(f"\n   Average PF: {avg_pf:.2f} (±{std_pf:.2f})")
-    print(f"   Stability: {'STABLE' if avg_pf > 1.0 and std_pf < 0.5 else 'UNSTABLE'}")
-    print(f"{'='*60}")
-
-
+if __name__ == "__main__":
+    from institutional_data_handler import prepare_institutional_data
+    from volume_shock_detector import VolumeShockDetector
+    from strategy_news_deviation import generate_signals as gen_news
+    
+    print("Loading Institutional Data...")
+    df = prepare_institutional_data()
+    
+    print("Detecting Shocks...")
+    detector = VolumeShockDetector()
+    df = detector.detect(df)
+    
+    print("Generating News Signals...")
+    df = gen_news(df)
+    
+    print("\nRunning Walk-Forward Test on News Strategy...\n")
+    run_walk_forward(df, strategy_cols=['News_Signal'])

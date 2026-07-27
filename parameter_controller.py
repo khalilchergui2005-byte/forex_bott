@@ -55,13 +55,11 @@ class StrategyParameters:
     # --- Strategy-Specific Trade Management (ARCH-02 Fix) ---
     # Maps column name to specific SL/TP multipliers. Overrides global TP/SL if found.
     strategy_sl_tp: Dict[str, Dict[str, float]] = field(default_factory=lambda: {
-        'Signal': {'tp_mult': 1.5, 'sl_mult': 2.5, 'second_target_mult': 3.0},  # OPT-INST: Optimized for 5Y Mean Reversion
-        'Final': {'tp_mult': 4.0, 'sl_mult': 2.0, 'second_target_mult': 6.0},  # Breakout (Matrix)
-        'Swing_Signal': {'tp_mult': 4.0, 'sl_mult': 2.0, 'second_target_mult': 6.0},  # Trend Following (Swing HL)
-        'Donchian_Signal': {'tp_mult': 4.0, 'sl_mult': 2.0, 'second_target_mult': 6.0},  # Trend Following (Donchian)
-        'MA_Crossover_Signal': {'tp_mult': 4.0, 'sl_mult': 2.0, 'second_target_mult': 6.0},  # Trend Following (MA Crossover)
-        'Asian_Breakout_Signal': {'tp_mult': 2.5, 'sl_mult': 2.0, 'second_target_mult': 5.0},  # OPT-INST: Asian Breakout
-        'Absorption_Signal': {'tp_mult': 3.0, 'sl_mult': 1.5, 'second_target_mult': 6.0}  # OPT-INST: Liquidity Absorption  # OPT-INST  # Smart Money (Liquidity Absorption)  # Session Breakout (Asian)
+        'Signal': {'tp_mult': 2.0, 'sl_mult': 2.0, 'second_target_mult': 4.0},  # Mean Reversion
+        'Asian_Breakout_Signal': {'tp_mult': 2.5, 'sl_mult': 2.0, 'second_target_mult': 5.0},  # Session Breakout
+        'Absorption_Signal': {'tp_mult': 3.0, 'sl_mult': 1.5, 'second_target_mult': 6.0},  # Smart Money
+        'Pairs_Signal': {'tp_mult': 0, 'sl_mult': 0, 'second_target_mult': 0},  # Pairs Trading
+        'News_Signal': {'tp_mult': 3.0, 'sl_mult': 2.0, 'second_target_mult': 6.0}  # News Deviation
     })
     
     # --- Strategy Matrix Regime Rules ---

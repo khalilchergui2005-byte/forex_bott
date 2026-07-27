@@ -66,7 +66,8 @@ class RegimeDetector:
         
         df["ATR_Pct"] = df["ATR"].rolling(self.vol_lookback, min_periods=20).rank(pct=True)
         
-        df.bfill(inplace=True)
+        # FIX-INST: Removed bfill() to prevent look-ahead bias. Drop NaNs instead.
+        df.dropna(inplace=True)
         return df
 
     def _classify_bar(self, row: pd.Series) -> tuple:
