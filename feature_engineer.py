@@ -1,155 +1,142 @@
 """
-feature_engineer.py - Institutional Feature Engineering
-Creates 50+ features from enriched data for ML Meta-Labeling.
+feature_engineer.py - Institutional Feature Engineering V2
+Integrates Macro Data (FRED), Cyclical Time, and Fractional Differentiation.
 """
 import pandas as pd
 import numpy as np
+import os
+from volume_profile import VolumeProfile
 
 class FeatureEngineer:
-    def __init__(self, lookback=14):
+    def __init__(self, lookback=14, ffd_d=0.4):
         self.lookback = lookback
+        self.ffd_d = ffd_d
+
+    def _frac_diff(self, series, d, thresh=1e-5):
+        """Fractional Differentiation (López de Prado FFD)"""
+        width = 10
+        weights = [1.0]
+        for k in range(1, width):
+            w = weights[-1] * (1 - (d + k - 1) / k)
+            if abs(w) < thresh: break
+            weights.append(w)
+        weights = np.array(weights[::-1])
+        
+        # Vectorized convolution
+        df_val = series.values
+        out = np.full(len(df_val), np.nan)
+        for i in range(len(weights)-1, len(df_val)):
+            window = df_val[i-len(weights)+1:i+1]
+            if not np.isnan(window).any():
+                out[i] = np.dot(weights, window)
+        return pd.Series(out, index=series.index)
 
     def build_features(self, df: pd.DataFrame) -> pd.DataFrame:
-        """
-        Builds 50+ features from institutional enriched data.
-        Input must contain: open, high, low, close, volume, 
-        regime_name, cvd, delta, rolling_corr, bull_div, bear_div, 
-        exhaustion, vol_shock, shock_dir
-        """
         data = df.copy()
         
         # ==========================================
-        # 1. PRICE FEATURES (10)
+        # 1. MACRO FEATURES (V3 - Short-End Carry)
+        # ==========================================
+        macro_path = "data/macro_data.csv"
+        if os.path.exists(macro_path):
+            macro_df = pd.read_csv(macro_path, index_col=0, parse_dates=True)
+            # FIX-INST: Use Short-End Rates (DFF, ECBDFR) instead of 10Y proxy
+            cols_to_fill = ['US_10Y', 'DE_10Y', 'US_2Y', 'DXY', 'VIX', 'US_FFR', 'ECB_DF', 'US_DE_Spread', 'Short_End_Spread']
+            existing_cols = [c for c in cols_to_fill if c in macro_df.columns]
+            
+            data = data.join(macro_df[existing_cols], how='left')
+            data[existing_cols] = data[existing_cols].ffill()
+            
+            # Macro Derivatives
+            data['DXY_change'] = data['DXY'].pct_change(1)
+            data['VIX_change'] = data['VIX'].pct_change(1)
+            
+            # True Carry Trade Features (Short-End)
+            if 'Short_End_Spread' in data.columns:
+                data['Carry_Change'] = data['Short_End_Spread'].diff(1)
+                data['Carry_Z_Score'] = (data['Short_End_Spread'] - data['Short_End_Spread'].rolling(50).mean()) / (data['Short_End_Spread'].rolling(50).std() + 1e-10)
+            
+            # 2Y-10Y Term Structure (Yield Curve Slope)
+            if 'US_10Y' in data.columns and 'US_2Y' in data.columns:
+                data['US_Term_Structure'] = data['US_10Y'] - data['US_2Y']
+                data['Term_Structure_Change'] = data['US_Term_Structure'].diff(1)
+        # COT POSITIONING FEATURES (Institutional)
+        # ==========================================
+        cot_path = "data/cot_data.csv"
+        if os.path.exists(cot_path):
+            cot_df = pd.read_csv(cot_path, index_col=0, parse_dates=True)
+            data = data.join(cot_df, how='left')
+            # Forward-fill weekly COT data to H1
+            data[['COT_Net', 'COT_Z_Score', 'COT_Change']] = data[['COT_Net', 'COT_Z_Score', 'COT_Change']].ffill()
+            
+        # 2. FRACTIONAL DIFFERENTIATION (New)
+        # ==========================================
+        data['ffd_close'] = self._frac_diff(data['close'], self.ffd_d)
+        data['ffd_close_change'] = data['ffd_close'].diff(1)
+
+        # ==========================================
+        # 3. PRICE & VOLATILITY FEATURES
         # ==========================================
         data["ret_1"] = data["close"].pct_change(1)
-        data["ret_2"] = data["close"].pct_change(2)
-        data["ret_3"] = data["close"].pct_change(3)
         data["ret_5"] = data["close"].pct_change(5)
         data["ret_10"] = data["close"].pct_change(10)
-        data["ret_20"] = data["close"].pct_change(20)
-        data["momentum_5"] = data["close"] / data["close"].shift(5) - 1
-        data["momentum_10"] = data["close"] / data["close"].shift(10) - 1
-        data["high_low_range"] = (data["high"] - data["low"]) / data["close"]
-        data["close_position"] = (data["close"] - data["low"]) / (data["high"] - data["low"] + 1e-10)
-
-        # ==========================================
-        # 2. VOLATILITY FEATURES (8)
-        # ==========================================
-        data["volatility_5"] = data["ret_1"].rolling(5).std()
         data["volatility_10"] = data["ret_1"].rolling(10).std()
         data["volatility_20"] = data["ret_1"].rolling(20).std()
-        data["vol_ratio_5_20"] = data["volatility_5"] / (data["volatility_20"] + 1e-10)
         data["atr_14"] = (data["high"] - data["low"]).rolling(14).mean()
-        data["atr_pct"] = data["atr_14"] / data["close"]
-        data["atr_ratio"] = data["atr_14"] / (data["atr_14"].rolling(50).mean() + 1e-10)
-        data["range_expansion"] = (data["high"] - data["low"]) / (data["atr_14"] + 1e-10)
-
+        
         # ==========================================
-        # 3. VOLUME FEATURES (8)
+        # VOLUME PROFILE FEATURES (New)
         # ==========================================
-        data["volume_change"] = data["volume"].pct_change(1)
-        data["volume_ma_5"] = data["volume"].rolling(5).mean()
-        data["volume_ma_20"] = data["volume"].rolling(20).mean()
-        data["volume_ratio"] = data["volume_ma_5"] / (data["volume_ma_20"] + 1e-10)
-        data["volume_z_20"] = (data["volume"] - data["volume"].rolling(20).mean()) / (data["volume"].rolling(20).std() + 1e-10)
-        data["volume_z_50"] = (data["volume"] - data["volume"].rolling(50).mean()) / (data["volume"].rolling(50).std() + 1e-10)
-        data["cum_volume_5"] = data["volume"].rolling(5).sum()
-        data["volume_trend"] = data["volume"].rolling(5).mean() / (data["volume"].rolling(20).mean() + 1e-10)
-
+        vp = VolumeProfile(lookback=24, num_bins=20)
+        data = vp.calculate_features(data)
+        
         # ==========================================
-        # 4. ORDER FLOW FEATURES (8)
+        # 4. VOLUME & ORDER FLOW FEATURES
         # ==========================================
+        if "volume" in data.columns:
+            data["volume_z_20"] = (data["volume"] - data["volume"].rolling(20).mean()) / (data["volume"].rolling(20).std() + 1e-10)
         if "cvd" in data.columns:
             data["cvd_change"] = data["cvd"].diff(1)
-            data["cvd_ma_5"] = data["cvd"].rolling(5).mean()
-            data["cvd_ma_20"] = data["cvd"].rolling(20).mean()
-            data["cvd_divergence"] = data["cvd"] - data["cvd_ma_20"]
-            data["cvd_slope_5"] = data["cvd"].diff(5)
-            data["cvd_slope_10"] = data["cvd"].diff(10)
-            data["cvd_ratio"] = data["cvd_ma_5"] / (data["cvd_ma_20"] + 1e-10)
             data["cvd_z_20"] = (data["cvd"] - data["cvd"].rolling(20).mean()) / (data["cvd"].rolling(20).std() + 1e-10)
-
         if "delta" in data.columns:
             data["delta_ma_5"] = data["delta"].rolling(5).mean()
-            data["delta_positive_ratio"] = (data["delta"] > 0).rolling(20).mean()
 
         # ==========================================
-        # 5. REGIME FEATURES (6)
+        # 5. REGIME & DIVERGENCE FEATURES
         # ==========================================
-        if "regime" in data.columns:
-            # One-hot encode regime (5 categories: TREND_UP, TREND_DOWN, RANGE, VOLATILE, QUIET)
+        if "regime_name" in data.columns:
             regime_dummies = pd.get_dummies(data["regime_name"], prefix="regime")
             for col in regime_dummies.columns:
                 data[col] = regime_dummies[col].astype(int)
-            
-        if "regime_confidence" in data.columns:
-            data["regime_conf_ma_5"] = data["regime_confidence"].rolling(5).mean()
-            data["regime_conf_change"] = data["regime_confidence"].diff(1)
-
-        if "adx" in data.columns:
-            data["adx_ma_5"] = data["adx"].rolling(5).mean()
-            data["adx_change"] = data["adx"].diff(1)
-
-        # ==========================================
-        # 6. CORRELATION & DIVERGENCE FEATURES (6)
-        # ==========================================
         if "rolling_corr" in data.columns:
             data["corr_ma_5"] = data["rolling_corr"].rolling(5).mean()
-            data["corr_change"] = data["rolling_corr"].diff(1)
-            data["corr_z_20"] = (data["rolling_corr"] - data["rolling_corr"].rolling(20).mean()) / (data["rolling_corr"].rolling(20).std() + 1e-10)
-
-        if "bull_div" in data.columns:
-            data["bull_div_count_20"] = data["bull_div"].rolling(20).sum()
-        if "bear_div" in data.columns:
-            data["bear_div_count_20"] = data["bear_div"].rolling(20).sum()
 
         # ==========================================
-        # 7. SHOCK/NEWS FEATURES (4)
-        # ==========================================
-        if "vol_shock" in data.columns:
-            data["vol_shock"] = data["vol_shock"].astype(int)
-            data["shock_count_20"] = data["vol_shock"].rolling(20).sum()
-        if "shock_dir" in data.columns:
-            data["shock_dir_ma_5"] = data["shock_dir"].rolling(5).mean()
-
-        # ==========================================
-        # 8. TIME FEATURES (4)
+        # 6. CYCLICAL TIME FEATURES (New)
         # ==========================================
         if isinstance(data.index, pd.DatetimeIndex):
             data["hour"] = data.index.hour
             data["day_of_week"] = data.index.dayofweek
-            data["is_london"] = ((data["hour"] >= 7) & (data["hour"] < 16)).astype(int)
-            data["is_ny"] = ((data["hour"] >= 12) & (data["hour"] < 21)).astype(int)
-
-        # ==========================================
-        # 9. MOVING AVERAGE FEATURES (6)
-        # ==========================================
-        data["ma_5"] = data["close"].rolling(5).mean()
-        data["ma_10"] = data["close"].rolling(10).mean()
-        data["ma_20"] = data["close"].rolling(20).mean()
-        data["ma_50"] = data["close"].rolling(50).mean()
-        data["ma_5_20_cross"] = data["ma_5"] / (data["ma_20"] + 1e-10)
-        data["price_ma_20_ratio"] = data["close"] / (data["ma_20"] + 1e-10)
+            # Cyclical encoding
+            data["hour_sin"] = np.sin(2 * np.pi * data["hour"]/24.0)
+            data["hour_cos"] = np.cos(2 * np.pi * data["hour"]/24.0)
+            data["day_sin"] = np.sin(2 * np.pi * data["day_of_week"]/7.0)
+            data["day_cos"] = np.cos(2 * np.pi * data["day_of_week"]/7.0)
 
         # Drop NaN rows
         data.dropna(inplace=True)
         
-        # Count features
-        feature_cols = [c for c in data.columns if c not in ["open", "high", "low", "close", "volume", 
-                                                              "EURUSD_open", "EURUSD_high", "EURUSD_low", 
-                                                              "EURUSD_close", "EURUSD_volume",
-                                                              "GBPUSD_open", "GBPUSD_high", "GBPUSD_low",
-                                                              "GBPUSD_close", "GBPUSD_volume",
-                                                              "regime_name", "spread", "avg_spread",
-                                                              "TR", "+DM", "-DM", "+DI", "-DI", "ADX",
-                                                              "MA_Fast", "MA_Slow", "ATR_Pct", "ATR",
-                                                              "BB_mid", "BB_std", "BB_lower", "BB_upper",
-                                                              "Asian_High", "Asian_Low", "Range_Size",
-                                                              "Body_Ratio", "Raw_Signal", "dayofweek",
-                                                              "hedge_ratio", "coint_p_value", "coint_valid",
-                                                              "Pairs_Signal", "News_Signal"]]
+        # Define feature columns (exclude raw price columns and strings)
+        exclude_cols = ["open", "high", "low", "close", "volume", 
+                        "EURUSD_open", "EURUSD_high", "EURUSD_low", "EURUSD_close", "EURUSD_volume",
+                        "GBPUSD_open", "GBPUSD_high", "GBPUSD_low", "GBPUSD_close", "GBPUSD_volume",
+                        "regime_name", "spread", "avg_spread", "TR", "+DM", "-DM", "+DI", "-DI", "ADX",
+                        "MA_Fast", "MA_Slow", "ATR_Pct", "ATR",
+                        "base_signal", "target", "future_ret"]
         
-        print(f"Feature Engineering Complete: {len(feature_cols)} features created.")
+        feature_cols = [c for c in data.columns if c not in exclude_cols and data[c].dtype != bool]
+        
+        print(f"Feature Engineering V2 Complete: {len(feature_cols)} features created.")
         return data, feature_cols
 
 if __name__ == "__main__":
@@ -165,10 +152,10 @@ if __name__ == "__main__":
     detector = VolumeShockDetector()
     df = detector.detect(df)
     
-    print("\nBuilding Features...")
+    print("\nBuilding Features V2...")
     fe = FeatureEngineer()
     enriched, features = fe.build_features(df)
     
-    print(f"\nTotal rows after feature engineering: {len(enriched)}")
+    print(f"\nTotal rows: {len(enriched)}")
     print(f"Total features: {len(features)}")
-    print(f"\nFeature List:\n{features}")
+    print(f"Features: {features}")

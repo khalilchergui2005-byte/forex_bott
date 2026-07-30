@@ -92,12 +92,28 @@ class DukascopyFetcher:
         if ticks.empty:
             return pd.DataFrame()
         
+        # FIX-INST: Apply Tick Rule (Lee-Ready) to classify volume as Buy or Sell
+        mid = ticks['mid']
+        mid_diff = mid.diff().fillna(0)
+        
+        # Direction: +1 for up-tick (Buy), -1 for down-tick (Sell)
+        direction = np.sign(mid_diff)
+        # Forward fill zeros (consecutive equal prices take previous direction)
+        direction.replace(0, np.nan, inplace=True)
+        direction.ffill(inplace=True)
+        direction.fillna(0, inplace=True)
+        
+        ticks['buy_volume'] = ticks['volume'].where(direction > 0, 0)
+        ticks['sell_volume'] = ticks['volume'].where(direction < 0, 0)
+        
         h1 = pd.DataFrame()
         h1["open"] = ticks["mid"].resample("1h").first()
         h1["high"] = ticks["mid"].resample("1h").max()
         h1["low"] = ticks["mid"].resample("1h").min()
         h1["close"] = ticks["mid"].resample("1h").last()
         h1["volume"] = ticks["volume"].resample("1h").sum()
+        h1["buy_volume"] = ticks["buy_volume"].resample("1h").sum()
+        h1["sell_volume"] = ticks["sell_volume"].resample("1h").sum()
         h1["avg_spread"] = ticks["spread"].resample("1h").mean()
         
         h1.dropna(inplace=True)
