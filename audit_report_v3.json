@@ -1,0 +1,4783 @@
+{
+  "repo_root": "C:\\Users\\GTINF\\Desktop\\forex_bot",
+  "total_py_files": 200,
+  "syntax_valid_count": 133,
+  "syntax_broken_count": 67,
+  "broken_files": [
+    "alpha_vantage_news.py",
+    "audit_project.py",
+    "build_hist_v2.py",
+    "clean_csv_data.py",
+    "clean_params.py",
+    "feature_engineer.py",
+    "final_pairs_test.py",
+    "frozen/1.0_time_of_day.py",
+    "frozen/1.1_news_drift.py",
+    "frozen/1.2_weekly_bias.py",
+    "frozen/1.3_combined_filters.py",
+    "frozen/1.4_volatility_regime.py",
+    "frozen/backtest_engine_mm.py",
+    "frozen/diagnose_env.py",
+    "frozen/fix_data.py",
+    "frozen/live_hmm_bot.py",
+    "frozen/strategy_market_maker.py",
+    "frozen/strategy_mean_reversion.py",
+    "integrate_vp.py",
+    "microstructure_engine.py",
+    "opt_pairs.py",
+    "opt_pairs_v2.py",
+    "optimizer_foundry.py",
+    "optimizer_range.py",
+    "optimizer_shadow.py",
+    "run_20yr_download.py",
+    "run_20yr_robust.py",
+    "run_5yr_download.py",
+    "run_av_fetch.py",
+    "run_macro_fetch.py",
+    "run_meta_20y.py",
+    "run_news_fetch.py",
+    "setup_coint_gate.py",
+    "setup_cointegration.py",
+    "setup_cot.py",
+    "setup_cpcv.py",
+    "setup_cpcv_20y.py",
+    "setup_dsr.py",
+    "setup_feature_eng.py",
+    "setup_gdelt.py",
+    "setup_gmm_regime.py",
+    "setup_hmm.py",
+    "setup_macro_fetcher.py",
+    "setup_meta_labeler.py",
+    "setup_micro_engine.py",
+    "setup_ml_validation.py",
+    "setup_news_fetcher.py",
+    "setup_news_parser.py",
+    "setup_news_strategy.py",
+    "setup_news_validation.py",
+    "setup_ofi.py",
+    "setup_pairs_engine.py",
+    "setup_pairs_strategy.py",
+    "setup_pairs_test.py",
+    "setup_rolling_coint.py",
+    "setup_shock_detector.py",
+    "setup_spread.py",
+    "setup_vp.py",
+    "test_hour00.py",
+    "update_asian_params.py",
+    "update_dsr_20y.py",
+    "update_inst_params.py",
+    "update_opt_params.py",
+    "upgrade_fe_v2.py",
+    "upgrade_meta_labeler.py",
+    "validate_asian.py",
+    "validate_pairs_final.py"
+  ],
+  "orphan_files": [
+    "analysis_session_edge.py",
+    "frozen/1.0_time_of_day.py",
+    "frozen/1.3_combined_filters.py",
+    "robustness_shadow_thresholds.py",
+    "deflated_sharpe_calculator.py",
+    "optimizer_momentum.py",
+    "setup_meta_labeler.py",
+    "ofi_calculator.py",
+    "cpv_validator.py",
+    "multiple_testing_shadow.py",
+    "run_macro_fetch.py",
+    "final_pairs_test.py",
+    "robustness_high_atr_thresholds.py",
+    "news_risk.py",
+    "frozen/strategy_mean_reversion.py",
+    "setup_vp.py",
+    "4.1_genetic_v3.py",
+    "edge_diagnostics.py",
+    "cpv_long_lower_shadow.py",
+    "walk_forward_optimizer.py",
+    "6.4_portfolio.py",
+    "setup_gmm_regime.py",
+    "setup_news_parser.py",
+    "setup_news_strategy.py",
+    "audit_project.py",
+    "strategy_base.py",
+    "macro_data_fetcher.py",
+    "multiple_testing_high_atr.py",
+    "frozen/fix_data.py",
+    "frozen/strategy_market_maker.py",
+    "2.6_finbert.py",
+    "monte_carlo_shadow.py",
+    "data_feed_interface.py",
+    "monte_carlo_tokyo.py",
+    "prop_firm_rules.py",
+    "reports/4.1_genetic.py",
+    "3.3_autoencoder.py",
+    "frozen/1.2_weekly_bias.py",
+    "0.1_missing_numbers.py",
+    "2.1_trade_log.py",
+    "walk_forward_validator.py",
+    "setup_ofi.py",
+    "setup_pairs_test.py",
+    "1.1_data_download.py",
+    "setup_shock_detector.py",
+    "update_asian_params.py",
+    "0.4_dissect_failure.py",
+    "1.2_eda.py",
+    "cross_validation.py",
+    "0.3_out_of_sample_2025.py",
+    "strategy_correlation.py",
+    "4.2_walk_forward.py",
+    "run_5yr_download.py",
+    "opt_pairs.py",
+    "upgrade_fe_v2.py",
+    "smart_portfolio.py",
+    "frozen/1.4_volatility_regime.py",
+    "prop_firm_challenge.py",
+    "2.2_walk_forward_monthly.py",
+    "run_20yr_robust.py",
+    "data_quality_report.py",
+    "param_sensitivity.py",
+    "run_20yr_download.py",
+    "frozen/1.1_news_drift.py",
+    "update_inst_params.py",
+    "cpv_high_atr.py",
+    "frozen/live_hmm_bot.py",
+    "run_av_fetch.py",
+    "atr_kelly_sizing.py",
+    "setup_cpcv.py",
+    "edge_scanner.py",
+    "3.2_final_judgment.py",
+    "3.6_pywavelets.py",
+    "optimizer_range.py",
+    "4.0_prediction_layer.py",
+    "gdelt_fetcher.py",
+    "news_detector.py",
+    "setup_news_validation.py",
+    "validate_asian.py",
+    "validate_pairs.py",
+    "multiple_testing_correction.py",
+    "run_meta_20y.py",
+    "6.1_nine_regime.py",
+    "alpha_vantage_news.py",
+    "composite_score.py",
+    "defect_rate.py",
+    "run_20yr_tick_rule_download.py",
+    "volume_profile.py",
+    "4.1_confidence_filter.py",
+    "apex_diag.py",
+    "cpcv_validator.py",
+    "setup_news_fetcher.py",
+    "smart_portfolio_pro.py",
+    "microstructure_engine.py",
+    "optimizer_shadow.py",
+    "5.5_out_of_sample_v3.py",
+    "run_cpcv_20y.py",
+    "6.3_market_maker.py",
+    "test_risk_guardian.py",
+    "setup_cpcv_20y.py",
+    "3.4_timegan.py",
+    "setup_macro_fetcher.py",
+    "3.2_rl_local.py",
+    "analysis_correlation.py",
+    "setup_ml_validation.py",
+    "validate_news.py",
+    "optimizer_safe.py",
+    "final_cut.py",
+    "2.1_hmm_model.py",
+    "5.3_measure_costs.py",
+    "frozen/1.5_risk_managed_bot.py",
+    "regime_detector_gmm.py",
+    "update_dsr_20y.py",
+    "stress_test.py",
+    "0.5_fix_system.py",
+    "validate_pairs_cointegration.py",
+    "cointegration_tester.py",
+    "setup_feature_eng.py",
+    "setup_cointegration.py",
+    "analysis_rm.py",
+    "robustness_hour00_shift.py",
+    "4.1_genetic.py",
+    "setup_cot.py",
+    "clean_params.py",
+    "opt_pairs_v2.py",
+    "update_opt_params.py",
+    "validate_pairs_cont.py",
+    "setup_spread.py",
+    "cot_fetcher.py",
+    "optimal_cut.py",
+    "4.1_genetic_safe.py",
+    "5.4_hmm_h4_backtest.py",
+    "test_sess.py",
+    "setup_dsr.py",
+    "apply_surgery.py",
+    "optimizer_mean_reversion.py",
+    "validate_pairs_final.py",
+    "auditor.py",
+    "setup_pairs_strategy.py",
+    "frozen/diagnose_env.py",
+    "3.2_sac_cloned.py",
+    "_test_alloc_disabled.py",
+    "build_hist_v2.py",
+    "spread_risk.py",
+    "3.1_trading_env.py",
+    "build_historical_data.py",
+    "setup_micro_engine.py",
+    "3.2_train_rl.py",
+    "setup_coint_gate.py",
+    "economic_calendar_fetcher.py",
+    "clean_csv_data.py",
+    "analysis_temporal_edge.py",
+    "integrate_vp.py",
+    "analysis_shock_awe.py",
+    "optimizer_foundry.py",
+    "multi_period_validator.py",
+    "5.1_out_of_sample.py",
+    "3.3_eurjpy.py",
+    "3.2_train_sac.py",
+    "2.4_hmm_strategy.py",
+    "dry_run_simulator.py",
+    "test_hour00.py",
+    "news_csv_parser.py",
+    "multiple_testing_hour00.py",
+    "upgrade_meta_labeler.py",
+    "setup_gdelt.py",
+    "setup_rolling_coint.py",
+    "beast_final.py",
+    "run_news_fetch.py",
+    "setup_hmm.py",
+    "show_report.py",
+    "test_risk_manager_pro.py",
+    "setup_pairs_engine.py",
+    "validate_ml_strategy.py",
+    "frozen/backtest_engine_mm.py"
+  ],
+  "entry_points": [
+    "run_macro_fetch.py",
+    "frozen/strategy_mean_reversion.py",
+    "setup_news_strategy.py",
+    "strategy_base.py",
+    "frozen/strategy_market_maker.py",
+    "strategy_correlation.py",
+    "run_5yr_download.py",
+    "run_20yr_robust.py",
+    "run_20yr_download.py",
+    "frozen/live_hmm_bot.py",
+    "run_av_fetch.py",
+    "run_meta_20y.py",
+    "run_20yr_tick_rule_download.py",
+    "microstructure_engine.py",
+    "run_cpcv_20y.py",
+    "frozen/1.5_risk_managed_bot.py",
+    "5.4_hmm_h4_backtest.py",
+    "apply_surgery.py",
+    "setup_pairs_strategy.py",
+    "setup_micro_engine.py",
+    "3.2_train_rl.py",
+    "3.2_train_sac.py",
+    "2.4_hmm_strategy.py",
+    "dry_run_simulator.py",
+    "beast_final.py",
+    "run_news_fetch.py",
+    "test_risk_manager_pro.py",
+    "setup_pairs_engine.py",
+    "validate_ml_strategy.py",
+    "frozen/backtest_engine_mm.py"
+  ],
+  "dependency_graph": {
+    "2.1_trade_log.py": [
+      "backtest_engine",
+      "data_loader"
+    ],
+    "6.1_nine_regime.py": [
+      "backtest_engine",
+      "data_loader"
+    ],
+    "6.3_market_maker.py": [
+      "data_loader"
+    ],
+    "_test_alloc_disabled.py": [
+      "portfolio_allocator",
+      "bias_score",
+      "bias_trading_compat"
+    ],
+    "analysis_correlation.py": [
+      "data_loader",
+      "backtest_engine"
+    ],
+    "analysis_rm.py": [
+      "risk_manager"
+    ],
+    "analysis_session_edge.py": [
+      "data_loader",
+      "backtest_engine",
+      "parameter_controller"
+    ],
+    "analysis_shock_awe.py": [
+      "data_loader",
+      "backtest_engine",
+      "parameter_controller"
+    ],
+    "analysis_temporal_edge.py": [
+      "data_loader"
+    ],
+    "atr_kelly_sizing.py": [
+      "data_loader",
+      "backtest_engine",
+      "parameter_controller",
+      "backtest_engine"
+    ],
+    "backtest_engine.py": [
+      "risk_manager",
+      "risk_guardian",
+      "data_loader",
+      "parameter_controller"
+    ],
+    "bias_trading_compat.py": [
+      "bias_score"
+    ],
+    "build_historical_data.py": [
+      "dukascopy_fetcher"
+    ],
+    "cpv_high_atr.py": [
+      "data_loader",
+      "backtest_engine",
+      "parameter_controller"
+    ],
+    "cpv_long_lower_shadow.py": [
+      "data_loader",
+      "backtest_engine",
+      "parameter_controller"
+    ],
+    "cpv_validator.py": [
+      "cpv_temporal"
+    ],
+    "cross_validation.py": [
+      "data_loader",
+      "backtest_engine",
+      "parameter_controller"
+    ],
+    "data_feed_interface.py": [
+      "data_loader"
+    ],
+    "dry_run_simulator.py": [
+      "data_loader",
+      "backtest_engine",
+      "unified_filters",
+      "parameter_controller",
+      "weekly_analyzer"
+    ],
+    "edge_diagnostics.py": [
+      "data_loader",
+      "parameter_controller"
+    ],
+    "edge_scanner.py": [
+      "data_loader",
+      "backtest_engine"
+    ],
+    "institutional_data_handler.py": [
+      "regime_detector",
+      "order_flow_analyzer",
+      "correlation_matrix"
+    ],
+    "meta_labeler.py": [
+      "feature_engineer",
+      "institutional_data_handler",
+      "volume_shock_detector"
+    ],
+    "monte_carlo_shadow.py": [
+      "data_loader",
+      "backtest_engine",
+      "parameter_controller"
+    ],
+    "monte_carlo_tokyo.py": [
+      "data_loader",
+      "backtest_engine",
+      "parameter_controller"
+    ],
+    "multiple_testing_high_atr.py": [
+      "data_loader"
+    ],
+    "multiple_testing_hour00.py": [
+      "data_loader"
+    ],
+    "multiple_testing_shadow.py": [
+      "data_loader"
+    ],
+    "optimizer_mean_reversion.py": [
+      "backtest_engine",
+      "data_loader"
+    ],
+    "optimizer_momentum.py": [
+      "backtest_engine",
+      "data_loader",
+      "parameter_controller"
+    ],
+    "optimizer_safe.py": [
+      "data_loader",
+      "backtest_engine",
+      "parameter_controller"
+    ],
+    "order_flow_analyzer.py": [
+      "dukascopy_fetcher"
+    ],
+    "pairs_backtest_engine.py": [
+      "risk_manager",
+      "risk_guardian",
+      "parameter_controller"
+    ],
+    "prop_firm_challenge.py": [
+      "data_loader",
+      "backtest_engine",
+      "parameter_controller"
+    ],
+    "robustness_high_atr_thresholds.py": [
+      "data_loader",
+      "backtest_engine",
+      "parameter_controller"
+    ],
+    "robustness_hour00_shift.py": [
+      "data_loader",
+      "backtest_engine",
+      "parameter_controller"
+    ],
+    "robustness_shadow_thresholds.py": [
+      "data_loader",
+      "backtest_engine",
+      "parameter_controller"
+    ],
+    "run_cpcv_20y.py": [
+      "feature_engineer",
+      "meta_labeler",
+      "volume_shock_detector"
+    ],
+    "smart_portfolio.py": [
+      "data_loader",
+      "backtest_engine",
+      "parameter_controller"
+    ],
+    "smart_portfolio_pro.py": [
+      "data_loader",
+      "backtest_engine",
+      "parameter_controller"
+    ],
+    "strategy_correlation.py": [
+      "data_loader"
+    ],
+    "test_risk_guardian.py": [
+      "risk_guardian",
+      "risk_guardian"
+    ],
+    "test_risk_manager_pro.py": [
+      "risk_manager"
+    ],
+    "test_sess.py": [
+      "session_risk"
+    ],
+    "validate_ml_strategy.py": [
+      "institutional_data_handler",
+      "volume_shock_detector",
+      "feature_engineer",
+      "meta_labeler",
+      "backtest_engine"
+    ],
+    "validate_news.py": [
+      "institutional_data_handler",
+      "volume_shock_detector",
+      "strategy_news_deviation",
+      "backtest_engine",
+      "monte_carlo_test"
+    ],
+    "validate_pairs.py": [
+      "spread_calculator",
+      "strategy_pairs_trading",
+      "pairs_backtest_engine",
+      "monte_carlo_test"
+    ],
+    "validate_pairs_cont.py": [
+      "spread_calculator",
+      "strategy_pairs_trading",
+      "pairs_backtest_engine",
+      "monte_carlo_test"
+    ],
+    "volume_profile.py": [
+      "regime_detector"
+    ],
+    "walk_forward_optimizer.py": [
+      "backtest_engine",
+      "institutional_data_handler",
+      "volume_shock_detector",
+      "strategy_news_deviation"
+    ]
+  },
+  "reverse_dependency_graph": {
+    "backtest_engine.py": [
+      "2.1_trade_log.py",
+      "6.1_nine_regime.py",
+      "analysis_correlation.py",
+      "analysis_session_edge.py",
+      "analysis_shock_awe.py",
+      "atr_kelly_sizing.py",
+      "atr_kelly_sizing.py",
+      "cpv_high_atr.py",
+      "cpv_long_lower_shadow.py",
+      "cross_validation.py",
+      "dry_run_simulator.py",
+      "edge_scanner.py",
+      "monte_carlo_shadow.py",
+      "monte_carlo_tokyo.py",
+      "optimizer_mean_reversion.py",
+      "optimizer_momentum.py",
+      "optimizer_safe.py",
+      "prop_firm_challenge.py",
+      "robustness_high_atr_thresholds.py",
+      "robustness_hour00_shift.py",
+      "robustness_shadow_thresholds.py",
+      "smart_portfolio.py",
+      "smart_portfolio_pro.py",
+      "validate_ml_strategy.py",
+      "validate_news.py",
+      "walk_forward_optimizer.py"
+    ],
+    "data_loader.py": [
+      "2.1_trade_log.py",
+      "6.1_nine_regime.py",
+      "6.3_market_maker.py",
+      "analysis_correlation.py",
+      "analysis_session_edge.py",
+      "analysis_shock_awe.py",
+      "analysis_temporal_edge.py",
+      "atr_kelly_sizing.py",
+      "backtest_engine.py",
+      "cpv_high_atr.py",
+      "cpv_long_lower_shadow.py",
+      "cross_validation.py",
+      "data_feed_interface.py",
+      "dry_run_simulator.py",
+      "edge_diagnostics.py",
+      "edge_scanner.py",
+      "monte_carlo_shadow.py",
+      "monte_carlo_tokyo.py",
+      "multiple_testing_high_atr.py",
+      "multiple_testing_hour00.py",
+      "multiple_testing_shadow.py",
+      "optimizer_mean_reversion.py",
+      "optimizer_momentum.py",
+      "optimizer_safe.py",
+      "prop_firm_challenge.py",
+      "robustness_high_atr_thresholds.py",
+      "robustness_hour00_shift.py",
+      "robustness_shadow_thresholds.py",
+      "smart_portfolio.py",
+      "smart_portfolio_pro.py",
+      "strategy_correlation.py"
+    ],
+    "portfolio_allocator.py": [
+      "_test_alloc_disabled.py"
+    ],
+    "bias_score.py": [
+      "_test_alloc_disabled.py",
+      "bias_trading_compat.py"
+    ],
+    "bias_trading_compat.py": [
+      "_test_alloc_disabled.py"
+    ],
+    "risk_manager.py": [
+      "analysis_rm.py",
+      "backtest_engine.py",
+      "pairs_backtest_engine.py",
+      "test_risk_manager_pro.py"
+    ],
+    "parameter_controller.py": [
+      "analysis_session_edge.py",
+      "analysis_shock_awe.py",
+      "atr_kelly_sizing.py",
+      "backtest_engine.py",
+      "cpv_high_atr.py",
+      "cpv_long_lower_shadow.py",
+      "cross_validation.py",
+      "dry_run_simulator.py",
+      "edge_diagnostics.py",
+      "monte_carlo_shadow.py",
+      "monte_carlo_tokyo.py",
+      "optimizer_momentum.py",
+      "optimizer_safe.py",
+      "pairs_backtest_engine.py",
+      "prop_firm_challenge.py",
+      "robustness_high_atr_thresholds.py",
+      "robustness_hour00_shift.py",
+      "robustness_shadow_thresholds.py",
+      "smart_portfolio.py",
+      "smart_portfolio_pro.py"
+    ],
+    "risk_guardian.py": [
+      "backtest_engine.py",
+      "pairs_backtest_engine.py",
+      "test_risk_guardian.py",
+      "test_risk_guardian.py"
+    ],
+    "dukascopy_fetcher.py": [
+      "build_historical_data.py",
+      "order_flow_analyzer.py"
+    ],
+    "cpv_temporal.py": [
+      "cpv_validator.py"
+    ],
+    "unified_filters.py": [
+      "dry_run_simulator.py"
+    ],
+    "weekly_analyzer.py": [
+      "dry_run_simulator.py"
+    ],
+    "regime_detector.py": [
+      "institutional_data_handler.py",
+      "volume_profile.py"
+    ],
+    "order_flow_analyzer.py": [
+      "institutional_data_handler.py"
+    ],
+    "correlation_matrix.py": [
+      "institutional_data_handler.py"
+    ],
+    "feature_engineer.py": [
+      "meta_labeler.py",
+      "run_cpcv_20y.py",
+      "validate_ml_strategy.py"
+    ],
+    "institutional_data_handler.py": [
+      "meta_labeler.py",
+      "validate_ml_strategy.py",
+      "validate_news.py",
+      "walk_forward_optimizer.py"
+    ],
+    "volume_shock_detector.py": [
+      "meta_labeler.py",
+      "run_cpcv_20y.py",
+      "validate_ml_strategy.py",
+      "validate_news.py",
+      "walk_forward_optimizer.py"
+    ],
+    "meta_labeler.py": [
+      "run_cpcv_20y.py",
+      "validate_ml_strategy.py"
+    ],
+    "session_risk.py": [
+      "test_sess.py"
+    ],
+    "strategy_news_deviation.py": [
+      "validate_news.py",
+      "walk_forward_optimizer.py"
+    ],
+    "monte_carlo_test.py": [
+      "validate_news.py",
+      "validate_pairs.py",
+      "validate_pairs_cont.py"
+    ],
+    "spread_calculator.py": [
+      "validate_pairs.py",
+      "validate_pairs_cont.py"
+    ],
+    "strategy_pairs_trading.py": [
+      "validate_pairs.py",
+      "validate_pairs_cont.py"
+    ],
+    "pairs_backtest_engine.py": [
+      "validate_pairs.py",
+      "validate_pairs_cont.py"
+    ],
+    "analysis_session_edge.py": [],
+    "frozen/1.0_time_of_day.py": [],
+    "frozen/1.3_combined_filters.py": [],
+    "robustness_shadow_thresholds.py": [],
+    "deflated_sharpe_calculator.py": [],
+    "optimizer_momentum.py": [],
+    "setup_meta_labeler.py": [],
+    "ofi_calculator.py": [],
+    "cpv_validator.py": [],
+    "multiple_testing_shadow.py": [],
+    "run_macro_fetch.py": [],
+    "final_pairs_test.py": [],
+    "robustness_high_atr_thresholds.py": [],
+    "news_risk.py": [],
+    "frozen/strategy_mean_reversion.py": [],
+    "setup_vp.py": [],
+    "4.1_genetic_v3.py": [],
+    "edge_diagnostics.py": [],
+    "cpv_long_lower_shadow.py": [],
+    "walk_forward_optimizer.py": [],
+    "6.4_portfolio.py": [],
+    "setup_gmm_regime.py": [],
+    "setup_news_parser.py": [],
+    "setup_news_strategy.py": [],
+    "audit_project.py": [],
+    "strategy_base.py": [],
+    "macro_data_fetcher.py": [],
+    "multiple_testing_high_atr.py": [],
+    "frozen/fix_data.py": [],
+    "frozen/strategy_market_maker.py": [],
+    "2.6_finbert.py": [],
+    "monte_carlo_shadow.py": [],
+    "data_feed_interface.py": [],
+    "monte_carlo_tokyo.py": [],
+    "prop_firm_rules.py": [],
+    "reports/4.1_genetic.py": [],
+    "3.3_autoencoder.py": [],
+    "frozen/1.2_weekly_bias.py": [],
+    "0.1_missing_numbers.py": [],
+    "2.1_trade_log.py": [],
+    "walk_forward_validator.py": [],
+    "setup_ofi.py": [],
+    "setup_pairs_test.py": [],
+    "1.1_data_download.py": [],
+    "setup_shock_detector.py": [],
+    "update_asian_params.py": [],
+    "0.4_dissect_failure.py": [],
+    "1.2_eda.py": [],
+    "cross_validation.py": [],
+    "0.3_out_of_sample_2025.py": [],
+    "strategy_correlation.py": [],
+    "4.2_walk_forward.py": [],
+    "run_5yr_download.py": [],
+    "opt_pairs.py": [],
+    "upgrade_fe_v2.py": [],
+    "smart_portfolio.py": [],
+    "frozen/1.4_volatility_regime.py": [],
+    "prop_firm_challenge.py": [],
+    "2.2_walk_forward_monthly.py": [],
+    "run_20yr_robust.py": [],
+    "data_quality_report.py": [],
+    "param_sensitivity.py": [],
+    "run_20yr_download.py": [],
+    "frozen/1.1_news_drift.py": [],
+    "update_inst_params.py": [],
+    "cpv_high_atr.py": [],
+    "frozen/live_hmm_bot.py": [],
+    "run_av_fetch.py": [],
+    "atr_kelly_sizing.py": [],
+    "setup_cpcv.py": [],
+    "edge_scanner.py": [],
+    "3.2_final_judgment.py": [],
+    "3.6_pywavelets.py": [],
+    "optimizer_range.py": [],
+    "4.0_prediction_layer.py": [],
+    "gdelt_fetcher.py": [],
+    "news_detector.py": [],
+    "setup_news_validation.py": [],
+    "validate_asian.py": [],
+    "validate_pairs.py": [],
+    "multiple_testing_correction.py": [],
+    "run_meta_20y.py": [],
+    "6.1_nine_regime.py": [],
+    "alpha_vantage_news.py": [],
+    "composite_score.py": [],
+    "defect_rate.py": [],
+    "run_20yr_tick_rule_download.py": [],
+    "volume_profile.py": [],
+    "4.1_confidence_filter.py": [],
+    "apex_diag.py": [],
+    "cpcv_validator.py": [],
+    "setup_news_fetcher.py": [],
+    "smart_portfolio_pro.py": [],
+    "microstructure_engine.py": [],
+    "optimizer_shadow.py": [],
+    "5.5_out_of_sample_v3.py": [],
+    "run_cpcv_20y.py": [],
+    "6.3_market_maker.py": [],
+    "test_risk_guardian.py": [],
+    "setup_cpcv_20y.py": [],
+    "3.4_timegan.py": [],
+    "setup_macro_fetcher.py": [],
+    "3.2_rl_local.py": [],
+    "analysis_correlation.py": [],
+    "setup_ml_validation.py": [],
+    "validate_news.py": [],
+    "optimizer_safe.py": [],
+    "final_cut.py": [],
+    "2.1_hmm_model.py": [],
+    "5.3_measure_costs.py": [],
+    "frozen/1.5_risk_managed_bot.py": [],
+    "regime_detector_gmm.py": [],
+    "update_dsr_20y.py": [],
+    "stress_test.py": [],
+    "0.5_fix_system.py": [],
+    "validate_pairs_cointegration.py": [],
+    "cointegration_tester.py": [],
+    "setup_feature_eng.py": [],
+    "setup_cointegration.py": [],
+    "analysis_rm.py": [],
+    "robustness_hour00_shift.py": [],
+    "4.1_genetic.py": [],
+    "setup_cot.py": [],
+    "clean_params.py": [],
+    "opt_pairs_v2.py": [],
+    "update_opt_params.py": [],
+    "validate_pairs_cont.py": [],
+    "setup_spread.py": [],
+    "cot_fetcher.py": [],
+    "optimal_cut.py": [],
+    "4.1_genetic_safe.py": [],
+    "5.4_hmm_h4_backtest.py": [],
+    "test_sess.py": [],
+    "setup_dsr.py": [],
+    "apply_surgery.py": [],
+    "optimizer_mean_reversion.py": [],
+    "validate_pairs_final.py": [],
+    "auditor.py": [],
+    "setup_pairs_strategy.py": [],
+    "frozen/diagnose_env.py": [],
+    "3.2_sac_cloned.py": [],
+    "_test_alloc_disabled.py": [],
+    "build_hist_v2.py": [],
+    "spread_risk.py": [],
+    "3.1_trading_env.py": [],
+    "build_historical_data.py": [],
+    "setup_micro_engine.py": [],
+    "3.2_train_rl.py": [],
+    "setup_coint_gate.py": [],
+    "economic_calendar_fetcher.py": [],
+    "clean_csv_data.py": [],
+    "analysis_temporal_edge.py": [],
+    "integrate_vp.py": [],
+    "analysis_shock_awe.py": [],
+    "optimizer_foundry.py": [],
+    "multi_period_validator.py": [],
+    "5.1_out_of_sample.py": [],
+    "3.3_eurjpy.py": [],
+    "3.2_train_sac.py": [],
+    "2.4_hmm_strategy.py": [],
+    "dry_run_simulator.py": [],
+    "test_hour00.py": [],
+    "news_csv_parser.py": [],
+    "multiple_testing_hour00.py": [],
+    "upgrade_meta_labeler.py": [],
+    "setup_gdelt.py": [],
+    "setup_rolling_coint.py": [],
+    "beast_final.py": [],
+    "run_news_fetch.py": [],
+    "setup_hmm.py": [],
+    "show_report.py": [],
+    "test_risk_manager_pro.py": [],
+    "setup_pairs_engine.py": [],
+    "validate_ml_strategy.py": [],
+    "frozen/backtest_engine_mm.py": []
+  },
+  "files": {
+    "0.1_missing_numbers.py": {
+      "relative_path": "0.1_missing_numbers.py",
+      "filename": "0.1_missing_numbers.py",
+      "lines": 221,
+      "imports_local": [],
+      "imports_external": [
+        "pandas",
+        "numpy",
+        "pathlib",
+        "warnings"
+      ],
+      "classes": [],
+      "functions": [],
+      "docstring": null,
+      "syntax_valid": true,
+      "error": null
+    },
+    "0.3_out_of_sample_2025.py": {
+      "relative_path": "0.3_out_of_sample_2025.py",
+      "filename": "0.3_out_of_sample_2025.py",
+      "lines": 134,
+      "imports_local": [],
+      "imports_external": [
+        "pandas",
+        "numpy",
+        "pathlib",
+        "re"
+      ],
+      "classes": [],
+      "functions": [],
+      "docstring": null,
+      "syntax_valid": true,
+      "error": null
+    },
+    "0.4_dissect_failure.py": {
+      "relative_path": "0.4_dissect_failure.py",
+      "filename": "0.4_dissect_failure.py",
+      "lines": 192,
+      "imports_local": [],
+      "imports_external": [
+        "pandas",
+        "numpy",
+        "pathlib",
+        "re"
+      ],
+      "classes": [],
+      "functions": [],
+      "docstring": null,
+      "syntax_valid": true,
+      "error": null
+    },
+    "0.5_fix_system.py": {
+      "relative_path": "0.5_fix_system.py",
+      "filename": "0.5_fix_system.py",
+      "lines": 124,
+      "imports_local": [],
+      "imports_external": [
+        "pandas",
+        "numpy",
+        "pathlib",
+        "re"
+      ],
+      "classes": [],
+      "functions": [],
+      "docstring": null,
+      "syntax_valid": true,
+      "error": null
+    },
+    "1.1_data_download.py": {
+      "relative_path": "1.1_data_download.py",
+      "filename": "1.1_data_download.py",
+      "lines": 24,
+      "imports_local": [],
+      "imports_external": [
+        "yfinance",
+        "pandas",
+        "pathlib"
+      ],
+      "classes": [],
+      "functions": [],
+      "docstring": null,
+      "syntax_valid": true,
+      "error": null
+    },
+    "1.2_eda.py": {
+      "relative_path": "1.2_eda.py",
+      "filename": "1.2_eda.py",
+      "lines": 48,
+      "imports_local": [],
+      "imports_external": [
+        "pandas",
+        "numpy",
+        "matplotlib.pyplot",
+        "matplotlib.dates",
+        "pathlib"
+      ],
+      "classes": [],
+      "functions": [],
+      "docstring": null,
+      "syntax_valid": true,
+      "error": null
+    },
+    "2.1_hmm_model.py": {
+      "relative_path": "2.1_hmm_model.py",
+      "filename": "2.1_hmm_model.py",
+      "lines": 76,
+      "imports_local": [],
+      "imports_external": [
+        "pandas",
+        "numpy",
+        "matplotlib.pyplot",
+        "matplotlib.dates",
+        "sklearn.mixture",
+        "pathlib",
+        "joblib"
+      ],
+      "classes": [],
+      "functions": [],
+      "docstring": null,
+      "syntax_valid": true,
+      "error": null
+    },
+    "2.1_trade_log.py": {
+      "relative_path": "2.1_trade_log.py",
+      "filename": "2.1_trade_log.py",
+      "lines": 45,
+      "imports_local": [
+        "backtest_engine",
+        "data_loader"
+      ],
+      "imports_external": [
+        "pandas",
+        "pathlib",
+        "strategy_matrix"
+      ],
+      "classes": [],
+      "functions": [],
+      "docstring": "2.1_trade_log.py - نظام تسجيل الصفقات المؤسسي (مُحدّث)\nيستخدم DataHub الموحد.",
+      "syntax_valid": true,
+      "error": null
+    },
+    "2.2_walk_forward_monthly.py": {
+      "relative_path": "2.2_walk_forward_monthly.py",
+      "filename": "2.2_walk_forward_monthly.py",
+      "lines": 166,
+      "imports_local": [],
+      "imports_external": [
+        "pandas",
+        "numpy",
+        "sklearn.mixture",
+        "pathlib",
+        "joblib"
+      ],
+      "classes": [],
+      "functions": [
+        "backtest_window"
+      ],
+      "docstring": null,
+      "syntax_valid": true,
+      "error": null
+    },
+    "2.4_hmm_strategy.py": {
+      "relative_path": "2.4_hmm_strategy.py",
+      "filename": "2.4_hmm_strategy.py",
+      "lines": 150,
+      "imports_local": [],
+      "imports_external": [
+        "pandas",
+        "numpy",
+        "matplotlib.pyplot",
+        "matplotlib.dates",
+        "pathlib",
+        "joblib"
+      ],
+      "classes": [],
+      "functions": [],
+      "docstring": null,
+      "syntax_valid": true,
+      "error": null
+    },
+    "2.6_finbert.py": {
+      "relative_path": "2.6_finbert.py",
+      "filename": "2.6_finbert.py",
+      "lines": 68,
+      "imports_local": [],
+      "imports_external": [
+        "pandas",
+        "numpy",
+        "pathlib",
+        "datetime",
+        "warnings",
+        "transformers",
+        "subprocess",
+        "transformers"
+      ],
+      "classes": [],
+      "functions": [],
+      "docstring": null,
+      "syntax_valid": true,
+      "error": null
+    },
+    "3.1_trading_env.py": {
+      "relative_path": "3.1_trading_env.py",
+      "filename": "3.1_trading_env.py",
+      "lines": 152,
+      "imports_local": [],
+      "imports_external": [
+        "gymnasium",
+        "gymnasium",
+        "numpy",
+        "pandas",
+        "pathlib",
+        "yfinance",
+        "sklearn.mixture"
+      ],
+      "classes": [
+        "ForexTradingEnv"
+      ],
+      "functions": [
+        "__init__",
+        "_get_obs",
+        "reset",
+        "step",
+        "render"
+      ],
+      "docstring": null,
+      "syntax_valid": true,
+      "error": null
+    },
+    "3.2_final_judgment.py": {
+      "relative_path": "3.2_final_judgment.py",
+      "filename": "3.2_final_judgment.py",
+      "lines": 160,
+      "imports_local": [],
+      "imports_external": [
+        "gymnasium",
+        "gymnasium",
+        "numpy",
+        "pandas",
+        "stable_baselines3",
+        "stable_baselines3.common.vec_env",
+        "sklearn.mixture",
+        "pathlib",
+        "warnings"
+      ],
+      "classes": [
+        "WaveletEnv"
+      ],
+      "functions": [
+        "__init__",
+        "_obs",
+        "reset",
+        "step"
+      ],
+      "docstring": null,
+      "syntax_valid": true,
+      "error": null
+    },
+    "3.2_rl_local.py": {
+      "relative_path": "3.2_rl_local.py",
+      "filename": "3.2_rl_local.py",
+      "lines": 160,
+      "imports_local": [],
+      "imports_external": [
+        "gymnasium",
+        "gymnasium",
+        "numpy",
+        "pandas",
+        "stable_baselines3",
+        "stable_baselines3.common.vec_env",
+        "sklearn.mixture",
+        "pathlib",
+        "warnings"
+      ],
+      "classes": [
+        "WaveletEnv"
+      ],
+      "functions": [
+        "__init__",
+        "_obs",
+        "reset",
+        "step"
+      ],
+      "docstring": null,
+      "syntax_valid": true,
+      "error": null
+    },
+    "3.2_sac_cloned.py": {
+      "relative_path": "3.2_sac_cloned.py",
+      "filename": "3.2_sac_cloned.py",
+      "lines": 204,
+      "imports_local": [],
+      "imports_external": [
+        "gymnasium",
+        "gymnasium",
+        "numpy",
+        "pandas",
+        "stable_baselines3",
+        "stable_baselines3.common.vec_env",
+        "sklearn.mixture",
+        "matplotlib.pyplot",
+        "pathlib",
+        "warnings"
+      ],
+      "classes": [
+        "ExpertEnv"
+      ],
+      "functions": [
+        "__init__",
+        "_obs",
+        "reset",
+        "step"
+      ],
+      "docstring": null,
+      "syntax_valid": true,
+      "error": null
+    },
+    "3.2_train_rl.py": {
+      "relative_path": "3.2_train_rl.py",
+      "filename": "3.2_train_rl.py",
+      "lines": 151,
+      "imports_local": [],
+      "imports_external": [
+        "gymnasium",
+        "gymnasium",
+        "numpy",
+        "pandas",
+        "stable_baselines3",
+        "stable_baselines3.common.vec_env",
+        "pathlib",
+        "matplotlib.pyplot"
+      ],
+      "classes": [
+        "ForexTradingEnv"
+      ],
+      "functions": [
+        "__init__",
+        "_get_obs",
+        "reset",
+        "step"
+      ],
+      "docstring": null,
+      "syntax_valid": true,
+      "error": null
+    },
+    "3.2_train_sac.py": {
+      "relative_path": "3.2_train_sac.py",
+      "filename": "3.2_train_sac.py",
+      "lines": 151,
+      "imports_local": [],
+      "imports_external": [
+        "gymnasium",
+        "gymnasium",
+        "numpy",
+        "pandas",
+        "stable_baselines3",
+        "stable_baselines3.common.vec_env",
+        "matplotlib.pyplot",
+        "pathlib"
+      ],
+      "classes": [
+        "LatentTradingEnv"
+      ],
+      "functions": [
+        "__init__",
+        "_obs",
+        "reset",
+        "step"
+      ],
+      "docstring": null,
+      "syntax_valid": true,
+      "error": null
+    },
+    "3.3_autoencoder.py": {
+      "relative_path": "3.3_autoencoder.py",
+      "filename": "3.3_autoencoder.py",
+      "lines": 138,
+      "imports_local": [],
+      "imports_external": [
+        "numpy",
+        "pandas",
+        "torch",
+        "torch.nn",
+        "torch.optim",
+        "sklearn.preprocessing",
+        "matplotlib.pyplot",
+        "pathlib",
+        "joblib"
+      ],
+      "classes": [
+        "VAE"
+      ],
+      "functions": [
+        "build_features",
+        "__init__",
+        "encode",
+        "reparameterize",
+        "forward",
+        "compress"
+      ],
+      "docstring": null,
+      "syntax_valid": true,
+      "error": null
+    },
+    "3.3_eurjpy.py": {
+      "relative_path": "3.3_eurjpy.py",
+      "filename": "3.3_eurjpy.py",
+      "lines": 138,
+      "imports_local": [],
+      "imports_external": [
+        "pandas",
+        "numpy",
+        "pathlib",
+        "re"
+      ],
+      "classes": [],
+      "functions": [],
+      "docstring": null,
+      "syntax_valid": true,
+      "error": null
+    },
+    "3.4_timegan.py": {
+      "relative_path": "3.4_timegan.py",
+      "filename": "3.4_timegan.py",
+      "lines": 156,
+      "imports_local": [],
+      "imports_external": [
+        "numpy",
+        "pandas",
+        "torch",
+        "torch.nn",
+        "torch.optim",
+        "pathlib",
+        "joblib"
+      ],
+      "classes": [
+        "TimeGAN"
+      ],
+      "functions": [
+        "__init__",
+        "embed",
+        "generate",
+        "discriminate"
+      ],
+      "docstring": null,
+      "syntax_valid": true,
+      "error": null
+    },
+    "3.6_pywavelets.py": {
+      "relative_path": "3.6_pywavelets.py",
+      "filename": "3.6_pywavelets.py",
+      "lines": 63,
+      "imports_local": [],
+      "imports_external": [
+        "pandas",
+        "numpy",
+        "pathlib",
+        "warnings",
+        "pywt",
+        "subprocess",
+        "pywt"
+      ],
+      "classes": [],
+      "functions": [],
+      "docstring": null,
+      "syntax_valid": true,
+      "error": null
+    },
+    "4.0_prediction_layer.py": {
+      "relative_path": "4.0_prediction_layer.py",
+      "filename": "4.0_prediction_layer.py",
+      "lines": 81,
+      "imports_local": [],
+      "imports_external": [
+        "pandas",
+        "numpy",
+        "pathlib",
+        "torch",
+        "torch.nn",
+        "joblib",
+        "transformers",
+        "warnings"
+      ],
+      "classes": [
+        "VAE"
+      ],
+      "functions": [
+        "__init__",
+        "encode",
+        "reparameterize",
+        "forward",
+        "compress"
+      ],
+      "docstring": null,
+      "syntax_valid": true,
+      "error": null
+    },
+    "4.1_confidence_filter.py": {
+      "relative_path": "4.1_confidence_filter.py",
+      "filename": "4.1_confidence_filter.py",
+      "lines": 150,
+      "imports_local": [],
+      "imports_external": [
+        "pandas",
+        "numpy",
+        "pathlib",
+        "re"
+      ],
+      "classes": [],
+      "functions": [
+        "backtest"
+      ],
+      "docstring": null,
+      "syntax_valid": true,
+      "error": null
+    },
+    "4.1_genetic.py": {
+      "relative_path": "4.1_genetic.py",
+      "filename": "4.1_genetic.py",
+      "lines": 133,
+      "imports_local": [],
+      "imports_external": [
+        "pandas",
+        "numpy",
+        "sklearn.mixture",
+        "random",
+        "pathlib"
+      ],
+      "classes": [],
+      "functions": [
+        "evaluate",
+        "rand_gene",
+        "mutate",
+        "cross"
+      ],
+      "docstring": null,
+      "syntax_valid": true,
+      "error": null
+    },
+    "4.1_genetic_safe.py": {
+      "relative_path": "4.1_genetic_safe.py",
+      "filename": "4.1_genetic_safe.py",
+      "lines": 142,
+      "imports_local": [],
+      "imports_external": [
+        "pandas",
+        "numpy",
+        "sklearn.mixture",
+        "random",
+        "pathlib"
+      ],
+      "classes": [],
+      "functions": [
+        "evaluate",
+        "rand_gene",
+        "mutate",
+        "cross"
+      ],
+      "docstring": null,
+      "syntax_valid": true,
+      "error": null
+    },
+    "4.1_genetic_v3.py": {
+      "relative_path": "4.1_genetic_v3.py",
+      "filename": "4.1_genetic_v3.py",
+      "lines": 152,
+      "imports_local": [],
+      "imports_external": [
+        "yfinance",
+        "pandas",
+        "numpy",
+        "sklearn.mixture",
+        "random",
+        "pathlib"
+      ],
+      "classes": [],
+      "functions": [
+        "evaluate",
+        "rand_gene",
+        "mutate",
+        "cross"
+      ],
+      "docstring": null,
+      "syntax_valid": true,
+      "error": null
+    },
+    "4.2_walk_forward.py": {
+      "relative_path": "4.2_walk_forward.py",
+      "filename": "4.2_walk_forward.py",
+      "lines": 170,
+      "imports_local": [],
+      "imports_external": [
+        "pandas",
+        "numpy",
+        "sklearn.mixture",
+        "random",
+        "pathlib"
+      ],
+      "classes": [],
+      "functions": [
+        "prepare",
+        "evaluate"
+      ],
+      "docstring": null,
+      "syntax_valid": true,
+      "error": null
+    },
+    "5.1_out_of_sample.py": {
+      "relative_path": "5.1_out_of_sample.py",
+      "filename": "5.1_out_of_sample.py",
+      "lines": 122,
+      "imports_local": [],
+      "imports_external": [
+        "pandas",
+        "numpy",
+        "sklearn.mixture",
+        "pathlib",
+        "yfinance"
+      ],
+      "classes": [],
+      "functions": [],
+      "docstring": null,
+      "syntax_valid": true,
+      "error": null
+    },
+    "5.3_measure_costs.py": {
+      "relative_path": "5.3_measure_costs.py",
+      "filename": "5.3_measure_costs.py",
+      "lines": 87,
+      "imports_local": [],
+      "imports_external": [
+        "ibapi.client",
+        "ibapi.wrapper",
+        "ibapi.contract",
+        "threading",
+        "time",
+        "numpy"
+      ],
+      "classes": [
+        "CostMeasurer"
+      ],
+      "functions": [
+        "__init__",
+        "error",
+        "nextValidId",
+        "tickPrice",
+        "tickSize"
+      ],
+      "docstring": null,
+      "syntax_valid": true,
+      "error": null
+    },
+    "5.4_hmm_h4_backtest.py": {
+      "relative_path": "5.4_hmm_h4_backtest.py",
+      "filename": "5.4_hmm_h4_backtest.py",
+      "lines": 112,
+      "imports_local": [],
+      "imports_external": [
+        "pandas",
+        "numpy",
+        "sklearn.mixture",
+        "pathlib",
+        "warnings"
+      ],
+      "classes": [],
+      "functions": [
+        "backtest"
+      ],
+      "docstring": null,
+      "syntax_valid": true,
+      "error": null
+    },
+    "5.5_out_of_sample_v3.py": {
+      "relative_path": "5.5_out_of_sample_v3.py",
+      "filename": "5.5_out_of_sample_v3.py",
+      "lines": 103,
+      "imports_local": [],
+      "imports_external": [
+        "yfinance",
+        "pandas",
+        "numpy",
+        "pathlib"
+      ],
+      "classes": [],
+      "functions": [
+        "backtest"
+      ],
+      "docstring": null,
+      "syntax_valid": true,
+      "error": null
+    },
+    "6.1_nine_regime.py": {
+      "relative_path": "6.1_nine_regime.py",
+      "filename": "6.1_nine_regime.py",
+      "lines": 39,
+      "imports_local": [
+        "backtest_engine",
+        "data_loader"
+      ],
+      "imports_external": [
+        "pandas",
+        "pathlib",
+        "strategy_matrix"
+      ],
+      "classes": [],
+      "functions": [
+        "calc_metrics"
+      ],
+      "docstring": "6.1_nine_regime.py - مصفوفة الأنظمة التسعة (ديناميكية)\nتستخدم DataHub للحصول على البيانات.",
+      "syntax_valid": true,
+      "error": null
+    },
+    "6.3_market_maker.py": {
+      "relative_path": "6.3_market_maker.py",
+      "filename": "6.3_market_maker.py",
+      "lines": 35,
+      "imports_local": [
+        "data_loader"
+      ],
+      "imports_external": [
+        "pandas",
+        "strategy_market_maker",
+        "backtest_engine_mm"
+      ],
+      "classes": [],
+      "functions": [
+        "calc_metrics"
+      ],
+      "docstring": "6.3_market_maker.py - صانع السوق الديناميكي (M15)\nيستخدم DataHub للحصول على البيانات.",
+      "syntax_valid": true,
+      "error": null
+    },
+    "6.4_portfolio.py": {
+      "relative_path": "6.4_portfolio.py",
+      "filename": "6.4_portfolio.py",
+      "lines": 165,
+      "imports_local": [],
+      "imports_external": [
+        "pandas",
+        "numpy",
+        "sklearn.mixture",
+        "pathlib"
+      ],
+      "classes": [],
+      "functions": [],
+      "docstring": null,
+      "syntax_valid": true,
+      "error": null
+    },
+    "_test_alloc_disabled.py": {
+      "relative_path": "_test_alloc_disabled.py",
+      "filename": "_test_alloc_disabled.py",
+      "lines": 93,
+      "imports_local": [
+        "portfolio_allocator",
+        "bias_score",
+        "bias_trading_compat"
+      ],
+      "imports_external": [
+        "numpy"
+      ],
+      "classes": [
+        "R"
+      ],
+      "functions": [
+        "__init__"
+      ],
+      "docstring": null,
+      "syntax_valid": true,
+      "error": null
+    },
+    "alpha_vantage_news.py": {
+      "relative_path": "alpha_vantage_news.py",
+      "filename": "alpha_vantage_news.py",
+      "lines": 40,
+      "imports_local": [],
+      "imports_external": [],
+      "classes": [],
+      "functions": [],
+      "docstring": null,
+      "syntax_valid": false,
+      "error": "SyntaxError line 1: invalid non-printable character U+FEFF"
+    },
+    "analysis_correlation.py": {
+      "relative_path": "analysis_correlation.py",
+      "filename": "analysis_correlation.py",
+      "lines": 60,
+      "imports_local": [
+        "data_loader",
+        "backtest_engine"
+      ],
+      "imports_external": [
+        "pandas",
+        "numpy",
+        "strategy_long_lower_shadow",
+        "strategy_high_atr",
+        "strategy_hour00"
+      ],
+      "classes": [],
+      "functions": [],
+      "docstring": "correlation_test.py - Correlation Matrix for Three Candidate Strategies (Atom 8.10c)\nMeasures daily return correlation between Long_Lower_Shadow, High_ATR, and Hour_00.",
+      "syntax_valid": true,
+      "error": null
+    },
+    "analysis_rm.py": {
+      "relative_path": "analysis_rm.py",
+      "filename": "analysis_rm.py",
+      "lines": 33,
+      "imports_local": [
+        "risk_manager"
+      ],
+      "imports_external": [],
+      "classes": [],
+      "functions": [],
+      "docstring": null,
+      "syntax_valid": true,
+      "error": null
+    },
+    "analysis_session_edge.py": {
+      "relative_path": "analysis_session_edge.py",
+      "filename": "analysis_session_edge.py",
+      "lines": 82,
+      "imports_local": [
+        "data_loader",
+        "backtest_engine",
+        "parameter_controller"
+      ],
+      "imports_external": [
+        "pandas",
+        "numpy",
+        "itertools",
+        "warnings"
+      ],
+      "classes": [],
+      "functions": [],
+      "docstring": "session_edge_test.py - Trading Session Edge Test (Council Atom 7.4)\nTests buy signals at the start of major trading sessions (UTC).",
+      "syntax_valid": true,
+      "error": null
+    },
+    "analysis_shock_awe.py": {
+      "relative_path": "analysis_shock_awe.py",
+      "filename": "analysis_shock_awe.py",
+      "lines": 73,
+      "imports_local": [
+        "data_loader",
+        "backtest_engine",
+        "parameter_controller"
+      ],
+      "imports_external": [
+        "pandas",
+        "numpy",
+        "scipy",
+        "strategy_long_lower_shadow",
+        "warnings"
+      ],
+      "classes": [],
+      "functions": [],
+      "docstring": "shock_awe_test.py - Statistical Runs Test for Shock & Awe (Atom 7.3)\nTests if winning trades cluster together (momentum).",
+      "syntax_valid": true,
+      "error": null
+    },
+    "analysis_temporal_edge.py": {
+      "relative_path": "analysis_temporal_edge.py",
+      "filename": "analysis_temporal_edge.py",
+      "lines": 61,
+      "imports_local": [
+        "data_loader"
+      ],
+      "imports_external": [
+        "pandas",
+        "numpy",
+        "scipy"
+      ],
+      "classes": [],
+      "functions": [],
+      "docstring": "temporal_edge_test.py - Temporal/Session Edge Test (Council Atom 7.4)\nTests if specific days/hours have a structural edge.",
+      "syntax_valid": true,
+      "error": null
+    },
+    "apex_diag.py": {
+      "relative_path": "apex_diag.py",
+      "filename": "apex_diag.py",
+      "lines": 20,
+      "imports_local": [],
+      "imports_external": [
+        "pandas",
+        "numpy"
+      ],
+      "classes": [],
+      "functions": [],
+      "docstring": null,
+      "syntax_valid": true,
+      "error": null
+    },
+    "apply_surgery.py": {
+      "relative_path": "apply_surgery.py",
+      "filename": "apply_surgery.py",
+      "lines": 22,
+      "imports_local": [],
+      "imports_external": [
+        "pandas",
+        "numpy"
+      ],
+      "classes": [],
+      "functions": [],
+      "docstring": null,
+      "syntax_valid": true,
+      "error": null
+    },
+    "atr_kelly_sizing.py": {
+      "relative_path": "atr_kelly_sizing.py",
+      "filename": "atr_kelly_sizing.py",
+      "lines": 94,
+      "imports_local": [
+        "data_loader",
+        "backtest_engine",
+        "parameter_controller",
+        "backtest_engine"
+      ],
+      "imports_external": [
+        "pandas",
+        "numpy",
+        "warnings"
+      ],
+      "classes": [],
+      "functions": [],
+      "docstring": "atr_kelly_sizing.py - ATR-Based Dynamic Position Sizing Test (Atom 7.5)\nCompares fixed 0.5% risk vs. dynamic ATR-adjusted risk on Tokyo Open edge.",
+      "syntax_valid": true,
+      "error": null
+    },
+    "audit_project.py": {
+      "relative_path": "audit_project.py",
+      "filename": "audit_project.py",
+      "lines": 46,
+      "imports_local": [],
+      "imports_external": [],
+      "classes": [],
+      "functions": [],
+      "docstring": null,
+      "syntax_valid": false,
+      "error": "SyntaxError line 1: invalid non-printable character U+FEFF"
+    },
+    "auditor.py": {
+      "relative_path": "auditor.py",
+      "filename": "auditor.py",
+      "lines": 51,
+      "imports_local": [],
+      "imports_external": [
+        "os",
+        "re"
+      ],
+      "classes": [],
+      "functions": [
+        "audit_file",
+        "main"
+      ],
+      "docstring": null,
+      "syntax_valid": true,
+      "error": null
+    },
+    "backtest_engine.py": {
+      "relative_path": "backtest_engine.py",
+      "filename": "backtest_engine.py",
+      "lines": 311,
+      "imports_local": [
+        "risk_manager",
+        "risk_guardian",
+        "data_loader",
+        "parameter_controller"
+      ],
+      "imports_external": [
+        "pandas",
+        "random"
+      ],
+      "classes": [],
+      "functions": [
+        "dynamic_backtest"
+      ],
+      "docstring": "backtest_engine.py - Unified portfolio engine + Meta-Labeling Filter\nProject: Viral Entity - Strongest Trading Firm\nSupports: Multiple strategies, partial exit, fixed target, Sniping, Turbo Volatility.\nFilter layers (SmartScore, Fear, Shock&Awe) act as gatekeepers, NOT position size multipliers.",
+      "syntax_valid": true,
+      "error": null
+    },
+    "beast_final.py": {
+      "relative_path": "beast_final.py",
+      "filename": "beast_final.py",
+      "lines": 434,
+      "imports_local": [],
+      "imports_external": [
+        "time",
+        "threading",
+        "csv",
+        "os",
+        "re",
+        "pandas",
+        "numpy",
+        "datetime",
+        "pathlib",
+        "ibapi.client",
+        "ibapi.wrapper",
+        "ibapi.contract",
+        "ibapi.order",
+        "sklearn.mixture",
+        "warnings"
+      ],
+      "classes": [
+        "BeastFinal"
+      ],
+      "functions": [
+        "is_news_danger_zone",
+        "watchdog",
+        "require_live_trading_confirmation",
+        "main",
+        "__init__",
+        "log",
+        "error",
+        "nextValidId",
+        "contractDetails",
+        "contractDetailsEnd",
+        "accountSummary",
+        "accountSummaryEnd",
+        "position",
+        "positionEnd",
+        "historicalData",
+        "historicalDataEnd",
+        "clean_date",
+        "get_matrix_signal",
+        "get_mm_signal",
+        "calculate_position_size",
+        "place_trade",
+        "place_limit_order",
+        "kill_switch_check",
+        "run_cycle",
+        "connect_with_retry"
+      ],
+      "docstring": null,
+      "syntax_valid": true,
+      "error": null
+    },
+    "bias_score.py": {
+      "relative_path": "bias_score.py",
+      "filename": "bias_score.py",
+      "lines": 95,
+      "imports_local": [],
+      "imports_external": [
+        "dataclasses",
+        "numpy"
+      ],
+      "classes": [
+        "BiasReport",
+        "BiasScorer"
+      ],
+      "functions": [
+        "__init__",
+        "_sma",
+        "_atr",
+        "_comp_ma_pos",
+        "_comp_ma_cross",
+        "_comp_momentum",
+        "_comp_structure",
+        "score"
+      ],
+      "docstring": "Bias Score - quantitative directional bias from normalized components.",
+      "syntax_valid": true,
+      "error": null
+    },
+    "bias_trading_compat.py": {
+      "relative_path": "bias_trading_compat.py",
+      "filename": "bias_trading_compat.py",
+      "lines": 66,
+      "imports_local": [
+        "bias_score"
+      ],
+      "imports_external": [
+        "dataclasses"
+      ],
+      "classes": [
+        "CompatReport",
+        "BiasTradingCompat"
+      ],
+      "functions": [
+        "__init__",
+        "_score",
+        "_reason",
+        "evaluate",
+        "_best_side"
+      ],
+      "docstring": "Bias x Trading Type Compatibility.",
+      "syntax_valid": true,
+      "error": null
+    },
+    "build_hist_v2.py": {
+      "relative_path": "build_hist_v2.py",
+      "filename": "build_hist_v2.py",
+      "lines": 56,
+      "imports_local": [],
+      "imports_external": [],
+      "classes": [],
+      "functions": [],
+      "docstring": null,
+      "syntax_valid": false,
+      "error": "SyntaxError line 1: invalid non-printable character U+FEFF"
+    },
+    "build_historical_data.py": {
+      "relative_path": "build_historical_data.py",
+      "filename": "build_historical_data.py",
+      "lines": 84,
+      "imports_local": [
+        "dukascopy_fetcher"
+      ],
+      "imports_external": [
+        "pandas",
+        "numpy",
+        "datetime",
+        "time",
+        "os",
+        "warnings"
+      ],
+      "classes": [
+        "HistoricalDataBuilder"
+      ],
+      "functions": [
+        "__init__",
+        "build_period",
+        "_save",
+        "update_daily_data"
+      ],
+      "docstring": "build_historical_data.py - Institutional Multi-Year Data Builder\nDownloads, aggregates, and stores real H1 data with volume for backtesting.",
+      "syntax_valid": true,
+      "error": null
+    },
+    "clean_csv_data.py": {
+      "relative_path": "clean_csv_data.py",
+      "filename": "clean_csv_data.py",
+      "lines": 51,
+      "imports_local": [],
+      "imports_external": [],
+      "classes": [],
+      "functions": [],
+      "docstring": null,
+      "syntax_valid": false,
+      "error": "SyntaxError line 1: invalid non-printable character U+FEFF"
+    },
+    "clean_params.py": {
+      "relative_path": "clean_params.py",
+      "filename": "clean_params.py",
+      "lines": 26,
+      "imports_local": [],
+      "imports_external": [],
+      "classes": [],
+      "functions": [],
+      "docstring": null,
+      "syntax_valid": false,
+      "error": "SyntaxError line 1: invalid non-printable character U+FEFF"
+    },
+    "cointegration_tester.py": {
+      "relative_path": "cointegration_tester.py",
+      "filename": "cointegration_tester.py",
+      "lines": 62,
+      "imports_local": [],
+      "imports_external": [
+        "pandas",
+        "numpy",
+        "os",
+        "statsmodels.api",
+        "statsmodels.tsa.stattools"
+      ],
+      "classes": [],
+      "functions": [
+        "load_pair_data",
+        "test_cointegration"
+      ],
+      "docstring": "cointegration_tester.py - Engle-Granger Cointegration Test\nVerifies if EURUSD and GBPUSD are cointegrated over 5 years of real data.",
+      "syntax_valid": true,
+      "error": null
+    },
+    "composite_score.py": {
+      "relative_path": "composite_score.py",
+      "filename": "composite_score.py",
+      "lines": 89,
+      "imports_local": [],
+      "imports_external": [
+        "dataclasses"
+      ],
+      "classes": [
+        "TestScore",
+        "CompositeReport",
+        "CompositeScorer"
+      ],
+      "functions": [
+        "__init__",
+        "_grade",
+        "run"
+      ],
+      "docstring": "Composite Score — weighted aggregation of all validation tests.",
+      "syntax_valid": true,
+      "error": null
+    },
+    "correlation_matrix.py": {
+      "relative_path": "correlation_matrix.py",
+      "filename": "correlation_matrix.py",
+      "lines": 77,
+      "imports_local": [],
+      "imports_external": [
+        "pandas",
+        "numpy",
+        "os",
+        "warnings"
+      ],
+      "classes": [
+        "CorrelationMatrix"
+      ],
+      "functions": [
+        "__init__",
+        "_load_data",
+        "analyze"
+      ],
+      "docstring": "correlation_matrix.py - Institutional Cross-Asset Correlation & Divergence\nReads real H1 data for multiple pairs, calculates rolling correlation, and detects divergence.",
+      "syntax_valid": true,
+      "error": null
+    },
+    "cot_fetcher.py": {
+      "relative_path": "cot_fetcher.py",
+      "filename": "cot_fetcher.py",
+      "lines": 83,
+      "imports_local": [],
+      "imports_external": [
+        "pandas",
+        "numpy",
+        "cot_reports",
+        "os",
+        "time"
+      ],
+      "classes": [
+        "COTFetcher"
+      ],
+      "functions": [
+        "fetch_cot_data"
+      ],
+      "docstring": "cot_fetcher.py - CFTC Commitments of Traders (COT) Data Fetcher\nUses exact verified column names from CFTC legacy futures reports.",
+      "syntax_valid": true,
+      "error": null
+    },
+    "cpcv_validator.py": {
+      "relative_path": "cpcv_validator.py",
+      "filename": "cpcv_validator.py",
+      "lines": 134,
+      "imports_local": [],
+      "imports_external": [
+        "pandas",
+        "numpy",
+        "itertools",
+        "warnings",
+        "random"
+      ],
+      "classes": [
+        "CPCVValidator"
+      ],
+      "functions": [
+        "__init__",
+        "generate_folds",
+        "run_cpcv",
+        "dummy_backtest"
+      ],
+      "docstring": "cpcv_validator.py - Combinatorial Purged Cross-Validation\nImplements López de Prado's CPCV to generate multiple out-of-sample backtest paths.\nCalculates Probability of Backtest Overfitting (PBO).",
+      "syntax_valid": true,
+      "error": null
+    },
+    "cpv_high_atr.py": {
+      "relative_path": "cpv_high_atr.py",
+      "filename": "cpv_high_atr.py",
+      "lines": 87,
+      "imports_local": [
+        "data_loader",
+        "backtest_engine",
+        "parameter_controller"
+      ],
+      "imports_external": [
+        "pandas",
+        "numpy",
+        "itertools",
+        "warnings"
+      ],
+      "classes": [],
+      "functions": [],
+      "docstring": "cpv_high_atr.py - CPCV Test for High ATR Edge (Candidate 2)\nTests if high volatility regimes offer a structural edge.",
+      "syntax_valid": true,
+      "error": null
+    },
+    "cpv_long_lower_shadow.py": {
+      "relative_path": "cpv_long_lower_shadow.py",
+      "filename": "cpv_long_lower_shadow.py",
+      "lines": 85,
+      "imports_local": [
+        "data_loader",
+        "backtest_engine",
+        "parameter_controller"
+      ],
+      "imports_external": [
+        "pandas",
+        "numpy",
+        "itertools",
+        "warnings"
+      ],
+      "classes": [],
+      "functions": [],
+      "docstring": "cpv_long_lower_shadow.py - CPCV Test for Long Lower Shadow Edge (Candidate 1)\nTests if long lower shadows predict bullish reversals.",
+      "syntax_valid": true,
+      "error": null
+    },
+    "cpv_temporal.py": {
+      "relative_path": "cpv_temporal.py",
+      "filename": "cpv_temporal.py",
+      "lines": 132,
+      "imports_local": [],
+      "imports_external": [
+        "numpy",
+        "itertools",
+        "dataclasses",
+        "typing"
+      ],
+      "classes": [
+        "CPCVSplit",
+        "TemporalCPCV"
+      ],
+      "functions": [
+        "train_size",
+        "test_size",
+        "__init__",
+        "generate_splits",
+        "_assign_groups",
+        "_apply_purge",
+        "_apply_embargo",
+        "summary"
+      ],
+      "docstring": "Combinatorial Purged Cross-Validation (CPCV)\nTemporal Engine\n\nReference: Lopez de Prado (2018)\nAdvances in Financial Machine Learning, Ch.7",
+      "syntax_valid": true,
+      "error": null
+    },
+    "cpv_validator.py": {
+      "relative_path": "cpv_validator.py",
+      "filename": "cpv_validator.py",
+      "lines": 231,
+      "imports_local": [
+        "cpv_temporal"
+      ],
+      "imports_external": [
+        "numpy",
+        "dataclasses",
+        "typing"
+      ],
+      "classes": [
+        "SplitResult",
+        "CPCVReport",
+        "CPCVValidator"
+      ],
+      "functions": [
+        "summary",
+        "__init__",
+        "validate",
+        "_run_split",
+        "_metrics",
+        "_build_report",
+        "_compute_pbo",
+        "_classify"
+      ],
+      "docstring": "CPCV Validator - Validate strategies via CPCV.",
+      "syntax_valid": true,
+      "error": null
+    },
+    "cross_validation.py": {
+      "relative_path": "cross_validation.py",
+      "filename": "cross_validation.py",
+      "lines": 66,
+      "imports_local": [
+        "data_loader",
+        "backtest_engine",
+        "parameter_controller"
+      ],
+      "imports_external": [
+        "pandas",
+        "numpy",
+        "strategy_matrix",
+        "strategy_momentum"
+      ],
+      "classes": [],
+      "functions": [],
+      "docstring": "cross_validation.py - Time-series Cross-Validation (Overfitting Gate)\nTests current parameters on 3 sequential data folds.",
+      "syntax_valid": true,
+      "error": null
+    },
+    "data_feed_interface.py": {
+      "relative_path": "data_feed_interface.py",
+      "filename": "data_feed_interface.py",
+      "lines": 69,
+      "imports_local": [
+        "data_loader"
+      ],
+      "imports_external": [
+        "abc",
+        "typing",
+        "pandas"
+      ],
+      "classes": [
+        "DataFeedInterface",
+        "CsvDataFeed"
+      ],
+      "functions": [
+        "load",
+        "get_symbol",
+        "get_timeframe",
+        "get_date_range",
+        "validate",
+        "__init__",
+        "load",
+        "get_symbol",
+        "get_timeframe",
+        "get_date_range",
+        "validate"
+      ],
+      "docstring": "data_feed_interface.py",
+      "syntax_valid": true,
+      "error": null
+    },
+    "data_loader.py": {
+      "relative_path": "data_loader.py",
+      "filename": "data_loader.py",
+      "lines": 76,
+      "imports_local": [],
+      "imports_external": [
+        "pandas",
+        "pathlib"
+      ],
+      "classes": [],
+      "functions": [
+        "build_unified_data",
+        "load_hourly",
+        "load_daily",
+        "load_m15"
+      ],
+      "docstring": "DataHub - المركز الموحد لبيانات EUR/USD\nالمشروع: الكيان الفيروسي - أقوى شركة تداول\nيجمع بيانات Dukascopy و MT5 في مصدر واحد مضاد للرصاص.",
+      "syntax_valid": true,
+      "error": null
+    },
+    "data_quality_report.py": {
+      "relative_path": "data_quality_report.py",
+      "filename": "data_quality_report.py",
+      "lines": 131,
+      "imports_local": [],
+      "imports_external": [
+        "pandas",
+        "pathlib"
+      ],
+      "classes": [],
+      "functions": [
+        "main"
+      ],
+      "docstring": null,
+      "syntax_valid": true,
+      "error": null
+    },
+    "defect_rate.py": {
+      "relative_path": "defect_rate.py",
+      "filename": "defect_rate.py",
+      "lines": 54,
+      "imports_local": [],
+      "imports_external": [
+        "dataclasses"
+      ],
+      "classes": [
+        "DefectReport",
+        "DefectRateCalculator"
+      ],
+      "functions": [
+        "__init__",
+        "run"
+      ],
+      "docstring": "Defect Rate Calculator — aggregates validation test results.",
+      "syntax_valid": true,
+      "error": null
+    },
+    "deflated_sharpe_calculator.py": {
+      "relative_path": "deflated_sharpe_calculator.py",
+      "filename": "deflated_sharpe_calculator.py",
+      "lines": 164,
+      "imports_local": [],
+      "imports_external": [
+        "numpy",
+        "scipy"
+      ],
+      "classes": [
+        "DeflatedSharpeCalculator"
+      ],
+      "functions": [
+        "__init__",
+        "expected_max_sharpe",
+        "compute_dsr",
+        "compute_min_trl"
+      ],
+      "docstring": "deflated_sharpe_calculator.py - Deflated Sharpe Ratio Calculator\nImplements Bailey & López de Prado (2014) DSR methodology.\nTests whether observed Sharpe is significant after multiple testing correction.",
+      "syntax_valid": true,
+      "error": null
+    },
+    "dry_run_simulator.py": {
+      "relative_path": "dry_run_simulator.py",
+      "filename": "dry_run_simulator.py",
+      "lines": 125,
+      "imports_local": [
+        "data_loader",
+        "backtest_engine",
+        "unified_filters",
+        "parameter_controller",
+        "weekly_analyzer"
+      ],
+      "imports_external": [
+        "pandas",
+        "pathlib",
+        "strategy_matrix",
+        "strategy_momentum",
+        "strategy_range_hunter"
+      ],
+      "classes": [],
+      "functions": [],
+      "docstring": "dry_run_simulator.py - Dynamic Portfolio (3 strategies + adaptive weighting)\nProject: Viral Entity - Strongest Trading Firm",
+      "syntax_valid": true,
+      "error": null
+    },
+    "dukascopy_fetcher.py": {
+      "relative_path": "dukascopy_fetcher.py",
+      "filename": "dukascopy_fetcher.py",
+      "lines": 138,
+      "imports_local": [],
+      "imports_external": [
+        "pandas",
+        "numpy",
+        "datetime",
+        "time",
+        "requests",
+        "lzma",
+        "struct"
+      ],
+      "classes": [
+        "DukascopyFetcher"
+      ],
+      "functions": [
+        "__init__",
+        "_fetch_hour_ticks",
+        "fetch_period",
+        "aggregate_to_h1"
+      ],
+      "docstring": "dukascopy_fetcher.py - Institutional Tick Data Fetcher",
+      "syntax_valid": true,
+      "error": null
+    },
+    "economic_calendar_fetcher.py": {
+      "relative_path": "economic_calendar_fetcher.py",
+      "filename": "economic_calendar_fetcher.py",
+      "lines": 90,
+      "imports_local": [],
+      "imports_external": [
+        "finnhub",
+        "pandas",
+        "datetime",
+        "os",
+        "time"
+      ],
+      "classes": [
+        "EconomicCalendarFetcher"
+      ],
+      "functions": [
+        "__init__",
+        "fetch_economic_events"
+      ],
+      "docstring": "economic_calendar_fetcher.py - Institutional News Data Fetcher\nFetches historical economic events (Actual vs Forecast) from Finnhub.",
+      "syntax_valid": true,
+      "error": null
+    },
+    "edge_diagnostics.py": {
+      "relative_path": "edge_diagnostics.py",
+      "filename": "edge_diagnostics.py",
+      "lines": 84,
+      "imports_local": [
+        "data_loader",
+        "parameter_controller"
+      ],
+      "imports_external": [
+        "pandas",
+        "numpy",
+        "scipy.stats"
+      ],
+      "classes": [],
+      "functions": [],
+      "docstring": "edge_diagnostics.py - Statistical Edge Test (Council Atom 7.1)\nTests if classical indicators have ANY predictive power.",
+      "syntax_valid": true,
+      "error": null
+    },
+    "edge_scanner.py": {
+      "relative_path": "edge_scanner.py",
+      "filename": "edge_scanner.py",
+      "lines": 102,
+      "imports_local": [
+        "data_loader",
+        "backtest_engine"
+      ],
+      "imports_external": [
+        "pandas",
+        "numpy",
+        "itertools",
+        "warnings"
+      ],
+      "classes": [],
+      "functions": [],
+      "docstring": "edge_scanner.py - Systematic Edge Discovery (Council Atom 8.9)\nScans multiple feature classes for predictive power using CPCV.",
+      "syntax_valid": true,
+      "error": null
+    },
+    "feature_engineer.py": {
+      "relative_path": "feature_engineer.py",
+      "filename": "feature_engineer.py",
+      "lines": 74,
+      "imports_local": [],
+      "imports_external": [],
+      "classes": [],
+      "functions": [],
+      "docstring": null,
+      "syntax_valid": false,
+      "error": "SyntaxError line 1: invalid non-printable character U+FEFF"
+    },
+    "final_cut.py": {
+      "relative_path": "final_cut.py",
+      "filename": "final_cut.py",
+      "lines": 34,
+      "imports_local": [],
+      "imports_external": [
+        "pandas"
+      ],
+      "classes": [],
+      "functions": [],
+      "docstring": null,
+      "syntax_valid": true,
+      "error": null
+    },
+    "final_pairs_test.py": {
+      "relative_path": "final_pairs_test.py",
+      "filename": "final_pairs_test.py",
+      "lines": 92,
+      "imports_local": [],
+      "imports_external": [],
+      "classes": [],
+      "functions": [],
+      "docstring": null,
+      "syntax_valid": false,
+      "error": "SyntaxError line 1: invalid non-printable character U+FEFF"
+    },
+    "frozen/1.0_time_of_day.py": {
+      "relative_path": "frozen/1.0_time_of_day.py",
+      "filename": "1.0_time_of_day.py",
+      "lines": 124,
+      "imports_local": [],
+      "imports_external": [],
+      "classes": [],
+      "functions": [],
+      "docstring": null,
+      "syntax_valid": false,
+      "error": "SyntaxError line 1: invalid non-printable character U+FEFF"
+    },
+    "frozen/1.1_news_drift.py": {
+      "relative_path": "frozen/1.1_news_drift.py",
+      "filename": "1.1_news_drift.py",
+      "lines": 129,
+      "imports_local": [],
+      "imports_external": [],
+      "classes": [],
+      "functions": [],
+      "docstring": null,
+      "syntax_valid": false,
+      "error": "SyntaxError line 1: invalid non-printable character U+FEFF"
+    },
+    "frozen/1.2_weekly_bias.py": {
+      "relative_path": "frozen/1.2_weekly_bias.py",
+      "filename": "1.2_weekly_bias.py",
+      "lines": 203,
+      "imports_local": [],
+      "imports_external": [],
+      "classes": [],
+      "functions": [],
+      "docstring": null,
+      "syntax_valid": false,
+      "error": "SyntaxError line 1: invalid non-printable character U+FEFF"
+    },
+    "frozen/1.3_combined_filters.py": {
+      "relative_path": "frozen/1.3_combined_filters.py",
+      "filename": "1.3_combined_filters.py",
+      "lines": 127,
+      "imports_local": [],
+      "imports_external": [],
+      "classes": [],
+      "functions": [],
+      "docstring": null,
+      "syntax_valid": false,
+      "error": "SyntaxError line 1: invalid non-printable character U+FEFF"
+    },
+    "frozen/1.4_volatility_regime.py": {
+      "relative_path": "frozen/1.4_volatility_regime.py",
+      "filename": "1.4_volatility_regime.py",
+      "lines": 123,
+      "imports_local": [],
+      "imports_external": [],
+      "classes": [],
+      "functions": [],
+      "docstring": null,
+      "syntax_valid": false,
+      "error": "SyntaxError line 1: invalid non-printable character U+FEFF"
+    },
+    "frozen/1.5_risk_managed_bot.py": {
+      "relative_path": "frozen/1.5_risk_managed_bot.py",
+      "filename": "1.5_risk_managed_bot.py",
+      "lines": 115,
+      "imports_local": [],
+      "imports_external": [
+        "pandas",
+        "numpy",
+        "matplotlib.pyplot",
+        "matplotlib.dates",
+        "pathlib"
+      ],
+      "classes": [],
+      "functions": [],
+      "docstring": null,
+      "syntax_valid": true,
+      "error": null
+    },
+    "frozen/backtest_engine_mm.py": {
+      "relative_path": "frozen/backtest_engine_mm.py",
+      "filename": "backtest_engine_mm.py",
+      "lines": 70,
+      "imports_local": [],
+      "imports_external": [],
+      "classes": [],
+      "functions": [],
+      "docstring": null,
+      "syntax_valid": false,
+      "error": "SyntaxError line 1: invalid non-printable character U+FEFF"
+    },
+    "frozen/diagnose_env.py": {
+      "relative_path": "frozen/diagnose_env.py",
+      "filename": "diagnose_env.py",
+      "lines": 108,
+      "imports_local": [],
+      "imports_external": [],
+      "classes": [],
+      "functions": [],
+      "docstring": null,
+      "syntax_valid": false,
+      "error": "SyntaxError line 1: invalid non-printable character U+FEFF"
+    },
+    "frozen/fix_data.py": {
+      "relative_path": "frozen/fix_data.py",
+      "filename": "fix_data.py",
+      "lines": 46,
+      "imports_local": [],
+      "imports_external": [],
+      "classes": [],
+      "functions": [],
+      "docstring": null,
+      "syntax_valid": false,
+      "error": "SyntaxError line 1: invalid non-printable character U+FEFF"
+    },
+    "frozen/live_hmm_bot.py": {
+      "relative_path": "frozen/live_hmm_bot.py",
+      "filename": "live_hmm_bot.py",
+      "lines": 224,
+      "imports_local": [],
+      "imports_external": [],
+      "classes": [],
+      "functions": [],
+      "docstring": null,
+      "syntax_valid": false,
+      "error": "SyntaxError line 1: invalid non-printable character U+FEFF"
+    },
+    "frozen/strategy_market_maker.py": {
+      "relative_path": "frozen/strategy_market_maker.py",
+      "filename": "strategy_market_maker.py",
+      "lines": 32,
+      "imports_local": [],
+      "imports_external": [],
+      "classes": [],
+      "functions": [],
+      "docstring": null,
+      "syntax_valid": false,
+      "error": "SyntaxError line 1: invalid non-printable character U+FEFF"
+    },
+    "frozen/strategy_mean_reversion.py": {
+      "relative_path": "frozen/strategy_mean_reversion.py",
+      "filename": "strategy_mean_reversion.py",
+      "lines": 74,
+      "imports_local": [],
+      "imports_external": [],
+      "classes": [],
+      "functions": [],
+      "docstring": null,
+      "syntax_valid": false,
+      "error": "SyntaxError line 1: invalid non-printable character U+FEFF"
+    },
+    "gdelt_fetcher.py": {
+      "relative_path": "gdelt_fetcher.py",
+      "filename": "gdelt_fetcher.py",
+      "lines": 115,
+      "imports_local": [],
+      "imports_external": [
+        "pandas",
+        "numpy",
+        "requests",
+        "datetime",
+        "os",
+        "time"
+      ],
+      "classes": [
+        "GDELTFetcher"
+      ],
+      "functions": [
+        "fetch_monthly_data",
+        "fetch_full_history"
+      ],
+      "docstring": "gdelt_fetcher.py - GDELT Project News Data Fetcher (Direct API)\nFetches geopolitical and macro news tone/volume for EURUSD context.",
+      "syntax_valid": true,
+      "error": null
+    },
+    "institutional_data_handler.py": {
+      "relative_path": "institutional_data_handler.py",
+      "filename": "institutional_data_handler.py",
+      "lines": 62,
+      "imports_local": [
+        "regime_detector",
+        "order_flow_analyzer",
+        "correlation_matrix"
+      ],
+      "imports_external": [
+        "pandas",
+        "os",
+        "warnings"
+      ],
+      "classes": [],
+      "functions": [
+        "prepare_institutional_data"
+      ],
+      "docstring": "institutional_data_handler.py - Institutional Data Gateway\nLoads real Dukascopy data, applies all 3 smart modules (Regime, Order Flow, Correlation),\nand returns a fully enriched DataFrame ready for the smart engine.",
+      "syntax_valid": true,
+      "error": null
+    },
+    "integrate_vp.py": {
+      "relative_path": "integrate_vp.py",
+      "filename": "integrate_vp.py",
+      "lines": 27,
+      "imports_local": [],
+      "imports_external": [],
+      "classes": [],
+      "functions": [],
+      "docstring": null,
+      "syntax_valid": false,
+      "error": "SyntaxError line 1: invalid non-printable character U+FEFF"
+    },
+    "macro_data_fetcher.py": {
+      "relative_path": "macro_data_fetcher.py",
+      "filename": "macro_data_fetcher.py",
+      "lines": 135,
+      "imports_local": [],
+      "imports_external": [
+        "requests",
+        "pandas",
+        "numpy",
+        "datetime",
+        "os",
+        "time"
+      ],
+      "classes": [
+        "MacroDataFetcher"
+      ],
+      "functions": [
+        "__init__",
+        "fetch_series",
+        "fetch_all_macro",
+        "align_to_h1"
+      ],
+      "docstring": "macro_data_fetcher.py - Institutional Macro Economic Data Fetcher\nFetches US-DE Rate Differential, DXY, and VIX from FRED API.\nAligns daily data to H1 timeframe via forward-fill.",
+      "syntax_valid": true,
+      "error": null
+    },
+    "meta_labeler.py": {
+      "relative_path": "meta_labeler.py",
+      "filename": "meta_labeler.py",
+      "lines": 252,
+      "imports_local": [
+        "feature_engineer",
+        "institutional_data_handler",
+        "volume_shock_detector"
+      ],
+      "imports_external": [
+        "pandas",
+        "numpy",
+        "xgboost",
+        "sklearn.metrics",
+        "warnings",
+        "sklearn.metrics",
+        "numpy"
+      ],
+      "classes": [
+        "MetaLabeler"
+      ],
+      "functions": [
+        "focal_loss_obj",
+        "focal_eval",
+        "__init__",
+        "create_base_signal",
+        "create_triple_barrier_target",
+        "calculate_uniqueness_weights",
+        "train",
+        "predict",
+        "evaluate"
+      ],
+      "docstring": "meta_labeler.py - Institutional ML Meta-Labeler (Triple Barrier Method)\nTrains an XGBoost Binary Classifier to predict if a trade will hit TP before SL.",
+      "syntax_valid": true,
+      "error": null
+    },
+    "microstructure_engine.py": {
+      "relative_path": "microstructure_engine.py",
+      "filename": "microstructure_engine.py",
+      "lines": 61,
+      "imports_local": [],
+      "imports_external": [],
+      "classes": [],
+      "functions": [],
+      "docstring": null,
+      "syntax_valid": false,
+      "error": "SyntaxError line 1: invalid non-printable character U+FEFF"
+    },
+    "monte_carlo_shadow.py": {
+      "relative_path": "monte_carlo_shadow.py",
+      "filename": "monte_carlo_shadow.py",
+      "lines": 93,
+      "imports_local": [
+        "data_loader",
+        "backtest_engine",
+        "parameter_controller"
+      ],
+      "imports_external": [
+        "pandas",
+        "numpy",
+        "strategy_long_lower_shadow"
+      ],
+      "classes": [],
+      "functions": [],
+      "docstring": "monte_carlo_shadow.py - Monte Carlo Simulation for Long Lower Shadow\nEstimates Prop Firm success probability using bootstrapped trade sequences.",
+      "syntax_valid": true,
+      "error": null
+    },
+    "monte_carlo_test.py": {
+      "relative_path": "monte_carlo_test.py",
+      "filename": "monte_carlo_test.py",
+      "lines": 103,
+      "imports_local": [],
+      "imports_external": [
+        "dataclasses",
+        "numpy"
+      ],
+      "classes": [
+        "MCReport",
+        "MonteCarloTest"
+      ],
+      "functions": [
+        "__init__",
+        "_metrics",
+        "run"
+      ],
+      "docstring": "Monte Carlo Bootstrap Test — resamples trades to test robustness.",
+      "syntax_valid": true,
+      "error": null
+    },
+    "monte_carlo_tokyo.py": {
+      "relative_path": "monte_carlo_tokyo.py",
+      "filename": "monte_carlo_tokyo.py",
+      "lines": 97,
+      "imports_local": [
+        "data_loader",
+        "backtest_engine",
+        "parameter_controller"
+      ],
+      "imports_external": [
+        "pandas",
+        "numpy",
+        "warnings"
+      ],
+      "classes": [],
+      "functions": [],
+      "docstring": "monte_carlo_tokyo.py - FTMO Challenge Monte Carlo on Tokyo Open Edge (Atom 7.6)\nEstimates success probability using bootstrapped trade sequences.",
+      "syntax_valid": true,
+      "error": null
+    },
+    "multi_period_validator.py": {
+      "relative_path": "multi_period_validator.py",
+      "filename": "multi_period_validator.py",
+      "lines": 109,
+      "imports_local": [],
+      "imports_external": [
+        "dataclasses",
+        "numpy"
+      ],
+      "classes": [
+        "PeriodResult",
+        "MultiPeriodReport",
+        "MultiPeriodValidator"
+      ],
+      "functions": [
+        "__init__",
+        "_period_metrics",
+        "run"
+      ],
+      "docstring": "Multi-Period Validation — checks consistency across time segments.",
+      "syntax_valid": true,
+      "error": null
+    },
+    "multiple_testing_correction.py": {
+      "relative_path": "multiple_testing_correction.py",
+      "filename": "multiple_testing_correction.py",
+      "lines": 60,
+      "imports_local": [],
+      "imports_external": [
+        "pandas",
+        "numpy",
+        "scipy"
+      ],
+      "classes": [],
+      "functions": [],
+      "docstring": "multiple_testing_correction.py - Bonferroni Correction (Council Atom 8.3)\nCalculates the total number of trials across all project history,\nand applies strict correction to the temporal edge discovery.",
+      "syntax_valid": true,
+      "error": null
+    },
+    "multiple_testing_high_atr.py": {
+      "relative_path": "multiple_testing_high_atr.py",
+      "filename": "multiple_testing_high_atr.py",
+      "lines": 43,
+      "imports_local": [
+        "data_loader"
+      ],
+      "imports_external": [
+        "pandas",
+        "numpy",
+        "scipy"
+      ],
+      "classes": [],
+      "functions": [],
+      "docstring": "multiple_testing_high_atr.py - Bonferroni Correction for High ATR (Candidate 2)\nCalculates original p-value and applies strict correction.",
+      "syntax_valid": true,
+      "error": null
+    },
+    "multiple_testing_hour00.py": {
+      "relative_path": "multiple_testing_hour00.py",
+      "filename": "multiple_testing_hour00.py",
+      "lines": 42,
+      "imports_local": [
+        "data_loader"
+      ],
+      "imports_external": [
+        "pandas",
+        "numpy",
+        "scipy"
+      ],
+      "classes": [],
+      "functions": [],
+      "docstring": "multiple_testing_hour00.py - Bonferroni Correction for Hour_00 (Candidate 3)\nCalculates original p-value and applies strict correction.",
+      "syntax_valid": true,
+      "error": null
+    },
+    "multiple_testing_shadow.py": {
+      "relative_path": "multiple_testing_shadow.py",
+      "filename": "multiple_testing_shadow.py",
+      "lines": 46,
+      "imports_local": [
+        "data_loader"
+      ],
+      "imports_external": [
+        "pandas",
+        "numpy",
+        "scipy"
+      ],
+      "classes": [],
+      "functions": [],
+      "docstring": "multiple_testing_shadow.py - Bonferroni Correction for Long Lower Shadow (Atom 8.9a)\nCalculates original p-value and applies strict correction.",
+      "syntax_valid": true,
+      "error": null
+    },
+    "news_csv_parser.py": {
+      "relative_path": "news_csv_parser.py",
+      "filename": "news_csv_parser.py",
+      "lines": 102,
+      "imports_local": [],
+      "imports_external": [
+        "pandas",
+        "numpy",
+        "re",
+        "os"
+      ],
+      "classes": [],
+      "functions": [
+        "clean_numeric",
+        "parse_news_csv"
+      ],
+      "docstring": "news_csv_parser.py - Institutional Economic News Parser\nReads historical news CSV (e.g., ForexFactory format), cleans numeric values, \nand calculates the Surprise (Actual - Forecast).",
+      "syntax_valid": true,
+      "error": null
+    },
+    "news_detector.py": {
+      "relative_path": "news_detector.py",
+      "filename": "news_detector.py",
+      "lines": 4,
+      "imports_local": [],
+      "imports_external": [],
+      "classes": [
+        "NewsDetector"
+      ],
+      "functions": [
+        "is_high_impact_news"
+      ],
+      "docstring": null,
+      "syntax_valid": true,
+      "error": null
+    },
+    "news_risk.py": {
+      "relative_path": "news_risk.py",
+      "filename": "news_risk.py",
+      "lines": 121,
+      "imports_local": [],
+      "imports_external": [
+        "dataclasses",
+        "datetime",
+        "enum",
+        "typing"
+      ],
+      "classes": [
+        "RiskLevel",
+        "NewsEvent",
+        "NewsRiskReport",
+        "NewsRiskDetector"
+      ],
+      "functions": [
+        "__post_init__",
+        "__init__",
+        "add_event",
+        "add_events",
+        "clear",
+        "events",
+        "check",
+        "_next_min"
+      ],
+      "docstring": "News Risk Detector - avoids trading around high-impact economic events.",
+      "syntax_valid": true,
+      "error": null
+    },
+    "ofi_calculator.py": {
+      "relative_path": "ofi_calculator.py",
+      "filename": "ofi_calculator.py",
+      "lines": 68,
+      "imports_local": [],
+      "imports_external": [
+        "pandas",
+        "numpy"
+      ],
+      "classes": [
+        "OFICalculator"
+      ],
+      "functions": [
+        "__init__",
+        "calculate"
+      ],
+      "docstring": "ofi_calculator.py - Institutional Order Flow Imbalance (OFI) Calculator\nCalculates true OFI using separated Buy/Sell volumes (Tick Rule applied).",
+      "syntax_valid": true,
+      "error": null
+    },
+    "opt_pairs.py": {
+      "relative_path": "opt_pairs.py",
+      "filename": "opt_pairs.py",
+      "lines": 145,
+      "imports_local": [],
+      "imports_external": [],
+      "classes": [],
+      "functions": [],
+      "docstring": null,
+      "syntax_valid": false,
+      "error": "SyntaxError line 1: invalid non-printable character U+FEFF"
+    },
+    "opt_pairs_v2.py": {
+      "relative_path": "opt_pairs_v2.py",
+      "filename": "opt_pairs_v2.py",
+      "lines": 93,
+      "imports_local": [],
+      "imports_external": [],
+      "classes": [],
+      "functions": [],
+      "docstring": null,
+      "syntax_valid": false,
+      "error": "SyntaxError line 1: invalid non-printable character U+FEFF"
+    },
+    "optimal_cut.py": {
+      "relative_path": "optimal_cut.py",
+      "filename": "optimal_cut.py",
+      "lines": 10,
+      "imports_local": [],
+      "imports_external": [
+        "pandas"
+      ],
+      "classes": [],
+      "functions": [],
+      "docstring": null,
+      "syntax_valid": true,
+      "error": null
+    },
+    "optimizer_foundry.py": {
+      "relative_path": "optimizer_foundry.py",
+      "filename": "optimizer_foundry.py",
+      "lines": 118,
+      "imports_local": [],
+      "imports_external": [],
+      "classes": [],
+      "functions": [],
+      "docstring": null,
+      "syntax_valid": false,
+      "error": "SyntaxError line 1: invalid non-printable character U+FEFF"
+    },
+    "optimizer_mean_reversion.py": {
+      "relative_path": "optimizer_mean_reversion.py",
+      "filename": "optimizer_mean_reversion.py",
+      "lines": 124,
+      "imports_local": [
+        "backtest_engine",
+        "data_loader"
+      ],
+      "imports_external": [
+        "pandas",
+        "numpy",
+        "itertools"
+      ],
+      "classes": [],
+      "functions": [
+        "generate_mr_signals_optimized",
+        "evaluate_params"
+      ],
+      "docstring": "optimizer_mean_reversion.py - المحسن الآلي لوكيل الظل (مُصحح)\nالمشروع: الكيان الفيروسي - أقوى شركة تداول\nيبحث عن أفضل معاملات لاستراتيجية الارتداد نحو المتوسط.",
+      "syntax_valid": true,
+      "error": null
+    },
+    "optimizer_momentum.py": {
+      "relative_path": "optimizer_momentum.py",
+      "filename": "optimizer_momentum.py",
+      "lines": 106,
+      "imports_local": [
+        "backtest_engine",
+        "data_loader",
+        "parameter_controller"
+      ],
+      "imports_external": [
+        "pandas",
+        "numpy",
+        "random"
+      ],
+      "classes": [],
+      "functions": [
+        "generate_momentum_signals_optimized",
+        "evaluate_params"
+      ],
+      "docstring": "optimizer_momentum.py - المحسن الآلي لوكيل الزخم\nالمشروع: الكيان الفيروسي - أقوى شركة تداول\nيبحث عن أفضل معاملات لاستراتيجية الزخم (Momentum).",
+      "syntax_valid": true,
+      "error": null
+    },
+    "optimizer_range.py": {
+      "relative_path": "optimizer_range.py",
+      "filename": "optimizer_range.py",
+      "lines": 103,
+      "imports_local": [],
+      "imports_external": [],
+      "classes": [],
+      "functions": [],
+      "docstring": null,
+      "syntax_valid": false,
+      "error": "SyntaxError line 1: invalid non-printable character U+FEFF"
+    },
+    "optimizer_safe.py": {
+      "relative_path": "optimizer_safe.py",
+      "filename": "optimizer_safe.py",
+      "lines": 125,
+      "imports_local": [
+        "data_loader",
+        "backtest_engine",
+        "parameter_controller"
+      ],
+      "imports_external": [
+        "optuna",
+        "pandas",
+        "numpy",
+        "strategy_matrix",
+        "strategy_momentum",
+        "copy"
+      ],
+      "classes": [],
+      "functions": [
+        "objective"
+      ],
+      "docstring": "optimizer_safe.py - Safe Bayesian Optimization for Matrix + Momentum\nProject: Viral Entity - Strongest Trading Firm\nDoes NOT modify any existing file. Only suggests best parameters.",
+      "syntax_valid": true,
+      "error": null
+    },
+    "optimizer_shadow.py": {
+      "relative_path": "optimizer_shadow.py",
+      "filename": "optimizer_shadow.py",
+      "lines": 102,
+      "imports_local": [],
+      "imports_external": [],
+      "classes": [],
+      "functions": [],
+      "docstring": null,
+      "syntax_valid": false,
+      "error": "SyntaxError line 1: invalid non-printable character U+FEFF"
+    },
+    "order_flow_analyzer.py": {
+      "relative_path": "order_flow_analyzer.py",
+      "filename": "order_flow_analyzer.py",
+      "lines": 77,
+      "imports_local": [
+        "dukascopy_fetcher"
+      ],
+      "imports_external": [
+        "pandas",
+        "numpy",
+        "warnings"
+      ],
+      "classes": [
+        "OrderFlowAnalyzer"
+      ],
+      "functions": [
+        "__init__",
+        "analyze"
+      ],
+      "docstring": "order_flow_analyzer.py - Institutional Order Flow Analyzer\nAnalyzes REAL volume data to extract Cumulative Volume Delta (CVD) and Exhaustion.",
+      "syntax_valid": true,
+      "error": null
+    },
+    "pairs_backtest_engine.py": {
+      "relative_path": "pairs_backtest_engine.py",
+      "filename": "pairs_backtest_engine.py",
+      "lines": 109,
+      "imports_local": [
+        "risk_manager",
+        "risk_guardian",
+        "parameter_controller"
+      ],
+      "imports_external": [
+        "pandas",
+        "numpy",
+        "warnings"
+      ],
+      "classes": [],
+      "functions": [
+        "dynamic_pairs_backtest"
+      ],
+      "docstring": "pairs_backtest_engine.py - Dedicated Backtest Engine for Statistical Arbitrage\nHandles simultaneous dual-leg execution (Buy EUR, Sell GBP) and Combined PnL.",
+      "syntax_valid": true,
+      "error": null
+    },
+    "param_sensitivity.py": {
+      "relative_path": "param_sensitivity.py",
+      "filename": "param_sensitivity.py",
+      "lines": 118,
+      "imports_local": [],
+      "imports_external": [
+        "dataclasses",
+        "numpy"
+      ],
+      "classes": [
+        "ParamResult",
+        "ParamSensitivityReport",
+        "ParamSensitivity"
+      ],
+      "functions": [
+        "__init__",
+        "_calc_pf",
+        "run"
+      ],
+      "docstring": "Parameter Sensitivity — detects overfitting by perturbing strategy parameters.",
+      "syntax_valid": true,
+      "error": null
+    },
+    "parameter_controller.py": {
+      "relative_path": "parameter_controller.py",
+      "filename": "parameter_controller.py",
+      "lines": 169,
+      "imports_local": [],
+      "imports_external": [
+        "dataclasses",
+        "typing"
+      ],
+      "classes": [
+        "StrategyParameters"
+      ],
+      "functions": [
+        "apply_preset",
+        "apply_cost_scenario"
+      ],
+      "docstring": "parameter_controller.py - Dynamic Parameter Hub for the Viral Entity.\nAll tunable knobs in one place. Ready for Bayesian Optimization, Walk-Forward,\nand per-Prop-Firm scenario profiles.",
+      "syntax_valid": true,
+      "error": null
+    },
+    "portfolio_allocator.py": {
+      "relative_path": "portfolio_allocator.py",
+      "filename": "portfolio_allocator.py",
+      "lines": 238,
+      "imports_local": [],
+      "imports_external": [
+        "numpy",
+        "pandas",
+        "dataclasses",
+        "typing"
+      ],
+      "classes": [
+        "ExposureReport",
+        "ExposureController",
+        "AllocationDecision",
+        "PortfolioAllocator"
+      ],
+      "functions": [
+        "compute_correlation_matrix",
+        "avg_correlation",
+        "risk_parity_weights",
+        "__init__",
+        "check",
+        "__init__",
+        "allocate"
+      ],
+      "docstring": "Portfolio Allocator — correlation, exposure control, risk parity.",
+      "syntax_valid": true,
+      "error": null
+    },
+    "prop_firm_challenge.py": {
+      "relative_path": "prop_firm_challenge.py",
+      "filename": "prop_firm_challenge.py",
+      "lines": 69,
+      "imports_local": [
+        "data_loader",
+        "backtest_engine",
+        "parameter_controller"
+      ],
+      "imports_external": [
+        "pandas",
+        "strategy_matrix",
+        "strategy_momentum"
+      ],
+      "classes": [],
+      "functions": [],
+      "docstring": "prop_firm_challenge.py - Full Prop Firm Challenge Simulator\nCapital: $100,000 | Min Order: $500 | Rules: FTMO",
+      "syntax_valid": true,
+      "error": null
+    },
+    "prop_firm_rules.py": {
+      "relative_path": "prop_firm_rules.py",
+      "filename": "prop_firm_rules.py",
+      "lines": 13,
+      "imports_local": [],
+      "imports_external": [],
+      "classes": [
+        "PropFirmRules"
+      ],
+      "functions": [
+        "check_daily_loss",
+        "check_max_loss"
+      ],
+      "docstring": null,
+      "syntax_valid": true,
+      "error": null
+    },
+    "regime_detector.py": {
+      "relative_path": "regime_detector.py",
+      "filename": "regime_detector.py",
+      "lines": 122,
+      "imports_local": [],
+      "imports_external": [
+        "dataclasses",
+        "enum",
+        "numpy",
+        "pandas"
+      ],
+      "classes": [
+        "Regime",
+        "RegimeState",
+        "RegimeDetector"
+      ],
+      "functions": [
+        "__init__",
+        "_compute_indicators",
+        "_classify_bar",
+        "detect",
+        "detect_history"
+      ],
+      "docstring": "regime_detector.py - Institutional Regime Detector with Immune System\nClassifies market state and triggers Extreme Volatility Lockout.",
+      "syntax_valid": true,
+      "error": null
+    },
+    "regime_detector_gmm.py": {
+      "relative_path": "regime_detector_gmm.py",
+      "filename": "regime_detector_gmm.py",
+      "lines": 117,
+      "imports_local": [],
+      "imports_external": [
+        "pandas",
+        "numpy",
+        "warnings",
+        "sklearn.mixture",
+        "os"
+      ],
+      "classes": [
+        "GMMRegimeDetector"
+      ],
+      "functions": [
+        "__init__",
+        "_prepare_features",
+        "fit_predict_causal"
+      ],
+      "docstring": "regime_detector_gmm.py - Gaussian Mixture Model for Market Regime Detection\nReplaces HMM to avoid C++ build dependencies. Uses scikit-learn.\nTrained on an expanding window to prevent look-ahead bias.",
+      "syntax_valid": true,
+      "error": null
+    },
+    "reports/4.1_genetic.py": {
+      "relative_path": "reports/4.1_genetic.py",
+      "filename": "4.1_genetic.py",
+      "lines": 195,
+      "imports_local": [],
+      "imports_external": [
+        "pandas",
+        "numpy",
+        "sklearn.mixture",
+        "random",
+        "pathlib",
+        "matplotlib.pyplot"
+      ],
+      "classes": [],
+      "functions": [
+        "evaluate_strategy",
+        "random_gene",
+        "mutate",
+        "crossover"
+      ],
+      "docstring": null,
+      "syntax_valid": true,
+      "error": null
+    },
+    "risk_guardian.py": {
+      "relative_path": "risk_guardian.py",
+      "filename": "risk_guardian.py",
+      "lines": 578,
+      "imports_local": [],
+      "imports_external": [
+        "__future__",
+        "threading",
+        "functools",
+        "dataclasses",
+        "datetime",
+        "enum",
+        "typing"
+      ],
+      "classes": [
+        "ProtectionLevel",
+        "VerdictAction",
+        "RiskVerdict",
+        "GuardianDecision",
+        "LevelConfig",
+        "LevelState",
+        "RiskGuardian",
+        "RiskManager"
+      ],
+      "functions": [
+        "synchronized",
+        "wrapper",
+        "__init__",
+        "_default_configs",
+        "check_signal",
+        "_aggregate_verdicts",
+        "_reset_periodic_pnl",
+        "_cascade_halt",
+        "_check_level",
+        "_check_trade_level",
+        "_check_strategy_level",
+        "_check_type_level",
+        "_check_account_level",
+        "_check_firm_level",
+        "_check_system_level",
+        "record_trade",
+        "update_positions",
+        "update_equity",
+        "update_notional",
+        "halt_level",
+        "resume_level",
+        "new_session",
+        "health_check",
+        "is_healthy",
+        "get_state",
+        "can_trade",
+        "emergency_halt",
+        "__init__",
+        "propose_trade",
+        "settle_trade",
+        "get_audit_trail",
+        "guardian"
+      ],
+      "docstring": null,
+      "syntax_valid": true,
+      "error": null
+    },
+    "risk_manager.py": {
+      "relative_path": "risk_manager.py",
+      "filename": "risk_manager.py",
+      "lines": 179,
+      "imports_local": [],
+      "imports_external": [
+        "logging",
+        "datetime",
+        "decimal",
+        "typing",
+        "pandas",
+        "numpy"
+      ],
+      "classes": [
+        "CircuitBreakerException",
+        "RiskManager"
+      ],
+      "functions": [
+        "__init__",
+        "_apply_config",
+        "calculate_position_size",
+        "update_balance",
+        "check_circuit_breaker",
+        "update_pnl",
+        "reset_for_testing",
+        "status_report",
+        "enable_prop_firm_mode"
+      ],
+      "docstring": "risk_manager.py - درع المخاطر الديناميكي\nالمشروع: الكيان الفيروسي - أقوى شركة تداول\nيدعم قوالب شركات التمويل (Prop Firms) وحجم صفقة ديناميكي.",
+      "syntax_valid": true,
+      "error": null
+    },
+    "robustness_high_atr_thresholds.py": {
+      "relative_path": "robustness_high_atr_thresholds.py",
+      "filename": "robustness_high_atr_thresholds.py",
+      "lines": 83,
+      "imports_local": [
+        "data_loader",
+        "backtest_engine",
+        "parameter_controller"
+      ],
+      "imports_external": [
+        "pandas",
+        "numpy",
+        "itertools",
+        "warnings"
+      ],
+      "classes": [],
+      "functions": [],
+      "docstring": "robustness_high_atr_thresholds.py - Robustness test for High ATR (Candidate 2)\nTests the edge across three percentile thresholds (0.50, 0.66, 0.80) using CPCV.",
+      "syntax_valid": true,
+      "error": null
+    },
+    "robustness_hour00_shift.py": {
+      "relative_path": "robustness_hour00_shift.py",
+      "filename": "robustness_hour00_shift.py",
+      "lines": 74,
+      "imports_local": [
+        "data_loader",
+        "backtest_engine",
+        "parameter_controller"
+      ],
+      "imports_external": [
+        "pandas",
+        "numpy",
+        "itertools",
+        "warnings"
+      ],
+      "classes": [],
+      "functions": [],
+      "docstring": "robustness_hour00_shift.py - Robustness test for Hour_00 (Candidate 3)\nTests the edge by shifting the entry time ±1 and ±2 hours.",
+      "syntax_valid": true,
+      "error": null
+    },
+    "robustness_shadow_thresholds.py": {
+      "relative_path": "robustness_shadow_thresholds.py",
+      "filename": "robustness_shadow_thresholds.py",
+      "lines": 79,
+      "imports_local": [
+        "data_loader",
+        "backtest_engine",
+        "parameter_controller"
+      ],
+      "imports_external": [
+        "pandas",
+        "numpy",
+        "itertools",
+        "warnings"
+      ],
+      "classes": [],
+      "functions": [],
+      "docstring": "robustness_shadow_thresholds.py - Robustness test for Long Lower Shadow (Atom 8.4)\nTests the edge across three threshold values (0.8, 1.0, 1.2) using CPCV.",
+      "syntax_valid": true,
+      "error": null
+    },
+    "run_20yr_download.py": {
+      "relative_path": "run_20yr_download.py",
+      "filename": "run_20yr_download.py",
+      "lines": 23,
+      "imports_local": [],
+      "imports_external": [],
+      "classes": [],
+      "functions": [],
+      "docstring": null,
+      "syntax_valid": false,
+      "error": "SyntaxError line 1: invalid non-printable character U+FEFF"
+    },
+    "run_20yr_robust.py": {
+      "relative_path": "run_20yr_robust.py",
+      "filename": "run_20yr_robust.py",
+      "lines": 152,
+      "imports_local": [],
+      "imports_external": [],
+      "classes": [],
+      "functions": [],
+      "docstring": null,
+      "syntax_valid": false,
+      "error": "SyntaxError line 1: invalid non-printable character U+FEFF"
+    },
+    "run_20yr_tick_rule_download.py": {
+      "relative_path": "run_20yr_tick_rule_download.py",
+      "filename": "run_20yr_tick_rule_download.py",
+      "lines": 162,
+      "imports_local": [],
+      "imports_external": [
+        "os",
+        "pandas",
+        "datetime",
+        "time",
+        "requests",
+        "lzma",
+        "struct",
+        "warnings",
+        "numpy"
+      ],
+      "classes": [
+        "RobustTickRuleFetcher"
+      ],
+      "functions": [
+        "get_last_date",
+        "build_historical_data",
+        "__init__",
+        "_fetch_hour_ticks",
+        "fetch_day",
+        "aggregate_to_h1_with_tick_rule"
+      ],
+      "docstring": null,
+      "syntax_valid": true,
+      "error": null
+    },
+    "run_5yr_download.py": {
+      "relative_path": "run_5yr_download.py",
+      "filename": "run_5yr_download.py",
+      "lines": 23,
+      "imports_local": [],
+      "imports_external": [],
+      "classes": [],
+      "functions": [],
+      "docstring": null,
+      "syntax_valid": false,
+      "error": "SyntaxError line 1: invalid non-printable character U+FEFF"
+    },
+    "run_av_fetch.py": {
+      "relative_path": "run_av_fetch.py",
+      "filename": "run_av_fetch.py",
+      "lines": 16,
+      "imports_local": [],
+      "imports_external": [],
+      "classes": [],
+      "functions": [],
+      "docstring": null,
+      "syntax_valid": false,
+      "error": "SyntaxError line 1: invalid non-printable character U+FEFF"
+    },
+    "run_cpcv_20y.py": {
+      "relative_path": "run_cpcv_20y.py",
+      "filename": "run_cpcv_20y.py",
+      "lines": 160,
+      "imports_local": [
+        "feature_engineer",
+        "meta_labeler",
+        "volume_shock_detector"
+      ],
+      "imports_external": [
+        "warnings",
+        "pandas",
+        "numpy",
+        "itertools",
+        "xgboost",
+        "sklearn.metrics",
+        "json"
+      ],
+      "classes": [],
+      "functions": [],
+      "docstring": "run_cpcv_20y.py - CPCV Validation on 20-Year Data\nTests the Meta-Labeler across 15 combinatorial paths.\nCollects ALL OOS trades for definitive DSR calculation.",
+      "syntax_valid": true,
+      "error": null
+    },
+    "run_macro_fetch.py": {
+      "relative_path": "run_macro_fetch.py",
+      "filename": "run_macro_fetch.py",
+      "lines": 16,
+      "imports_local": [],
+      "imports_external": [],
+      "classes": [],
+      "functions": [],
+      "docstring": null,
+      "syntax_valid": false,
+      "error": "SyntaxError line 1: invalid non-printable character U+FEFF"
+    },
+    "run_meta_20y.py": {
+      "relative_path": "run_meta_20y.py",
+      "filename": "run_meta_20y.py",
+      "lines": 47,
+      "imports_local": [],
+      "imports_external": [],
+      "classes": [],
+      "functions": [],
+      "docstring": null,
+      "syntax_valid": false,
+      "error": "SyntaxError line 1: invalid non-printable character U+FEFF"
+    },
+    "run_news_fetch.py": {
+      "relative_path": "run_news_fetch.py",
+      "filename": "run_news_fetch.py",
+      "lines": 16,
+      "imports_local": [],
+      "imports_external": [],
+      "classes": [],
+      "functions": [],
+      "docstring": null,
+      "syntax_valid": false,
+      "error": "SyntaxError line 1: invalid non-printable character U+FEFF"
+    },
+    "session_risk.py": {
+      "relative_path": "session_risk.py",
+      "filename": "session_risk.py",
+      "lines": 117,
+      "imports_local": [],
+      "imports_external": [
+        "dataclasses"
+      ],
+      "classes": [
+        "SessionRiskReport",
+        "SessionRiskMonitor"
+      ],
+      "functions": [
+        "__init__",
+        "_in",
+        "_active",
+        "_overlaps",
+        "_edge",
+        "check"
+      ],
+      "docstring": "Session Risk Monitor - forex session quality with currency-specific scoring.",
+      "syntax_valid": true,
+      "error": null
+    },
+    "setup_coint_gate.py": {
+      "relative_path": "setup_coint_gate.py",
+      "filename": "setup_coint_gate.py",
+      "lines": 141,
+      "imports_local": [],
+      "imports_external": [],
+      "classes": [],
+      "functions": [],
+      "docstring": null,
+      "syntax_valid": false,
+      "error": "SyntaxError line 1: invalid non-printable character U+FEFF"
+    },
+    "setup_cointegration.py": {
+      "relative_path": "setup_cointegration.py",
+      "filename": "setup_cointegration.py",
+      "lines": 73,
+      "imports_local": [],
+      "imports_external": [],
+      "classes": [],
+      "functions": [],
+      "docstring": null,
+      "syntax_valid": false,
+      "error": "SyntaxError line 1: invalid non-printable character U+FEFF"
+    },
+    "setup_cot.py": {
+      "relative_path": "setup_cot.py",
+      "filename": "setup_cot.py",
+      "lines": 99,
+      "imports_local": [],
+      "imports_external": [],
+      "classes": [],
+      "functions": [],
+      "docstring": null,
+      "syntax_valid": false,
+      "error": "SyntaxError line 1: invalid non-printable character U+FEFF"
+    },
+    "setup_cpcv.py": {
+      "relative_path": "setup_cpcv.py",
+      "filename": "setup_cpcv.py",
+      "lines": 141,
+      "imports_local": [],
+      "imports_external": [],
+      "classes": [],
+      "functions": [],
+      "docstring": null,
+      "syntax_valid": false,
+      "error": "SyntaxError line 1: invalid non-printable character U+FEFF"
+    },
+    "setup_cpcv_20y.py": {
+      "relative_path": "setup_cpcv_20y.py",
+      "filename": "setup_cpcv_20y.py",
+      "lines": 187,
+      "imports_local": [],
+      "imports_external": [],
+      "classes": [],
+      "functions": [],
+      "docstring": null,
+      "syntax_valid": false,
+      "error": "SyntaxError line 1: invalid non-printable character U+FEFF"
+    },
+    "setup_dsr.py": {
+      "relative_path": "setup_dsr.py",
+      "filename": "setup_dsr.py",
+      "lines": 172,
+      "imports_local": [],
+      "imports_external": [],
+      "classes": [],
+      "functions": [],
+      "docstring": null,
+      "syntax_valid": false,
+      "error": "SyntaxError line 1: invalid non-printable character U+FEFF"
+    },
+    "setup_feature_eng.py": {
+      "relative_path": "setup_feature_eng.py",
+      "filename": "setup_feature_eng.py",
+      "lines": 181,
+      "imports_local": [],
+      "imports_external": [],
+      "classes": [],
+      "functions": [],
+      "docstring": null,
+      "syntax_valid": false,
+      "error": "SyntaxError line 1: invalid non-printable character U+FEFF"
+    },
+    "setup_gdelt.py": {
+      "relative_path": "setup_gdelt.py",
+      "filename": "setup_gdelt.py",
+      "lines": 114,
+      "imports_local": [],
+      "imports_external": [],
+      "classes": [],
+      "functions": [],
+      "docstring": null,
+      "syntax_valid": false,
+      "error": "SyntaxError line 1: invalid non-printable character U+FEFF"
+    },
+    "setup_gmm_regime.py": {
+      "relative_path": "setup_gmm_regime.py",
+      "filename": "setup_gmm_regime.py",
+      "lines": 115,
+      "imports_local": [],
+      "imports_external": [],
+      "classes": [],
+      "functions": [],
+      "docstring": null,
+      "syntax_valid": false,
+      "error": "SyntaxError line 1: invalid non-printable character U+FEFF"
+    },
+    "setup_hmm.py": {
+      "relative_path": "setup_hmm.py",
+      "filename": "setup_hmm.py",
+      "lines": 130,
+      "imports_local": [],
+      "imports_external": [],
+      "classes": [],
+      "functions": [],
+      "docstring": null,
+      "syntax_valid": false,
+      "error": "SyntaxError line 1: invalid non-printable character U+FEFF"
+    },
+    "setup_macro_fetcher.py": {
+      "relative_path": "setup_macro_fetcher.py",
+      "filename": "setup_macro_fetcher.py",
+      "lines": 134,
+      "imports_local": [],
+      "imports_external": [],
+      "classes": [],
+      "functions": [],
+      "docstring": null,
+      "syntax_valid": false,
+      "error": "SyntaxError line 1: invalid non-printable character U+FEFF"
+    },
+    "setup_meta_labeler.py": {
+      "relative_path": "setup_meta_labeler.py",
+      "filename": "setup_meta_labeler.py",
+      "lines": 105,
+      "imports_local": [],
+      "imports_external": [],
+      "classes": [],
+      "functions": [],
+      "docstring": null,
+      "syntax_valid": false,
+      "error": "SyntaxError line 1: invalid non-printable character U+FEFF"
+    },
+    "setup_micro_engine.py": {
+      "relative_path": "setup_micro_engine.py",
+      "filename": "setup_micro_engine.py",
+      "lines": 72,
+      "imports_local": [],
+      "imports_external": [],
+      "classes": [],
+      "functions": [],
+      "docstring": null,
+      "syntax_valid": false,
+      "error": "SyntaxError line 1: invalid non-printable character U+FEFF"
+    },
+    "setup_ml_validation.py": {
+      "relative_path": "setup_ml_validation.py",
+      "filename": "setup_ml_validation.py",
+      "lines": 97,
+      "imports_local": [],
+      "imports_external": [],
+      "classes": [],
+      "functions": [],
+      "docstring": null,
+      "syntax_valid": false,
+      "error": "SyntaxError line 1: invalid non-printable character U+FEFF"
+    },
+    "setup_news_fetcher.py": {
+      "relative_path": "setup_news_fetcher.py",
+      "filename": "setup_news_fetcher.py",
+      "lines": 100,
+      "imports_local": [],
+      "imports_external": [],
+      "classes": [],
+      "functions": [],
+      "docstring": null,
+      "syntax_valid": false,
+      "error": "SyntaxError line 1: invalid non-printable character U+FEFF"
+    },
+    "setup_news_parser.py": {
+      "relative_path": "setup_news_parser.py",
+      "filename": "setup_news_parser.py",
+      "lines": 109,
+      "imports_local": [],
+      "imports_external": [],
+      "classes": [],
+      "functions": [],
+      "docstring": null,
+      "syntax_valid": false,
+      "error": "SyntaxError line 1: invalid non-printable character U+FEFF"
+    },
+    "setup_news_strategy.py": {
+      "relative_path": "setup_news_strategy.py",
+      "filename": "setup_news_strategy.py",
+      "lines": 70,
+      "imports_local": [],
+      "imports_external": [],
+      "classes": [],
+      "functions": [],
+      "docstring": null,
+      "syntax_valid": false,
+      "error": "SyntaxError line 1: invalid non-printable character U+FEFF"
+    },
+    "setup_news_validation.py": {
+      "relative_path": "setup_news_validation.py",
+      "filename": "setup_news_validation.py",
+      "lines": 86,
+      "imports_local": [],
+      "imports_external": [],
+      "classes": [],
+      "functions": [],
+      "docstring": null,
+      "syntax_valid": false,
+      "error": "SyntaxError line 1: invalid non-printable character U+FEFF"
+    },
+    "setup_ofi.py": {
+      "relative_path": "setup_ofi.py",
+      "filename": "setup_ofi.py",
+      "lines": 75,
+      "imports_local": [],
+      "imports_external": [],
+      "classes": [],
+      "functions": [],
+      "docstring": null,
+      "syntax_valid": false,
+      "error": "SyntaxError line 1: invalid non-printable character U+FEFF"
+    },
+    "setup_pairs_engine.py": {
+      "relative_path": "setup_pairs_engine.py",
+      "filename": "setup_pairs_engine.py",
+      "lines": 109,
+      "imports_local": [],
+      "imports_external": [],
+      "classes": [],
+      "functions": [],
+      "docstring": null,
+      "syntax_valid": false,
+      "error": "SyntaxError line 1: invalid non-printable character U+FEFF"
+    },
+    "setup_pairs_strategy.py": {
+      "relative_path": "setup_pairs_strategy.py",
+      "filename": "setup_pairs_strategy.py",
+      "lines": 51,
+      "imports_local": [],
+      "imports_external": [],
+      "classes": [],
+      "functions": [],
+      "docstring": null,
+      "syntax_valid": false,
+      "error": "SyntaxError line 1: invalid non-printable character U+FEFF"
+    },
+    "setup_pairs_test.py": {
+      "relative_path": "setup_pairs_test.py",
+      "filename": "setup_pairs_test.py",
+      "lines": 98,
+      "imports_local": [],
+      "imports_external": [],
+      "classes": [],
+      "functions": [],
+      "docstring": null,
+      "syntax_valid": false,
+      "error": "SyntaxError line 1: invalid non-printable character U+FEFF"
+    },
+    "setup_rolling_coint.py": {
+      "relative_path": "setup_rolling_coint.py",
+      "filename": "setup_rolling_coint.py",
+      "lines": 83,
+      "imports_local": [],
+      "imports_external": [],
+      "classes": [],
+      "functions": [],
+      "docstring": null,
+      "syntax_valid": false,
+      "error": "SyntaxError line 1: invalid non-printable character U+FEFF"
+    },
+    "setup_shock_detector.py": {
+      "relative_path": "setup_shock_detector.py",
+      "filename": "setup_shock_detector.py",
+      "lines": 77,
+      "imports_local": [],
+      "imports_external": [],
+      "classes": [],
+      "functions": [],
+      "docstring": null,
+      "syntax_valid": false,
+      "error": "SyntaxError line 1: invalid non-printable character U+FEFF"
+    },
+    "setup_spread.py": {
+      "relative_path": "setup_spread.py",
+      "filename": "setup_spread.py",
+      "lines": 73,
+      "imports_local": [],
+      "imports_external": [],
+      "classes": [],
+      "functions": [],
+      "docstring": null,
+      "syntax_valid": false,
+      "error": "SyntaxError line 1: invalid non-printable character U+FEFF"
+    },
+    "setup_vp.py": {
+      "relative_path": "setup_vp.py",
+      "filename": "setup_vp.py",
+      "lines": 142,
+      "imports_local": [],
+      "imports_external": [],
+      "classes": [],
+      "functions": [],
+      "docstring": null,
+      "syntax_valid": false,
+      "error": "SyntaxError line 1: invalid non-printable character U+FEFF"
+    },
+    "show_report.py": {
+      "relative_path": "show_report.py",
+      "filename": "show_report.py",
+      "lines": 33,
+      "imports_local": [],
+      "imports_external": [
+        "pathlib"
+      ],
+      "classes": [],
+      "functions": [],
+      "docstring": null,
+      "syntax_valid": true,
+      "error": null
+    },
+    "smart_portfolio.py": {
+      "relative_path": "smart_portfolio.py",
+      "filename": "smart_portfolio.py",
+      "lines": 95,
+      "imports_local": [
+        "data_loader",
+        "backtest_engine",
+        "parameter_controller"
+      ],
+      "imports_external": [
+        "pandas",
+        "numpy",
+        "strategy_long_lower_shadow",
+        "strategy_high_atr",
+        "strategy_hour00"
+      ],
+      "classes": [],
+      "functions": [],
+      "docstring": "smart_portfolio.py - Smart Portfolio with Dynamic Weights (Atom 8.10d)\nAllocates capital based on current volatility regime.",
+      "syntax_valid": true,
+      "error": null
+    },
+    "smart_portfolio_pro.py": {
+      "relative_path": "smart_portfolio_pro.py",
+      "filename": "smart_portfolio_pro.py",
+      "lines": 166,
+      "imports_local": [
+        "data_loader",
+        "backtest_engine",
+        "parameter_controller"
+      ],
+      "imports_external": [
+        "optuna",
+        "pandas",
+        "numpy",
+        "strategy_long_lower_shadow",
+        "strategy_high_atr",
+        "strategy_hour00",
+        "warnings"
+      ],
+      "classes": [],
+      "functions": [
+        "objective",
+        "run_full_backtest"
+      ],
+      "docstring": "smart_portfolio_pro.py - Institutional-Grade Smart Portfolio (Atom 8.10d-Super)\nOptimizes dynamic weights using Bayesian Optimization, tests robustness,\nand provides a Monte Carlo estimate.",
+      "syntax_valid": true,
+      "error": null
+    },
+    "spread_calculator.py": {
+      "relative_path": "spread_calculator.py",
+      "filename": "spread_calculator.py",
+      "lines": 81,
+      "imports_local": [],
+      "imports_external": [
+        "pandas",
+        "numpy",
+        "os",
+        "statsmodels.api",
+        "statsmodels.tsa.stattools",
+        "warnings"
+      ],
+      "classes": [],
+      "functions": [
+        "load_pair_data",
+        "calculate_spread"
+      ],
+      "docstring": "spread_calculator.py - Dynamic Spread, Z-Score & Cointegration Gate\nCalculates rolling hedge ratio, spread, Z-score, and Rolling P-Value.",
+      "syntax_valid": true,
+      "error": null
+    },
+    "spread_risk.py": {
+      "relative_path": "spread_risk.py",
+      "filename": "spread_risk.py",
+      "lines": 92,
+      "imports_local": [],
+      "imports_external": [
+        "dataclasses",
+        "typing",
+        "numpy"
+      ],
+      "classes": [
+        "SpreadRiskReport",
+        "SpreadRiskMonitor"
+      ],
+      "functions": [
+        "__init__",
+        "update",
+        "clear",
+        "check"
+      ],
+      "docstring": "Spread Risk Monitor — tracks bid-ask spread health for trade decisions.",
+      "syntax_valid": true,
+      "error": null
+    },
+    "strategy_base.py": {
+      "relative_path": "strategy_base.py",
+      "filename": "strategy_base.py",
+      "lines": 29,
+      "imports_local": [],
+      "imports_external": [
+        "abc",
+        "dataclasses",
+        "typing",
+        "pandas"
+      ],
+      "classes": [
+        "Signal",
+        "StrategyBase"
+      ],
+      "functions": [
+        "generate",
+        "info"
+      ],
+      "docstring": "strategy_base.py — Unified strategy interface.",
+      "syntax_valid": true,
+      "error": null
+    },
+    "strategy_correlation.py": {
+      "relative_path": "strategy_correlation.py",
+      "filename": "strategy_correlation.py",
+      "lines": 55,
+      "imports_local": [
+        "data_loader"
+      ],
+      "imports_external": [
+        "pandas",
+        "strategy_long_lower_shadow",
+        "strategy_high_atr",
+        "strategy_hour00"
+      ],
+      "classes": [],
+      "functions": [],
+      "docstring": "strategy_correlation.py - Signal Correlation Test (Atom 8.10c)\nChecks overlap between strategies to measure true diversification.",
+      "syntax_valid": true,
+      "error": null
+    },
+    "strategy_news_deviation.py": {
+      "relative_path": "strategy_news_deviation.py",
+      "filename": "strategy_news_deviation.py",
+      "lines": 42,
+      "imports_local": [],
+      "imports_external": [
+        "pandas",
+        "numpy"
+      ],
+      "classes": [],
+      "functions": [
+        "generate_signals"
+      ],
+      "docstring": "strategy_news_deviation.py - News Deviation Strategy (Liquidity Shock)\nLogic: Enters trade on Liquidity Shock (Volume Spike) and exits after 4 hours.\nOutputs: 'News_Signal' column (1, -1, 0)",
+      "syntax_valid": true,
+      "error": null
+    },
+    "strategy_pairs_trading.py": {
+      "relative_path": "strategy_pairs_trading.py",
+      "filename": "strategy_pairs_trading.py",
+      "lines": 48,
+      "imports_local": [],
+      "imports_external": [
+        "pandas",
+        "numpy"
+      ],
+      "classes": [],
+      "functions": [
+        "generate_signals"
+      ],
+      "docstring": "strategy_pairs_trading.py - Statistical Arbitrage (Pairs Trading)\nLogic: Trades the spread based on Z-Score mean reversion, ONLY if cointegration is valid.",
+      "syntax_valid": true,
+      "error": null
+    },
+    "stress_test.py": {
+      "relative_path": "stress_test.py",
+      "filename": "stress_test.py",
+      "lines": 124,
+      "imports_local": [],
+      "imports_external": [
+        "dataclasses",
+        "numpy"
+      ],
+      "classes": [
+        "StressScenario",
+        "StressReport",
+        "StressTest"
+      ],
+      "functions": [
+        "__init__",
+        "_metrics",
+        "_pnl_pct",
+        "_scenario",
+        "run"
+      ],
+      "docstring": "Stress Test — validates strategy robustness under adverse market conditions.",
+      "syntax_valid": true,
+      "error": null
+    },
+    "test_hour00.py": {
+      "relative_path": "test_hour00.py",
+      "filename": "test_hour00.py",
+      "lines": 19,
+      "imports_local": [],
+      "imports_external": [],
+      "classes": [],
+      "functions": [],
+      "docstring": null,
+      "syntax_valid": false,
+      "error": "SyntaxError line 1: invalid non-printable character U+FEFF"
+    },
+    "test_risk_guardian.py": {
+      "relative_path": "test_risk_guardian.py",
+      "filename": "test_risk_guardian.py",
+      "lines": 486,
+      "imports_local": [
+        "risk_guardian",
+        "risk_guardian"
+      ],
+      "imports_external": [
+        "datetime",
+        "pytest",
+        "datetime",
+        "threading",
+        "threading"
+      ],
+      "classes": [
+        "TestInit",
+        "TestSignal",
+        "TestPositions",
+        "TestDailyPnL",
+        "TestDrawdown",
+        "TestCascade",
+        "TestHaltResume",
+        "TestEmergency",
+        "TestCanTrade",
+        "TestHealth",
+        "TestNewSession",
+        "TestEdges",
+        "TestNotional",
+        "TestConcentration",
+        "TestWhipsaw",
+        "TestDrawdownCascade",
+        "TestFailClosed",
+        "TestRiskManager",
+        "TestThreadSafety"
+      ],
+      "functions": [
+        "rg",
+        "test_6_levels",
+        "test_l1_config",
+        "test_not_halted",
+        "test_equity",
+        "test_all_configs_exist",
+        "test_fresh_allowed",
+        "test_returns_decision",
+        "test_l1_block_at_1",
+        "test_l1_allow_at_0",
+        "test_hierarchy",
+        "test_reduce_restores",
+        "test_loss_blocks",
+        "test_small_profit_ok",
+        "test_dd_blocks",
+        "test_peak_tracks_up",
+        "test_dd_from_peak",
+        "test_l2_cascades_up",
+        "test_l1_cascades_all",
+        "test_l6_only_l6",
+        "test_accumulate",
+        "test_halt_blocks",
+        "test_resume_allows",
+        "test_halt_higher_blocks",
+        "test_flag_set",
+        "test_blocks_all",
+        "test_all_halted",
+        "test_true_clear",
+        "test_false_halted",
+        "test_false_emergency",
+        "test_healthy_fresh",
+        "test_tuple",
+        "test_clears_pnl",
+        "test_clears_halts",
+        "test_resets_equity",
+        "test_allows_again",
+        "test_zero_equity",
+        "test_large_loss",
+        "test_profit_no_block",
+        "test_idempotent_halt",
+        "test_notional_blocks_over_limit",
+        "test_notional_exact_limit_blocks",
+        "test_notional_allows_below",
+        "test_notional_none_skips",
+        "test_update_notional_state",
+        "test_notional_resets_on_session",
+        "test_concentration_blocks",
+        "test_concentration_allows",
+        "test_concentration_none_skips",
+        "test_concentration_zero_parent_skips",
+        "test_concentration_system_no_parent",
+        "_rg",
+        "test_whipsaw_triggers",
+        "test_whipsaw_allows_under_threshold",
+        "test_whipsaw_disabled_by_default",
+        "test_whipsaw_cooldown_expires",
+        "test_whipsaw_resets_on_session",
+        "test_drawdown_cascade_halt_triggers",
+        "test_drawdown_no_cascade_by_default",
+        "test_drawdown_cascade_from_system",
+        "test_drawdown_cascade_blocks_future",
+        "test_drawdown_cascade_cleared_by_resume",
+        "test_fail_closed_on_exception",
+        "test_fail_closed_approved_false",
+        "test_fail_closed_preserves_timestamp",
+        "test_propose_trade_allows_increments",
+        "test_propose_trade_blocked_no_increment",
+        "test_settle_trade_records_and_decrements",
+        "test_audit_trail_records_both",
+        "test_guardian_property_accessible",
+        "test_lock_exists_and_is_rlock",
+        "test_concurrent_record_trade",
+        "test_concurrent_check_and_record",
+        "crash",
+        "worker",
+        "checker",
+        "recorder"
+      ],
+      "docstring": null,
+      "syntax_valid": true,
+      "error": null
+    },
+    "test_risk_manager_pro.py": {
+      "relative_path": "test_risk_manager_pro.py",
+      "filename": "test_risk_manager_pro.py",
+      "lines": 134,
+      "imports_local": [
+        "risk_manager"
+      ],
+      "imports_external": [
+        "pytest",
+        "datetime",
+        "decimal"
+      ],
+      "classes": [
+        "TestInitialization",
+        "TestPositionSizing",
+        "TestCircuitBreaker",
+        "TestPropFirmMode",
+        "TestScalingAndUtility"
+      ],
+      "functions": [
+        "rm",
+        "test_reject_zero_or_negative_balance",
+        "test_default_values",
+        "test_normal_calculation",
+        "test_very_tight_stop",
+        "test_entry_equals_stop",
+        "test_max_position_value_limit",
+        "test_daily_loss_triggers_breaker",
+        "test_daily_reset_on_new_day",
+        "test_total_drawdown_breaker",
+        "test_ftmo_mode_changes_limits",
+        "test_ftmo_daily_limit_respected",
+        "test_scaling_factor_increases_with_growth",
+        "test_status_report_runs"
+      ],
+      "docstring": "اختبارات مؤسسية شاملة لـ RiskManager\nالمستوى: إنتاجي. أي فشل هنا يعني خللاً قد يمس رأس المال.",
+      "syntax_valid": true,
+      "error": null
+    },
+    "test_sess.py": {
+      "relative_path": "test_sess.py",
+      "filename": "test_sess.py",
+      "lines": 75,
+      "imports_local": [
+        "session_risk"
+      ],
+      "imports_external": [
+        "datetime"
+      ],
+      "classes": [],
+      "functions": [],
+      "docstring": null,
+      "syntax_valid": true,
+      "error": null
+    },
+    "unified_filters.py": {
+      "relative_path": "unified_filters.py",
+      "filename": "unified_filters.py",
+      "lines": 31,
+      "imports_local": [],
+      "imports_external": [
+        "pandas"
+      ],
+      "classes": [],
+      "functions": [
+        "apply_time_filter",
+        "apply_weekly_bias_filter",
+        "apply_volatility_filter"
+      ],
+      "docstring": "unified_filters.py - المصدر الوحيد للحقيقة لكل فلاتر التداول\nالمشروع: الكيان الفيروسي - أقوى شركة تداول",
+      "syntax_valid": true,
+      "error": null
+    },
+    "update_asian_params.py": {
+      "relative_path": "update_asian_params.py",
+      "filename": "update_asian_params.py",
+      "lines": 21,
+      "imports_local": [],
+      "imports_external": [],
+      "classes": [],
+      "functions": [],
+      "docstring": null,
+      "syntax_valid": false,
+      "error": "SyntaxError line 1: invalid non-printable character U+FEFF"
+    },
+    "update_dsr_20y.py": {
+      "relative_path": "update_dsr_20y.py",
+      "filename": "update_dsr_20y.py",
+      "lines": 62,
+      "imports_local": [],
+      "imports_external": [],
+      "classes": [],
+      "functions": [],
+      "docstring": null,
+      "syntax_valid": false,
+      "error": "SyntaxError line 1: invalid non-printable character U+FEFF"
+    },
+    "update_inst_params.py": {
+      "relative_path": "update_inst_params.py",
+      "filename": "update_inst_params.py",
+      "lines": 24,
+      "imports_local": [],
+      "imports_external": [],
+      "classes": [],
+      "functions": [],
+      "docstring": null,
+      "syntax_valid": false,
+      "error": "SyntaxError line 1: invalid non-printable character U+FEFF"
+    },
+    "update_opt_params.py": {
+      "relative_path": "update_opt_params.py",
+      "filename": "update_opt_params.py",
+      "lines": 15,
+      "imports_local": [],
+      "imports_external": [],
+      "classes": [],
+      "functions": [],
+      "docstring": null,
+      "syntax_valid": false,
+      "error": "SyntaxError line 1: invalid non-printable character U+FEFF"
+    },
+    "upgrade_fe_v2.py": {
+      "relative_path": "upgrade_fe_v2.py",
+      "filename": "upgrade_fe_v2.py",
+      "lines": 142,
+      "imports_local": [],
+      "imports_external": [],
+      "classes": [],
+      "functions": [],
+      "docstring": null,
+      "syntax_valid": false,
+      "error": "SyntaxError line 1: invalid non-printable character U+FEFF"
+    },
+    "upgrade_meta_labeler.py": {
+      "relative_path": "upgrade_meta_labeler.py",
+      "filename": "upgrade_meta_labeler.py",
+      "lines": 150,
+      "imports_local": [],
+      "imports_external": [],
+      "classes": [],
+      "functions": [],
+      "docstring": null,
+      "syntax_valid": false,
+      "error": "SyntaxError line 1: invalid non-printable character U+FEFF"
+    },
+    "validate_asian.py": {
+      "relative_path": "validate_asian.py",
+      "filename": "validate_asian.py",
+      "lines": 70,
+      "imports_local": [],
+      "imports_external": [],
+      "classes": [],
+      "functions": [],
+      "docstring": null,
+      "syntax_valid": false,
+      "error": "SyntaxError line 1: invalid non-printable character U+FEFF"
+    },
+    "validate_ml_strategy.py": {
+      "relative_path": "validate_ml_strategy.py",
+      "filename": "validate_ml_strategy.py",
+      "lines": 90,
+      "imports_local": [
+        "institutional_data_handler",
+        "volume_shock_detector",
+        "feature_engineer",
+        "meta_labeler",
+        "backtest_engine"
+      ],
+      "imports_external": [
+        "pandas",
+        "numpy",
+        "warnings"
+      ],
+      "classes": [],
+      "functions": [],
+      "docstring": "validate_ml_strategy.py - Institutional Profitability Test\nTrains ML model, filters signals, and runs full backtest to measure PF and Max DD.",
+      "syntax_valid": true,
+      "error": null
+    },
+    "validate_news.py": {
+      "relative_path": "validate_news.py",
+      "filename": "validate_news.py",
+      "lines": 79,
+      "imports_local": [
+        "institutional_data_handler",
+        "volume_shock_detector",
+        "strategy_news_deviation",
+        "backtest_engine",
+        "monte_carlo_test"
+      ],
+      "imports_external": [
+        "pandas",
+        "numpy",
+        "warnings"
+      ],
+      "classes": [],
+      "functions": [],
+      "docstring": null,
+      "syntax_valid": true,
+      "error": null
+    },
+    "validate_pairs.py": {
+      "relative_path": "validate_pairs.py",
+      "filename": "validate_pairs.py",
+      "lines": 78,
+      "imports_local": [
+        "spread_calculator",
+        "strategy_pairs_trading",
+        "pairs_backtest_engine",
+        "monte_carlo_test"
+      ],
+      "imports_external": [
+        "pandas",
+        "numpy",
+        "warnings"
+      ],
+      "classes": [],
+      "functions": [],
+      "docstring": null,
+      "syntax_valid": true,
+      "error": null
+    },
+    "validate_pairs_cointegration.py": {
+      "relative_path": "validate_pairs_cointegration.py",
+      "filename": "validate_pairs_cointegration.py",
+      "lines": 76,
+      "imports_local": [],
+      "imports_external": [
+        "pandas",
+        "numpy",
+        "os",
+        "statsmodels.api",
+        "statsmodels.tsa.stattools",
+        "warnings"
+      ],
+      "classes": [],
+      "functions": [
+        "load_pair_data",
+        "test_rolling_cointegration"
+      ],
+      "docstring": "validate_pairs_cointegration.py - Rolling Cointegration Test\nChecks if the statistical relationship between EURUSD and GBPUSD holds over time.",
+      "syntax_valid": true,
+      "error": null
+    },
+    "validate_pairs_cont.py": {
+      "relative_path": "validate_pairs_cont.py",
+      "filename": "validate_pairs_cont.py",
+      "lines": 76,
+      "imports_local": [
+        "spread_calculator",
+        "strategy_pairs_trading",
+        "pairs_backtest_engine",
+        "monte_carlo_test"
+      ],
+      "imports_external": [
+        "pandas",
+        "numpy",
+        "warnings"
+      ],
+      "classes": [],
+      "functions": [],
+      "docstring": null,
+      "syntax_valid": true,
+      "error": null
+    },
+    "validate_pairs_final.py": {
+      "relative_path": "validate_pairs_final.py",
+      "filename": "validate_pairs_final.py",
+      "lines": 78,
+      "imports_local": [],
+      "imports_external": [],
+      "classes": [],
+      "functions": [],
+      "docstring": null,
+      "syntax_valid": false,
+      "error": "SyntaxError line 1: invalid non-printable character U+FEFF"
+    },
+    "volume_profile.py": {
+      "relative_path": "volume_profile.py",
+      "filename": "volume_profile.py",
+      "lines": 135,
+      "imports_local": [
+        "regime_detector"
+      ],
+      "imports_external": [
+        "pandas",
+        "numpy",
+        "warnings",
+        "os"
+      ],
+      "classes": [
+        "VolumeProfile"
+      ],
+      "functions": [
+        "__init__",
+        "calculate_features"
+      ],
+      "docstring": "volume_profile.py - Institutional Volume Profile Calculator\nCalculates Rolling POC, Value Area, HVN, LVN from real tick volume.\nOutputs features for ML Meta-Labeler.",
+      "syntax_valid": true,
+      "error": null
+    },
+    "volume_shock_detector.py": {
+      "relative_path": "volume_shock_detector.py",
+      "filename": "volume_shock_detector.py",
+      "lines": 70,
+      "imports_local": [],
+      "imports_external": [
+        "pandas",
+        "numpy",
+        "warnings",
+        "os"
+      ],
+      "classes": [
+        "VolumeShockDetector"
+      ],
+      "functions": [
+        "__init__",
+        "detect"
+      ],
+      "docstring": "volume_shock_detector.py - Institutional Liquidity Shock Detector\nCalculates Volume Z-Score and detects sudden liquidity injections (News/Fat Finger).",
+      "syntax_valid": true,
+      "error": null
+    },
+    "walk_forward_optimizer.py": {
+      "relative_path": "walk_forward_optimizer.py",
+      "filename": "walk_forward_optimizer.py",
+      "lines": 113,
+      "imports_local": [
+        "backtest_engine",
+        "institutional_data_handler",
+        "volume_shock_detector",
+        "strategy_news_deviation"
+      ],
+      "imports_external": [
+        "pandas",
+        "numpy",
+        "warnings"
+      ],
+      "classes": [],
+      "functions": [
+        "run_walk_forward"
+      ],
+      "docstring": "walk_forward_optimizer.py - Institutional Walk-Forward Validator\nNon-overlapping windows with Purge (10 bars) and Embargo (24 bars).\nGeneric: accepts any strategy column name.",
+      "syntax_valid": true,
+      "error": null
+    },
+    "walk_forward_validator.py": {
+      "relative_path": "walk_forward_validator.py",
+      "filename": "walk_forward_validator.py",
+      "lines": 282,
+      "imports_local": [],
+      "imports_external": [
+        "numpy",
+        "dataclasses",
+        "typing"
+      ],
+      "classes": [
+        "WFWindow",
+        "WFReport",
+        "WalkForwardValidator"
+      ],
+      "functions": [
+        "degradation",
+        "summary",
+        "__init__",
+        "validate",
+        "_generate_windows",
+        "_run_window",
+        "_compute_metrics",
+        "_build_report",
+        "_classify"
+      ],
+      "docstring": "Walk-Forward Validation Engine.",
+      "syntax_valid": true,
+      "error": null
+    },
+    "weekly_analyzer.py": {
+      "relative_path": "weekly_analyzer.py",
+      "filename": "weekly_analyzer.py",
+      "lines": 229,
+      "imports_local": [],
+      "imports_external": [
+        "pandas",
+        "datetime"
+      ],
+      "classes": [],
+      "functions": [
+        "analyze_week",
+        "recalculate_filters",
+        "apply_weekly_rules",
+        "get_effective_risk"
+      ],
+      "docstring": "weekly_analyzer.py - المحلل الأسبوعي والآلي + إعادة حساب الفلاتر الديناميكية\nالمشروع: الكيان الفيروسي - أقوى شركة تداول\nيتعلم من الأداء كل أسبوع ويعيد حساب الفلاتر كل شهر.",
+      "syntax_valid": true,
+      "error": null
+    }
+  }
+}

@@ -1,0 +1,511 @@
+# AUDIT SUMMARY v3 — Atom 0.1 (Content-Based)
+**Repository:** `C:\Users\GTINF\Desktop\forex_bot`
+**Total .py files (project only):** 200
+**Syntax valid:** 133 / 200
+**Syntax broken:** 67
+**Orphan files:** 175
+**Entry points:** 30
+
+## Broken Files (Syntax Errors)
+- `alpha_vantage_news.py` → SyntaxError line 1: invalid non-printable character U+FEFF
+- `audit_project.py` → SyntaxError line 1: invalid non-printable character U+FEFF
+- `build_hist_v2.py` → SyntaxError line 1: invalid non-printable character U+FEFF
+- `clean_csv_data.py` → SyntaxError line 1: invalid non-printable character U+FEFF
+- `clean_params.py` → SyntaxError line 1: invalid non-printable character U+FEFF
+- `feature_engineer.py` → SyntaxError line 1: invalid non-printable character U+FEFF
+- `final_pairs_test.py` → SyntaxError line 1: invalid non-printable character U+FEFF
+- `frozen/1.0_time_of_day.py` → SyntaxError line 1: invalid non-printable character U+FEFF
+- `frozen/1.1_news_drift.py` → SyntaxError line 1: invalid non-printable character U+FEFF
+- `frozen/1.2_weekly_bias.py` → SyntaxError line 1: invalid non-printable character U+FEFF
+- `frozen/1.3_combined_filters.py` → SyntaxError line 1: invalid non-printable character U+FEFF
+- `frozen/1.4_volatility_regime.py` → SyntaxError line 1: invalid non-printable character U+FEFF
+- `frozen/backtest_engine_mm.py` → SyntaxError line 1: invalid non-printable character U+FEFF
+- `frozen/diagnose_env.py` → SyntaxError line 1: invalid non-printable character U+FEFF
+- `frozen/fix_data.py` → SyntaxError line 1: invalid non-printable character U+FEFF
+- `frozen/live_hmm_bot.py` → SyntaxError line 1: invalid non-printable character U+FEFF
+- `frozen/strategy_market_maker.py` → SyntaxError line 1: invalid non-printable character U+FEFF
+- `frozen/strategy_mean_reversion.py` → SyntaxError line 1: invalid non-printable character U+FEFF
+- `integrate_vp.py` → SyntaxError line 1: invalid non-printable character U+FEFF
+- `microstructure_engine.py` → SyntaxError line 1: invalid non-printable character U+FEFF
+- `opt_pairs.py` → SyntaxError line 1: invalid non-printable character U+FEFF
+- `opt_pairs_v2.py` → SyntaxError line 1: invalid non-printable character U+FEFF
+- `optimizer_foundry.py` → SyntaxError line 1: invalid non-printable character U+FEFF
+- `optimizer_range.py` → SyntaxError line 1: invalid non-printable character U+FEFF
+- `optimizer_shadow.py` → SyntaxError line 1: invalid non-printable character U+FEFF
+- `run_20yr_download.py` → SyntaxError line 1: invalid non-printable character U+FEFF
+- `run_20yr_robust.py` → SyntaxError line 1: invalid non-printable character U+FEFF
+- `run_5yr_download.py` → SyntaxError line 1: invalid non-printable character U+FEFF
+- `run_av_fetch.py` → SyntaxError line 1: invalid non-printable character U+FEFF
+- `run_macro_fetch.py` → SyntaxError line 1: invalid non-printable character U+FEFF
+- `run_meta_20y.py` → SyntaxError line 1: invalid non-printable character U+FEFF
+- `run_news_fetch.py` → SyntaxError line 1: invalid non-printable character U+FEFF
+- `setup_coint_gate.py` → SyntaxError line 1: invalid non-printable character U+FEFF
+- `setup_cointegration.py` → SyntaxError line 1: invalid non-printable character U+FEFF
+- `setup_cot.py` → SyntaxError line 1: invalid non-printable character U+FEFF
+- `setup_cpcv.py` → SyntaxError line 1: invalid non-printable character U+FEFF
+- `setup_cpcv_20y.py` → SyntaxError line 1: invalid non-printable character U+FEFF
+- `setup_dsr.py` → SyntaxError line 1: invalid non-printable character U+FEFF
+- `setup_feature_eng.py` → SyntaxError line 1: invalid non-printable character U+FEFF
+- `setup_gdelt.py` → SyntaxError line 1: invalid non-printable character U+FEFF
+- `setup_gmm_regime.py` → SyntaxError line 1: invalid non-printable character U+FEFF
+- `setup_hmm.py` → SyntaxError line 1: invalid non-printable character U+FEFF
+- `setup_macro_fetcher.py` → SyntaxError line 1: invalid non-printable character U+FEFF
+- `setup_meta_labeler.py` → SyntaxError line 1: invalid non-printable character U+FEFF
+- `setup_micro_engine.py` → SyntaxError line 1: invalid non-printable character U+FEFF
+- `setup_ml_validation.py` → SyntaxError line 1: invalid non-printable character U+FEFF
+- `setup_news_fetcher.py` → SyntaxError line 1: invalid non-printable character U+FEFF
+- `setup_news_parser.py` → SyntaxError line 1: invalid non-printable character U+FEFF
+- `setup_news_strategy.py` → SyntaxError line 1: invalid non-printable character U+FEFF
+- `setup_news_validation.py` → SyntaxError line 1: invalid non-printable character U+FEFF
+- `setup_ofi.py` → SyntaxError line 1: invalid non-printable character U+FEFF
+- `setup_pairs_engine.py` → SyntaxError line 1: invalid non-printable character U+FEFF
+- `setup_pairs_strategy.py` → SyntaxError line 1: invalid non-printable character U+FEFF
+- `setup_pairs_test.py` → SyntaxError line 1: invalid non-printable character U+FEFF
+- `setup_rolling_coint.py` → SyntaxError line 1: invalid non-printable character U+FEFF
+- `setup_shock_detector.py` → SyntaxError line 1: invalid non-printable character U+FEFF
+- `setup_spread.py` → SyntaxError line 1: invalid non-printable character U+FEFF
+- `setup_vp.py` → SyntaxError line 1: invalid non-printable character U+FEFF
+- `test_hour00.py` → SyntaxError line 1: invalid non-printable character U+FEFF
+- `update_asian_params.py` → SyntaxError line 1: invalid non-printable character U+FEFF
+- `update_dsr_20y.py` → SyntaxError line 1: invalid non-printable character U+FEFF
+- `update_inst_params.py` → SyntaxError line 1: invalid non-printable character U+FEFF
+- `update_opt_params.py` → SyntaxError line 1: invalid non-printable character U+FEFF
+- `upgrade_fe_v2.py` → SyntaxError line 1: invalid non-printable character U+FEFF
+- `upgrade_meta_labeler.py` → SyntaxError line 1: invalid non-printable character U+FEFF
+- `validate_asian.py` → SyntaxError line 1: invalid non-printable character U+FEFF
+- `validate_pairs_final.py` → SyntaxError line 1: invalid non-printable character U+FEFF
+
+## Orphaned Files (No Incoming Imports)
+Count: 175
+- `0.1_missing_numbers.py`
+- `0.3_out_of_sample_2025.py`
+- `0.4_dissect_failure.py`
+- `0.5_fix_system.py`
+- `1.1_data_download.py`
+- `1.2_eda.py`
+- `2.1_hmm_model.py`
+- `2.1_trade_log.py`
+- `2.2_walk_forward_monthly.py`
+- `2.4_hmm_strategy.py` [ENTRY POINT?]
+- `2.6_finbert.py`
+- `3.1_trading_env.py`
+- `3.2_final_judgment.py`
+- `3.2_rl_local.py`
+- `3.2_sac_cloned.py`
+- `3.2_train_rl.py` [ENTRY POINT?]
+- `3.2_train_sac.py` [ENTRY POINT?]
+- `3.3_autoencoder.py`
+- `3.3_eurjpy.py`
+- `3.4_timegan.py`
+- `3.6_pywavelets.py`
+- `4.0_prediction_layer.py`
+- `4.1_confidence_filter.py`
+- `4.1_genetic.py`
+- `4.1_genetic_safe.py`
+- `4.1_genetic_v3.py`
+- `4.2_walk_forward.py`
+- `5.1_out_of_sample.py`
+- `5.3_measure_costs.py`
+- `5.4_hmm_h4_backtest.py` [ENTRY POINT?]
+- `5.5_out_of_sample_v3.py`
+- `6.1_nine_regime.py`
+- `6.3_market_maker.py`
+- `6.4_portfolio.py`
+- `_test_alloc_disabled.py`
+- `alpha_vantage_news.py`
+- `analysis_correlation.py`
+- `analysis_rm.py`
+- `analysis_session_edge.py`
+- `analysis_shock_awe.py`
+- `analysis_temporal_edge.py`
+- `apex_diag.py`
+- `apply_surgery.py` [ENTRY POINT?]
+- `atr_kelly_sizing.py`
+- `audit_project.py`
+- `auditor.py`
+- `beast_final.py` [ENTRY POINT?]
+- `build_hist_v2.py`
+- `build_historical_data.py`
+- `clean_csv_data.py`
+- `clean_params.py`
+- `cointegration_tester.py`
+- `composite_score.py`
+- `cot_fetcher.py`
+- `cpcv_validator.py`
+- `cpv_high_atr.py`
+- `cpv_long_lower_shadow.py`
+- `cpv_validator.py`
+- `cross_validation.py`
+- `data_feed_interface.py`
+- `data_quality_report.py`
+- `defect_rate.py`
+- `deflated_sharpe_calculator.py`
+- `dry_run_simulator.py` [ENTRY POINT?]
+- `economic_calendar_fetcher.py`
+- `edge_diagnostics.py`
+- `edge_scanner.py`
+- `final_cut.py`
+- `final_pairs_test.py`
+- `frozen/1.0_time_of_day.py`
+- `frozen/1.1_news_drift.py`
+- `frozen/1.2_weekly_bias.py`
+- `frozen/1.3_combined_filters.py`
+- `frozen/1.4_volatility_regime.py`
+- `frozen/1.5_risk_managed_bot.py` [ENTRY POINT?]
+- `frozen/backtest_engine_mm.py` [ENTRY POINT?]
+- `frozen/diagnose_env.py`
+- `frozen/fix_data.py`
+- `frozen/live_hmm_bot.py` [ENTRY POINT?]
+- `frozen/strategy_market_maker.py` [ENTRY POINT?]
+- `frozen/strategy_mean_reversion.py` [ENTRY POINT?]
+- `gdelt_fetcher.py`
+- `integrate_vp.py`
+- `macro_data_fetcher.py`
+- `microstructure_engine.py` [ENTRY POINT?]
+- `monte_carlo_shadow.py`
+- `monte_carlo_tokyo.py`
+- `multi_period_validator.py`
+- `multiple_testing_correction.py`
+- `multiple_testing_high_atr.py`
+- `multiple_testing_hour00.py`
+- `multiple_testing_shadow.py`
+- `news_csv_parser.py`
+- `news_detector.py`
+- `news_risk.py`
+- `ofi_calculator.py`
+- `opt_pairs.py`
+- `opt_pairs_v2.py`
+- `optimal_cut.py`
+- `optimizer_foundry.py`
+- `optimizer_mean_reversion.py`
+- `optimizer_momentum.py`
+- `optimizer_range.py`
+- `optimizer_safe.py`
+- `optimizer_shadow.py`
+- `param_sensitivity.py`
+- `prop_firm_challenge.py`
+- `prop_firm_rules.py`
+- `regime_detector_gmm.py`
+- `reports/4.1_genetic.py`
+- `robustness_high_atr_thresholds.py`
+- `robustness_hour00_shift.py`
+- `robustness_shadow_thresholds.py`
+- `run_20yr_download.py` [ENTRY POINT?]
+- `run_20yr_robust.py` [ENTRY POINT?]
+- `run_20yr_tick_rule_download.py` [ENTRY POINT?]
+- `run_5yr_download.py` [ENTRY POINT?]
+- `run_av_fetch.py` [ENTRY POINT?]
+- `run_cpcv_20y.py` [ENTRY POINT?]
+- `run_macro_fetch.py` [ENTRY POINT?]
+- `run_meta_20y.py` [ENTRY POINT?]
+- `run_news_fetch.py` [ENTRY POINT?]
+- `setup_coint_gate.py`
+- `setup_cointegration.py`
+- `setup_cot.py`
+- `setup_cpcv.py`
+- `setup_cpcv_20y.py`
+- `setup_dsr.py`
+- `setup_feature_eng.py`
+- `setup_gdelt.py`
+- `setup_gmm_regime.py`
+- `setup_hmm.py`
+- `setup_macro_fetcher.py`
+- `setup_meta_labeler.py`
+- `setup_micro_engine.py` [ENTRY POINT?]
+- `setup_ml_validation.py`
+- `setup_news_fetcher.py`
+- `setup_news_parser.py`
+- `setup_news_strategy.py` [ENTRY POINT?]
+- `setup_news_validation.py`
+- `setup_ofi.py`
+- `setup_pairs_engine.py` [ENTRY POINT?]
+- `setup_pairs_strategy.py` [ENTRY POINT?]
+- `setup_pairs_test.py`
+- `setup_rolling_coint.py`
+- `setup_shock_detector.py`
+- `setup_spread.py`
+- `setup_vp.py`
+- `show_report.py`
+- `smart_portfolio.py`
+- `smart_portfolio_pro.py`
+- `spread_risk.py`
+- `strategy_base.py` [ENTRY POINT?]
+- `strategy_correlation.py` [ENTRY POINT?]
+- `stress_test.py`
+- `test_hour00.py`
+- `test_risk_guardian.py`
+- `test_risk_manager_pro.py` [ENTRY POINT?]
+- `test_sess.py`
+- `update_asian_params.py`
+- `update_dsr_20y.py`
+- `update_inst_params.py`
+- `update_opt_params.py`
+- `upgrade_fe_v2.py`
+- `upgrade_meta_labeler.py`
+- `validate_asian.py`
+- `validate_ml_strategy.py` [ENTRY POINT?]
+- `validate_news.py`
+- `validate_pairs.py`
+- `validate_pairs_cointegration.py`
+- `validate_pairs_cont.py`
+- `validate_pairs_final.py`
+- `volume_profile.py`
+- `walk_forward_optimizer.py`
+- `walk_forward_validator.py`
+
+## Entry Points Detected
+Count: 30
+- `2.4_hmm_strategy.py`
+- `3.2_train_rl.py`
+- `3.2_train_sac.py`
+- `5.4_hmm_h4_backtest.py`
+- `apply_surgery.py`
+- `beast_final.py`
+- `dry_run_simulator.py`
+- `frozen/1.5_risk_managed_bot.py`
+- `frozen/backtest_engine_mm.py`
+- `frozen/live_hmm_bot.py`
+- `frozen/strategy_market_maker.py`
+- `frozen/strategy_mean_reversion.py`
+- `microstructure_engine.py`
+- `run_20yr_download.py`
+- `run_20yr_robust.py`
+- `run_20yr_tick_rule_download.py`
+- `run_5yr_download.py`
+- `run_av_fetch.py`
+- `run_cpcv_20y.py`
+- `run_macro_fetch.py`
+- `run_meta_20y.py`
+- `run_news_fetch.py`
+- `setup_micro_engine.py`
+- `setup_news_strategy.py`
+- `setup_pairs_engine.py`
+- `setup_pairs_strategy.py`
+- `strategy_base.py`
+- `strategy_correlation.py`
+- `test_risk_manager_pro.py`
+- `validate_ml_strategy.py`
+
+## Top External Dependencies
+- `pandas`: 106 imports
+- `numpy`: 101 imports
+- `pathlib`: 39 imports
+- `warnings`: 39 imports
+- `sklearn`: 20 imports
+- `dataclasses`: 19 imports
+- `os`: 17 imports
+- `datetime`: 16 imports
+- `matplotlib`: 13 imports
+- `gymnasium`: 12 imports
+- `itertools`: 11 imports
+- `typing`: 11 imports
+- `stable_baselines3`: 10 imports
+- `time`: 9 imports
+- `re`: 8 imports
+- `torch`: 8 imports
+- `random`: 8 imports
+- `scipy`: 8 imports
+- `ibapi`: 7 imports
+- `joblib`: 6 imports
+
+## File Inventory (Lines / Classes / Functions)
+- `0.1_missing_numbers.py`: 221 lines, 0 classes, 0 funcs
+- `0.3_out_of_sample_2025.py`: 134 lines, 0 classes, 0 funcs
+- `0.4_dissect_failure.py`: 192 lines, 0 classes, 0 funcs
+- `0.5_fix_system.py`: 124 lines, 0 classes, 0 funcs
+- `1.1_data_download.py`: 24 lines, 0 classes, 0 funcs
+- `1.2_eda.py`: 48 lines, 0 classes, 0 funcs
+- `2.1_hmm_model.py`: 76 lines, 0 classes, 0 funcs
+- `2.1_trade_log.py`: 45 lines, 0 classes, 0 funcs
+- `2.2_walk_forward_monthly.py`: 166 lines, 0 classes, 1 funcs
+- `2.4_hmm_strategy.py`: 150 lines, 0 classes, 0 funcs
+- `2.6_finbert.py`: 68 lines, 0 classes, 0 funcs
+- `3.1_trading_env.py`: 152 lines, 1 classes, 5 funcs
+- `3.2_final_judgment.py`: 160 lines, 1 classes, 4 funcs
+- `3.2_rl_local.py`: 160 lines, 1 classes, 4 funcs
+- `3.2_sac_cloned.py`: 204 lines, 1 classes, 4 funcs
+- `3.2_train_rl.py`: 151 lines, 1 classes, 4 funcs
+- `3.2_train_sac.py`: 151 lines, 1 classes, 4 funcs
+- `3.3_autoencoder.py`: 138 lines, 1 classes, 6 funcs
+- `3.3_eurjpy.py`: 138 lines, 0 classes, 0 funcs
+- `3.4_timegan.py`: 156 lines, 1 classes, 4 funcs
+- `3.6_pywavelets.py`: 63 lines, 0 classes, 0 funcs
+- `4.0_prediction_layer.py`: 81 lines, 1 classes, 5 funcs
+- `4.1_confidence_filter.py`: 150 lines, 0 classes, 1 funcs
+- `4.1_genetic.py`: 133 lines, 0 classes, 4 funcs
+- `4.1_genetic_safe.py`: 142 lines, 0 classes, 4 funcs
+- `4.1_genetic_v3.py`: 152 lines, 0 classes, 4 funcs
+- `4.2_walk_forward.py`: 170 lines, 0 classes, 2 funcs
+- `5.1_out_of_sample.py`: 122 lines, 0 classes, 0 funcs
+- `5.3_measure_costs.py`: 87 lines, 1 classes, 5 funcs
+- `5.4_hmm_h4_backtest.py`: 112 lines, 0 classes, 1 funcs
+- `5.5_out_of_sample_v3.py`: 103 lines, 0 classes, 1 funcs
+- `6.1_nine_regime.py`: 39 lines, 0 classes, 1 funcs
+- `6.3_market_maker.py`: 35 lines, 0 classes, 1 funcs
+- `6.4_portfolio.py`: 165 lines, 0 classes, 0 funcs
+- `_test_alloc_disabled.py`: 93 lines, 1 classes, 1 funcs
+- `alpha_vantage_news.py`: 40 lines, 0 classes, 0 funcs
+- `analysis_correlation.py`: 60 lines, 0 classes, 0 funcs
+- `analysis_rm.py`: 33 lines, 0 classes, 0 funcs
+- `analysis_session_edge.py`: 82 lines, 0 classes, 0 funcs
+- `analysis_shock_awe.py`: 73 lines, 0 classes, 0 funcs
+- `analysis_temporal_edge.py`: 61 lines, 0 classes, 0 funcs
+- `apex_diag.py`: 20 lines, 0 classes, 0 funcs
+- `apply_surgery.py`: 22 lines, 0 classes, 0 funcs
+- `atr_kelly_sizing.py`: 94 lines, 0 classes, 0 funcs
+- `audit_project.py`: 46 lines, 0 classes, 0 funcs
+- `auditor.py`: 51 lines, 0 classes, 2 funcs
+- `backtest_engine.py`: 311 lines, 0 classes, 1 funcs
+- `beast_final.py`: 434 lines, 1 classes, 25 funcs
+- `bias_score.py`: 95 lines, 2 classes, 8 funcs
+- `bias_trading_compat.py`: 66 lines, 2 classes, 5 funcs
+- `build_hist_v2.py`: 56 lines, 0 classes, 0 funcs
+- `build_historical_data.py`: 84 lines, 1 classes, 4 funcs
+- `clean_csv_data.py`: 51 lines, 0 classes, 0 funcs
+- `clean_params.py`: 26 lines, 0 classes, 0 funcs
+- `cointegration_tester.py`: 62 lines, 0 classes, 2 funcs
+- `composite_score.py`: 89 lines, 3 classes, 3 funcs
+- `correlation_matrix.py`: 77 lines, 1 classes, 3 funcs
+- `cot_fetcher.py`: 83 lines, 1 classes, 1 funcs
+- `cpcv_validator.py`: 134 lines, 1 classes, 4 funcs
+- `cpv_high_atr.py`: 87 lines, 0 classes, 0 funcs
+- `cpv_long_lower_shadow.py`: 85 lines, 0 classes, 0 funcs
+- `cpv_temporal.py`: 132 lines, 2 classes, 8 funcs
+- `cpv_validator.py`: 231 lines, 3 classes, 8 funcs
+- `cross_validation.py`: 66 lines, 0 classes, 0 funcs
+- `data_feed_interface.py`: 69 lines, 2 classes, 11 funcs
+- `data_loader.py`: 76 lines, 0 classes, 4 funcs
+- `data_quality_report.py`: 131 lines, 0 classes, 1 funcs
+- `defect_rate.py`: 54 lines, 2 classes, 2 funcs
+- `deflated_sharpe_calculator.py`: 164 lines, 1 classes, 4 funcs
+- `dry_run_simulator.py`: 125 lines, 0 classes, 0 funcs
+- `dukascopy_fetcher.py`: 138 lines, 1 classes, 4 funcs
+- `economic_calendar_fetcher.py`: 90 lines, 1 classes, 2 funcs
+- `edge_diagnostics.py`: 84 lines, 0 classes, 0 funcs
+- `edge_scanner.py`: 102 lines, 0 classes, 0 funcs
+- `feature_engineer.py`: 74 lines, 0 classes, 0 funcs
+- `final_cut.py`: 34 lines, 0 classes, 0 funcs
+- `final_pairs_test.py`: 92 lines, 0 classes, 0 funcs
+- `frozen/1.0_time_of_day.py`: 124 lines, 0 classes, 0 funcs
+- `frozen/1.1_news_drift.py`: 129 lines, 0 classes, 0 funcs
+- `frozen/1.2_weekly_bias.py`: 203 lines, 0 classes, 0 funcs
+- `frozen/1.3_combined_filters.py`: 127 lines, 0 classes, 0 funcs
+- `frozen/1.4_volatility_regime.py`: 123 lines, 0 classes, 0 funcs
+- `frozen/1.5_risk_managed_bot.py`: 115 lines, 0 classes, 0 funcs
+- `frozen/backtest_engine_mm.py`: 70 lines, 0 classes, 0 funcs
+- `frozen/diagnose_env.py`: 108 lines, 0 classes, 0 funcs
+- `frozen/fix_data.py`: 46 lines, 0 classes, 0 funcs
+- `frozen/live_hmm_bot.py`: 224 lines, 0 classes, 0 funcs
+- `frozen/strategy_market_maker.py`: 32 lines, 0 classes, 0 funcs
+- `frozen/strategy_mean_reversion.py`: 74 lines, 0 classes, 0 funcs
+- `gdelt_fetcher.py`: 115 lines, 1 classes, 2 funcs
+- `institutional_data_handler.py`: 62 lines, 0 classes, 1 funcs
+- `integrate_vp.py`: 27 lines, 0 classes, 0 funcs
+- `macro_data_fetcher.py`: 135 lines, 1 classes, 4 funcs
+- `meta_labeler.py`: 252 lines, 1 classes, 9 funcs
+- `microstructure_engine.py`: 61 lines, 0 classes, 0 funcs
+- `monte_carlo_shadow.py`: 93 lines, 0 classes, 0 funcs
+- `monte_carlo_test.py`: 103 lines, 2 classes, 3 funcs
+- `monte_carlo_tokyo.py`: 97 lines, 0 classes, 0 funcs
+- `multi_period_validator.py`: 109 lines, 3 classes, 3 funcs
+- `multiple_testing_correction.py`: 60 lines, 0 classes, 0 funcs
+- `multiple_testing_high_atr.py`: 43 lines, 0 classes, 0 funcs
+- `multiple_testing_hour00.py`: 42 lines, 0 classes, 0 funcs
+- `multiple_testing_shadow.py`: 46 lines, 0 classes, 0 funcs
+- `news_csv_parser.py`: 102 lines, 0 classes, 2 funcs
+- `news_detector.py`: 4 lines, 1 classes, 1 funcs
+- `news_risk.py`: 121 lines, 4 classes, 8 funcs
+- `ofi_calculator.py`: 68 lines, 1 classes, 2 funcs
+- `opt_pairs.py`: 145 lines, 0 classes, 0 funcs
+- `opt_pairs_v2.py`: 93 lines, 0 classes, 0 funcs
+- `optimal_cut.py`: 10 lines, 0 classes, 0 funcs
+- `optimizer_foundry.py`: 118 lines, 0 classes, 0 funcs
+- `optimizer_mean_reversion.py`: 124 lines, 0 classes, 2 funcs
+- `optimizer_momentum.py`: 106 lines, 0 classes, 2 funcs
+- `optimizer_range.py`: 103 lines, 0 classes, 0 funcs
+- `optimizer_safe.py`: 125 lines, 0 classes, 1 funcs
+- `optimizer_shadow.py`: 102 lines, 0 classes, 0 funcs
+- `order_flow_analyzer.py`: 77 lines, 1 classes, 2 funcs
+- `pairs_backtest_engine.py`: 109 lines, 0 classes, 1 funcs
+- `param_sensitivity.py`: 118 lines, 3 classes, 3 funcs
+- `parameter_controller.py`: 169 lines, 1 classes, 2 funcs
+- `portfolio_allocator.py`: 238 lines, 4 classes, 7 funcs
+- `prop_firm_challenge.py`: 69 lines, 0 classes, 0 funcs
+- `prop_firm_rules.py`: 13 lines, 1 classes, 2 funcs
+- `regime_detector.py`: 122 lines, 3 classes, 5 funcs
+- `regime_detector_gmm.py`: 117 lines, 1 classes, 3 funcs
+- `reports/4.1_genetic.py`: 195 lines, 0 classes, 4 funcs
+- `risk_guardian.py`: 578 lines, 8 classes, 32 funcs
+- `risk_manager.py`: 179 lines, 2 classes, 9 funcs
+- `robustness_high_atr_thresholds.py`: 83 lines, 0 classes, 0 funcs
+- `robustness_hour00_shift.py`: 74 lines, 0 classes, 0 funcs
+- `robustness_shadow_thresholds.py`: 79 lines, 0 classes, 0 funcs
+- `run_20yr_download.py`: 23 lines, 0 classes, 0 funcs
+- `run_20yr_robust.py`: 152 lines, 0 classes, 0 funcs
+- `run_20yr_tick_rule_download.py`: 162 lines, 1 classes, 6 funcs
+- `run_5yr_download.py`: 23 lines, 0 classes, 0 funcs
+- `run_av_fetch.py`: 16 lines, 0 classes, 0 funcs
+- `run_cpcv_20y.py`: 160 lines, 0 classes, 0 funcs
+- `run_macro_fetch.py`: 16 lines, 0 classes, 0 funcs
+- `run_meta_20y.py`: 47 lines, 0 classes, 0 funcs
+- `run_news_fetch.py`: 16 lines, 0 classes, 0 funcs
+- `session_risk.py`: 117 lines, 2 classes, 6 funcs
+- `setup_coint_gate.py`: 141 lines, 0 classes, 0 funcs
+- `setup_cointegration.py`: 73 lines, 0 classes, 0 funcs
+- `setup_cot.py`: 99 lines, 0 classes, 0 funcs
+- `setup_cpcv.py`: 141 lines, 0 classes, 0 funcs
+- `setup_cpcv_20y.py`: 187 lines, 0 classes, 0 funcs
+- `setup_dsr.py`: 172 lines, 0 classes, 0 funcs
+- `setup_feature_eng.py`: 181 lines, 0 classes, 0 funcs
+- `setup_gdelt.py`: 114 lines, 0 classes, 0 funcs
+- `setup_gmm_regime.py`: 115 lines, 0 classes, 0 funcs
+- `setup_hmm.py`: 130 lines, 0 classes, 0 funcs
+- `setup_macro_fetcher.py`: 134 lines, 0 classes, 0 funcs
+- `setup_meta_labeler.py`: 105 lines, 0 classes, 0 funcs
+- `setup_micro_engine.py`: 72 lines, 0 classes, 0 funcs
+- `setup_ml_validation.py`: 97 lines, 0 classes, 0 funcs
+- `setup_news_fetcher.py`: 100 lines, 0 classes, 0 funcs
+- `setup_news_parser.py`: 109 lines, 0 classes, 0 funcs
+- `setup_news_strategy.py`: 70 lines, 0 classes, 0 funcs
+- `setup_news_validation.py`: 86 lines, 0 classes, 0 funcs
+- `setup_ofi.py`: 75 lines, 0 classes, 0 funcs
+- `setup_pairs_engine.py`: 109 lines, 0 classes, 0 funcs
+- `setup_pairs_strategy.py`: 51 lines, 0 classes, 0 funcs
+- `setup_pairs_test.py`: 98 lines, 0 classes, 0 funcs
+- `setup_rolling_coint.py`: 83 lines, 0 classes, 0 funcs
+- `setup_shock_detector.py`: 77 lines, 0 classes, 0 funcs
+- `setup_spread.py`: 73 lines, 0 classes, 0 funcs
+- `setup_vp.py`: 142 lines, 0 classes, 0 funcs
+- `show_report.py`: 33 lines, 0 classes, 0 funcs
+- `smart_portfolio.py`: 95 lines, 0 classes, 0 funcs
+- `smart_portfolio_pro.py`: 166 lines, 0 classes, 2 funcs
+- `spread_calculator.py`: 81 lines, 0 classes, 2 funcs
+- `spread_risk.py`: 92 lines, 2 classes, 4 funcs
+- `strategy_base.py`: 29 lines, 2 classes, 2 funcs
+- `strategy_correlation.py`: 55 lines, 0 classes, 0 funcs
+- `strategy_news_deviation.py`: 42 lines, 0 classes, 1 funcs
+- `strategy_pairs_trading.py`: 48 lines, 0 classes, 1 funcs
+- `stress_test.py`: 124 lines, 3 classes, 5 funcs
+- `test_hour00.py`: 19 lines, 0 classes, 0 funcs
+- `test_risk_guardian.py`: 486 lines, 19 classes, 77 funcs
+- `test_risk_manager_pro.py`: 134 lines, 5 classes, 14 funcs
+- `test_sess.py`: 75 lines, 0 classes, 0 funcs
+- `unified_filters.py`: 31 lines, 0 classes, 3 funcs
+- `update_asian_params.py`: 21 lines, 0 classes, 0 funcs
+- `update_dsr_20y.py`: 62 lines, 0 classes, 0 funcs
+- `update_inst_params.py`: 24 lines, 0 classes, 0 funcs
+- `update_opt_params.py`: 15 lines, 0 classes, 0 funcs
+- `upgrade_fe_v2.py`: 142 lines, 0 classes, 0 funcs
+- `upgrade_meta_labeler.py`: 150 lines, 0 classes, 0 funcs
+- `validate_asian.py`: 70 lines, 0 classes, 0 funcs
+- `validate_ml_strategy.py`: 90 lines, 0 classes, 0 funcs
+- `validate_news.py`: 79 lines, 0 classes, 0 funcs
+- `validate_pairs.py`: 78 lines, 0 classes, 0 funcs
+- `validate_pairs_cointegration.py`: 76 lines, 0 classes, 2 funcs
+- `validate_pairs_cont.py`: 76 lines, 0 classes, 0 funcs
+- `validate_pairs_final.py`: 78 lines, 0 classes, 0 funcs
+- `volume_profile.py`: 135 lines, 1 classes, 2 funcs
+- `volume_shock_detector.py`: 70 lines, 1 classes, 2 funcs
+- `walk_forward_optimizer.py`: 113 lines, 0 classes, 1 funcs
+- `walk_forward_validator.py`: 282 lines, 3 classes, 9 funcs
+- `weekly_analyzer.py`: 229 lines, 0 classes, 4 funcs
